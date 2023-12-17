@@ -9,3 +9,4 @@ pour le jeu, il faut faire :
   <br> bloque qui s'arrete si touche autre
   <br>bloque qui s'enleve si ligne
   <br>prochain bloque qui tombe
+  <br>dimensions du jeu : 10 x 20
