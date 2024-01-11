@@ -10,8 +10,8 @@ Lposition_bloc_x=[]  #Voici les listes des position des blocs, et un bloc sera a
 Lposition_bloc_y=[]
 Lcouleur_bloc=[]
 Lcouleur_bloc_noir=[10,10,10,10]
-Lposition_carre_x=[]
-Lposition_carre_y=[]
+Lposition_carre_x=[0,0,0,0]
+Lposition_carre_y=[0,0,0,0]
 
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 Lposition_cadrillage_x=[]
@@ -25,7 +25,7 @@ doit_cree_bloc=1  #Ici, si marque 1, tout comme normal mais si marque 17, va aff
 type_bloc=0
 position_bloc_descente_x=325  #La, ajoute cette valeur aux positions des blocs en x (aussi pour + tard)
 position_bloc_descente_y=25  #La, ajoute cette valeur aux positions des blocs en y mais est pas encore utilisé
-color=""
+#color=""
 bloc_tetris=0
 repetition=49
 
@@ -247,7 +247,7 @@ def faire_tomber(nomre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,
 
     doit_cree_bloc=doit_cree_bloc
 
-    #Ici, va soit tou reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
+    #Ici, va soit tout reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
 
         if repetition==0:   #reset pour la suite
@@ -255,7 +255,9 @@ def faire_tomber(nomre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,
 
                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
             Lposition_bloc_x.clear()
+            Lposition_carre_x.clear()
             Lposition_bloc_y.clear()
+            Lposition_carre_y.clear()
             Lcouleur_bloc.clear()
             repetition=49
             doit_cree_bloc+=1
@@ -268,7 +270,7 @@ def faire_tomber(nomre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,
         repetition+=1
 
         for i in range(4):   #Ici, dessine pour effacer l'ancient tetros et garder le fond color1
-            pygame.draw.rect(window, color1, (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 49, 1))
+            pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 49, 1))
             pygame.draw.rect(window, color2, (Lposition_bloc_x[len(Lposition_bloc_y)-1-i], Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 1, 1))
             Lposition_bloc_y[len(Lposition_bloc_y)-1-i]+=1
 
@@ -296,16 +298,13 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
             []
      new_Lposition_bloc_x et new_Lposition_bloc_y serviront à
     acceuillir ces nouvelles valeurs, puis deviendrons les "vraies" Lposition_bloc_. """
-    rotation=False
-    for event in pygame.event.get():            #|détection de
-        if event.type == pygame.KEYDOWN:        #|la pression
-            if event.key == pygame.K_SPACE:     #|de la touche espace
-                rotation=True
+    rotation= True
     if rotation :
         #création des variables
         new_Lposition_bloc_x=[]
         new_Lposition_bloc_y=[]
         for i in range (len(Lposition_bloc_x)):
+            print(0)
             x=Lposition_bloc_x[i] - position_bloc_descente_x
             y=Lposition_bloc_y[i] - position_bloc_descente_y
 
@@ -332,7 +331,10 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
                 if y==-25:
                     new_Lposition_bloc_x.append(position_bloc_descente_x-75)
                     new_Lposition_bloc_y.append(position_bloc_descente_y+75)
-
+                if y ==-75:
+                    new_Lposition_bloc_x.append(position_bloc_descente_x+75)
+                    new_Lposition_bloc_y.append(position_bloc_descente_y+125)
+                    
             if x==-25:
                 if y==-75:
                     new_Lposition_bloc_x.append(position_bloc_descente_x+25)
@@ -343,7 +345,10 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
                 if y==-25:
                     new_Lposition_bloc_x.append(position_bloc_descente_x-75)
                     new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-
+                if y == 75 :
+                    new_Lposition_bloc_x.append(position_bloc_descente_x+25)
+                    new_Lposition_bloc_y.append(position_bloc_descente_y+75)
+                    
             if x==25:
                 if y==75:
                     new_Lposition_bloc_x.append(position_bloc_descente_x+25)
@@ -354,6 +359,8 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
                 if y==-25:
                     new_Lposition_bloc_x.append(position_bloc_descente_x-75)
                     new_Lposition_bloc_y.append(position_bloc_descente_y-25)
+            print(new_Lposition_bloc_x,x)
+            print(new_Lposition_bloc_y,y)
 
         #transfer des nouvelles valeurs:
         Lposition_bloc_x.clear()
@@ -403,13 +410,19 @@ def quit_game_mouvement(Lcouleur_bloc,Lcouleur_bloc_noir):
                     Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50 
             
         if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT: # Si la toche q est appuyée  
-            print(Lposition_carre_x)
-            if max(Lposition_carre_x)>=3:
+
+            if min(Lposition_carre_x)>1:
 
                 effacer()
                 
                 for i in range(4):
-                    Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50      
+                    Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
+                    
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE :
+            rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
+                    
+        if event.type == pygame.QUIT:
+            pygame.quit()  
             
 def effacer():            
     """Ici, cette def permet d'effacer un bloc en dessinant par dessus des blocs noirs et elle est utilisé lorsque on deplace le bloc ou le tourne"""
@@ -427,11 +440,10 @@ def effacer():
 
 pygame.init()   #Début de la création de la page
 
-color1=color("Tu veux quelle couleur pour l'écran ?")
 color2=color("Tu veux quelle couleur pour les lignes ?")
 
 window = pygame.display.set_mode((700,1000))  #crée le rectangle noir de 700 par 1000
-pygame.draw.rect(window, color1, pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
+pygame.draw.rect(window, (0,0,0), pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
 crea_map(color2)
 
 run = True
