@@ -1,10 +1,11 @@
-#yo, la y'a tout sauf le debut de julian qui va arriver, ya la rota mais elle marche pas...(faut faire espace pour que ça focntionne)
+#version avec le main du 12/01 + l'arrivée du menu principal & la possibilité de mettre en pause avec la touche echap (pas encore d'interface)
 
 import pygame
+import sys
 from pygame.locals import *
 from math import ceil
 from random import randint
-import sys
+
 
 clock = pygame.time.Clock()
 
@@ -63,25 +64,25 @@ def couleur_bloc(i):
     en paramètre i, ce qui va permettre la repetition pour x, x etant le nombre de bloc du tetros crée"""
 
     if Lcouleur_bloc[i]==1:
-        image = pygame.image.load("python_tetris/bloc_tetris_vert.jpg")
+        image = pygame.image.load("assets/bloc_tetris_vert.jpg")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==2:
-        image = pygame.image.load("python_tetris/bloc_tetris_rouge.JPG")
+        image = pygame.image.load("assets/bloc_tetris_rouge.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==3:
-        image = pygame.image.load("python_tetris/bloc_tetris_bleu.JPG")
+        image = pygame.image.load("assets/bloc_tetris_bleu.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==4:
-        image = pygame.image.load("python_tetris/bloc_tetris_orange.JPG")
+        image = pygame.image.load("assets/bloc_tetris_orange.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==5:
-        image = pygame.image.load("python_tetris/bloc_tetris_violet.JPG")
+        image = pygame.image.load("assets/bloc_tetris_violet.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==10:
-        image = pygame.image.load("python_tetris/bloc_tetris_noir.jpg")
+        image = pygame.image.load("assets/bloc_tetris_noir.jpg")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     else :
-        image = pygame.image.load("python_tetris/bloc_tetris_jaune.JPG")
+        image = pygame.image.load("assets/bloc_tetris_jaune.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     return bloc_tetris
 
@@ -167,7 +168,7 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
         Lposition_bloc_y.append(position_bloc_descente_y-25)
         Lposition_bloc_x.append(position_bloc_descente_x+75)
         Lposition_bloc_y.append(position_bloc_descente_y-25)
-        nombre_bloc+=4                 # Ici, comme ajoute 4, va dessiner 4 blocs
+        nombre_bloc+=4                 # Ici, comme ajoute 4, va collisions 4 blocs
         type_bloc=0
 
     if type_bloc==2:   # Ici, c'est le bloc 3X1 avec un bloc  en bas a droite
@@ -278,7 +279,7 @@ def faire_tomber(nomre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,
 
 
 
-            if repetition==50: #Va dessiner une ligne de la couleur du cadrillage tout les 50 pixels
+            if repetition==50: #Va collisions une ligne de la couleur du cadrillage tout les 50 pixels
 
                 pygame.draw.rect(window, color2, (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i]-1, 49, 1))
         position_bloc_descente_y+=1
@@ -396,7 +397,7 @@ def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetri
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y
 
 
-def quit_game_mouvement(Lcouleur_bloc,Lcouleur_bloc_noir):
+def mouvement(Lcouleur_bloc,Lcouleur_bloc_noir):
     
     """ Permet de fermer la page si appuye sur la croix """
     
@@ -422,13 +423,10 @@ def quit_game_mouvement(Lcouleur_bloc,Lcouleur_bloc_noir):
                     
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE :
             rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
-                    
-        if event.type == pygame.QUIT:
-            pygame.quit()  
-            
+
 def effacer():            
     """Ici, cette def permet d'effacer un bloc en dessinant par dessus des blocs noirs et elle est utilisé lorsque on deplace le bloc ou le tourne"""
-    for i in range(4):    #Ici, va dessiner le bloc en noir pour l'effacer
+    for i in range(4):    #Ici, va collisions le bloc en noir pour l'effacer
         Lcouleur_bloc_noir[i]=Lcouleur_bloc[i]
         Lcouleur_bloc[i]=10     
     creation_bloc(nombre_bloc,bloc_tetris)
@@ -438,25 +436,96 @@ def effacer():
     
     crea_map(color2)
 
-      
+
+class Button():
+    """Définit les caractéristiques des boutons utilisés dans le jeu."""
+    def __init__(self, x: int, y: int, image):
+        """Initialisation des variables nécessaires pour tout bouton: 
+        position (x,y), image, rectangle pygame(utile pour les collisions) 
+        et le statut du bouton(cliqué ou non cliqué)"""
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.clicked = False
+        
+    def collision(self, fenetre):
+        """Dessine le bouton dans la fenetre du jeu, et vérifie s'il y a une 
+        intéraction avec celui-ci. 
+        Retourne True si le bouton est cliqué, sinon retourne False."""
+        action = False
+        fenetre.blit(self.image, (self.rect.x, self.rect.y))
+        position_souris = pygame.mouse.get_pos()
+        if self.rect.collidepoint(position_souris):
+            if pygame.mouse.get_pressed()[0] and not self.clicked:
+                action = True
+                self.clicked = True
+            if not pygame.mouse.get_pressed()[0]:
+                self.clicked = False
+        return action
+
+
+def quit_game():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
 
 pygame.init()   #Début de la création de la page
 
+
+color1 = color("Couleur écran: ")
 color2=color("Tu veux quelle couleur pour les lignes ?")
 
+
+menu_img = pygame.image.load("assets/menu_image.png")
+
+bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
+bouton_jouer = Button(200, 200, bouton_jouer_img)
+
+quadrillage = False
+in_menu = True
+in_game = False
+in_pause = False
+esc_pressed = False
+
 window = pygame.display.set_mode((700,1000))  #crée le rectangle noir de 700 par 1000
-pygame.draw.rect(window, (0,0,0), pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
-crea_map(color2)
+
 
 run = True
 while run:
-    quit_game_mouvement(Lcouleur_bloc,Lcouleur_bloc_noir)
+    quit_game()
 
-    nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
+    if in_menu:
+        window.blit(menu_img, (0,0))
+        if bouton_jouer.collision(window):
+            in_menu = False
+            in_game = True
 
+    elif in_game:
+        if not quadrillage:
+            pygame.draw.rect(window, color1, pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
+            crea_map(color2)
+            quadrillage = True
 
-    doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber(nombre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,position_bloc_descente_y)
+        nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
 
-    #window.fill((0,0,0))  # a quoi sa sert de tout effacer à chaque fois+couleur 0,0,0=noir
+        doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber(nombre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,position_bloc_descente_y)
+
+        mouvement(Lcouleur_bloc,Lcouleur_bloc_noir)
+        
+        if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
+            in_game = False
+            in_pause = True
+            esc_pressed = True
+        if not pygame.key.get_pressed()[K_ESCAPE]:
+            esc_pressed = False
+
+    elif in_pause:
+        if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
+            in_game = True
+            in_pause = False
+            esc_pressed = True
+        if not pygame.key.get_pressed()[K_ESCAPE]:
+            esc_pressed = False
 
     pygame.display.update()
