@@ -468,9 +468,10 @@ class Button():
 def quit_game():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            sys.exit()
 
-pygame.init()   #Début de la création de la page
+
+pygame.init()   #Début dela création de la page
 
 
 color1 = color("Couleur écran: ")
