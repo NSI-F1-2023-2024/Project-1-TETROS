@@ -372,6 +372,13 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
 
 
 
+def effacer la ligne ():
+    for i in range (len(Lposition_cadrillage_x)):
+        if Lposition_cadrillage_x[i]==true:
+            Lposition_cadrillage_x[i]==false
+            for i in range (i-1):
+                Lposition_cadrillage_x[i]=Lposition_cadrillage_x[i-1][:]
+            Lposition_cadrillage_x[0]==false
 
 
 def possibilité_de_rotation(Lposition_cadrillage_x):
