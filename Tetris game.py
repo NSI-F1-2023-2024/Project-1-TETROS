@@ -64,25 +64,25 @@ def couleur_bloc(i):
     en paramètre i, ce qui va permettre la repetition pour x, x etant le nombre de bloc du tetros crée"""
 
     if Lcouleur_bloc[i]==1:
-        image = pygame.image.load("assets/bloc_tetris_vert.jpg")
+        image = pygame.image.load("python_tetris/bloc_tetris_vert.jpg")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==2:
-        image = pygame.image.load("assets/bloc_tetris_rouge.JPG")
+        image = pygame.image.load("python_tetris/bloc_tetris_rouge.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==3:
-        image = pygame.image.load("assets/bloc_tetris_bleu.JPG")
+        image = pygame.image.load("python_tetris/bloc_tetris_bleu.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==4:
-        image = pygame.image.load("assets/bloc_tetris_orange.JPG")
+        image = pygame.image.load("python_tetris/bloc_tetris_orange.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==5:
-        image = pygame.image.load("assets/bloc_tetris_violet.JPG")
+        image = pygame.image.load("python_tetris/bloc_tetris_violet.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     elif Lcouleur_bloc[i]==10:
-        image = pygame.image.load("assets/bloc_tetris_noir.jpg")
+        image = pygame.image.load("python_tetris/bloc_tetris_noir.jpg")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     else :
-        image = pygame.image.load("assets/bloc_tetris_jaune.JPG")
+        image = pygame.image.load("python_tetris/bloc_tetris_jaune.JPG")
         bloc_tetris = pygame.transform.scale(image, (50, 50))
     return bloc_tetris
 
@@ -157,7 +157,6 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
     if doit_cree_bloc>=10:
         type_bloc=doit_cree_bloc-10
         doit_cree_bloc-=1
-
 
     if type_bloc==1:  #Ici, c'est un bloc 4X1
         Lposition_bloc_x.append(position_bloc_descente_x-75)  #Ici va ajoouter aux liste des valeur et comme ça,
@@ -307,7 +306,7 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
         new_Lposition_bloc_x=[]
         new_Lposition_bloc_y=[]
         for i in range (len(Lposition_bloc_x)):
-            print(0)
+
             x=Lposition_bloc_x[i] - position_bloc_descente_x
             y=Lposition_bloc_y[i] - position_bloc_descente_y
 
@@ -362,15 +361,13 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
                 if y==-25:
                     new_Lposition_bloc_x.append(position_bloc_descente_x-75)
                     new_Lposition_bloc_y.append(position_bloc_descente_y-25)
-            print(new_Lposition_bloc_x,x)
-            print(new_Lposition_bloc_y,y)
+
 
         #transfer des nouvelles valeurs:
-        Lposition_bloc_x.clear()
-        Lposition_bloc_y.clear()
-        Lposition_bloc_x=new_Lposition_bloc_x
-        Lposition_bloc_y=new_Lposition_bloc_y
-
+        for i in range(len(Lposition_bloc_x)):
+            Lposition_bloc_x[i]=new_Lposition_bloc_x[i]
+            Lposition_bloc_y[i]=new_Lposition_bloc_y[i]
+            
     return Lposition_bloc_x, Lposition_bloc_y
 
 
@@ -404,22 +401,22 @@ def mouvement(Lcouleur_bloc,Lcouleur_bloc_noir):
     for event in pygame.event.get():
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT: # Si la toche q est appuyée  
-                
-            if max(Lposition_carre_x)<10:
+            if len(Lposition_carre_x)>0:    
+                if max(Lposition_carre_x)<10:
 
-                effacer()
+                    effacer()
                 
-                for i in range(4):
-                    Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50 
+                    for i in range(4):
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50 
             
         if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT: # Si la toche q est appuyée  
+            if len(Lposition_carre_x)>0:
+                if min(Lposition_carre_x)>1:
 
-            if min(Lposition_carre_x)>1:
-
-                effacer()
+                    effacer()
                 
-                for i in range(4):
-                    Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
+                    for i in range(4):
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
                     
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE :
             rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
@@ -473,14 +470,11 @@ def quit_game():
 
 pygame.init()   #Début dela création de la page
 
-
-color1 = color("Couleur écran: ")
 color2=color("Tu veux quelle couleur pour les lignes ?")
 
+menu_img = pygame.image.load("python_tetris/menu_image.png")
 
-menu_img = pygame.image.load("assets/menu_image.png")
-
-bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
+bouton_jouer_img = pygame.image.load("python_tetris/bouton_jouer.png")
 bouton_jouer = Button(200, 200, bouton_jouer_img)
 
 quadrillage = False
@@ -504,7 +498,11 @@ while run:
 
     elif in_game:
         if not quadrillage:
-            pygame.draw.rect(window, color1, pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
+            fond_ecran_jeu = pygame.image.load("python_tetris/fond_ecran_jeu.png")
+            fond_ecran_jeu=pygame.transform.rotate(fond_ecran_jeu,90)
+            fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (700,1100 ))
+            window.blit(fond_ecran_jeu,[0,0])
+            pygame.draw.rect(window, (0,0,0), pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
             crea_map(color2)
             quadrillage = True
 
