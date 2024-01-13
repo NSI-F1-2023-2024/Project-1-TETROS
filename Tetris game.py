@@ -245,7 +245,7 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
         position_bloc_descente_x+=150
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y
 
-def faire_tomber(nomre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,position_bloc_descente_y):
+def faire_tomber(nomre_bloc,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y):
 
     doit_cree_bloc=doit_cree_bloc
 
@@ -398,28 +398,26 @@ def mouvement(Lcouleur_bloc,Lcouleur_bloc_noir):
     
     """ Permet de fermer la page si appuye sur la croix """
     
-    for event in pygame.event.get():
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT: # Si la toche q est appuyée  
+        if len(Lposition_carre_x)>0:    
+            if max(Lposition_carre_x)<10:
 
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT: # Si la toche q est appuyée  
-            if len(Lposition_carre_x)>0:    
-                if max(Lposition_carre_x)<10:
-
-                    effacer()
+                effacer()
                 
-                    for i in range(4):
-                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50 
+                for i in range(4):
+                    Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50 
             
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT: # Si la toche q est appuyée  
-            if len(Lposition_carre_x)>0:
-                if min(Lposition_carre_x)>1:
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT: # Si la toche q est appuyée  
+        if len(Lposition_carre_x)>0:
+            if min(Lposition_carre_x)>1:
 
-                    effacer()
+                effacer()
                 
-                    for i in range(4):
-                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
+                for i in range(4):
+                    Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
                     
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE :
-            rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE :
+        rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
 
 def effacer():            
     """Ici, cette def permet d'effacer un bloc en dessinant par dessus des blocs noirs et elle est utilisé lorsque on deplace le bloc ou le tourne"""
@@ -463,7 +461,30 @@ class Button():
 
 
 def quit_game():
+    
     for event in pygame.event.get():
+        
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT: # Si la toche q est appuyée  
+            if len(Lposition_carre_x)>0:    
+                if max(Lposition_carre_x)<10:
+
+                    effacer()
+                
+                    for i in range(4):
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50 
+            
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT: # Si la toche q est appuyée  
+            if len(Lposition_carre_x)>0:
+                if min(Lposition_carre_x)>1:
+
+                    effacer()
+                
+                    for i in range(4):
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
+                    
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE :
+            rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
+
         if event.type == pygame.QUIT:
             sys.exit()
 
@@ -508,9 +529,9 @@ while run:
 
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
 
-        doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber(nombre_bloc,doit_cree_bloc,repetition,color1,color2,nombre_bloc,position_bloc_descente_y)
+        doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber(nombre_bloc,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y)
 
-        mouvement(Lcouleur_bloc,Lcouleur_bloc_noir)
+        #mouvement(Lcouleur_bloc,Lcouleur_bloc_noir)
         
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = False
