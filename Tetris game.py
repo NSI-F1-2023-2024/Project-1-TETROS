@@ -34,6 +34,7 @@ repetition=49
 
 #Ici, aussi les variables mais celles-ci sont utilisés pour le jeu en générale, par exemple si in_game = True, cela veut dire qu'on est en jeu, pareil avec pause et menu
 quadrillage = False
+in_mort = False
 in_menu = True
 in_game = False
 in_pause = False
@@ -216,38 +217,38 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
         nombre_bloc+=4
         type_bloc=0
 
-    if type_bloc==5:    #Ici c'est le bloc 2 en haut et 2 en bas à droite
+    if type_bloc==5:    #Ici c'est le bloc 2 en haut et 2 en bas à gauche
+        Lposition_bloc_x.append(position_bloc_descente_x-75)
+        Lposition_bloc_y.append(position_bloc_descente_y+25)
         Lposition_bloc_x.append(position_bloc_descente_x-25)
         Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
+        Lposition_bloc_x.append(position_bloc_descente_x-25)
         Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x+75)
+        Lposition_bloc_x.append(position_bloc_descente_x+25)
         Lposition_bloc_y.append(position_bloc_descente_y-25)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==6:    #Ici c'est le bloc 2 en haut et 2 en bas à droite
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+75)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
         Lposition_bloc_x.append(position_bloc_descente_x-25)
+        Lposition_bloc_y.append(position_bloc_descente_y+25)
+        Lposition_bloc_x.append(position_bloc_descente_x+25)
+        Lposition_bloc_y.append(position_bloc_descente_y+25)
+        Lposition_bloc_x.append(position_bloc_descente_x-25)
+        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-75)
         Lposition_bloc_y.append(position_bloc_descente_y-25)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==7:    #Ici c'est le bloc T
+        Lposition_bloc_x.append(position_bloc_descente_x-75)
+        Lposition_bloc_y.append(position_bloc_descente_y+25)
         Lposition_bloc_x.append(position_bloc_descente_x-25)
         Lposition_bloc_y.append(position_bloc_descente_y+25)
         Lposition_bloc_x.append(position_bloc_descente_x+25)
         Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+75)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
+        Lposition_bloc_x.append(position_bloc_descente_x-25)
         Lposition_bloc_y.append(position_bloc_descente_y-25)
         nombre_bloc+=4
         type_bloc=0
@@ -255,7 +256,8 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
         position_bloc_descente_x+=150
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y
 
-def faire_tomber_reset(nomre_bloc,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y):
+def faire_tomber_reset(in_mort,nombre_bloc,doit_cree_bloc,repetition,color2,position_bloc_descente_y):
+    
     """Ici, permet à chaque itération de faire d'ajouter 1 pixel aux positions y des blocs et si le bloc touche 
     un autre bloc, il est descend plus et va reset, donc mettre True aux positions du bloc puis tout .clear et ajouter
     1 a doit_cree_bloc"""
@@ -279,6 +281,8 @@ def faire_tomber_reset(nomre_bloc,doit_cree_bloc,repetition,color2,nombre_bloc,p
             nombre_bloc-=4
             position_bloc_descente_y=25
             crea_map(color2)
+        if mort()==True:
+            in_mort=True
 
     else :
         repetition+=1
@@ -297,7 +301,7 @@ def faire_tomber_reset(nomre_bloc,doit_cree_bloc,repetition,color2,nombre_bloc,p
         if repetition == 50 :  #reset
             repetition = 0
 
-    return doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y
+    return in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y
 
 def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y):
     """Fonction qui permet de faire tourner instantanément un bloc via la touche espace dans
@@ -311,83 +315,107 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
             []
      new_Lposition_bloc_x et new_Lposition_bloc_y serviront à
     acceuillir ces nouvelles valeurs, puis deviendrons les "vraies" Lposition_bloc_. """
-    rotation= True
-    if rotation :
-        #création des variables
-        new_Lposition_bloc_x=[]
-        new_Lposition_bloc_y=[]
-        for i in range (len(Lposition_bloc_x)):
+    valeurs_vérif_rota_x, valeur_vérif_rota_y = rotation_des_listes( Lposition_carre_x,Lposition_carre_y,position_bloc_descente_x,position_bloc_descente_y)
 
-            x=Lposition_bloc_x[i] - position_bloc_descente_x
-            y=Lposition_bloc_y[i] - position_bloc_descente_y
+    if vérif_possibilité_mvt(valeurs_vérif_rota_x, valeur_vérif_rota_y) :
+        effacer()
 
-            if x==-125:
-                new_Lposition_bloc_x.append(position_bloc_descente_x-25)
-                new_Lposition_bloc_y.append(position_bloc_descente_y+125)
-            if y==-125:
-                new_Lposition_bloc_x.append(position_bloc_descente_x+75)
-                new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-            if x==75:
-                new_Lposition_bloc_x.append(position_bloc_descente_x-25)
-                new_Lposition_bloc_y.append(position_bloc_descente_y-75)
-            if y==-75:
-                new_Lposition_bloc_x.append(position_bloc_descente_x-125)
-                new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-
-            if x==-75:
-                if y==75:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x+25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+75)
-                if y==25:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x-25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+75)
-                if y==-25:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x-75)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+75)
-                if y ==-75:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x+75)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+125)
-
-            if x==-25:
-                if y==-75:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x+25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-                if y==25:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x-25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-                if y==-25:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x-75)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-                if y == 75 :
-                    new_Lposition_bloc_x.append(position_bloc_descente_x+25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y+25)
-
-            if x==25:
-                if y==75:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x+25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y-25)
-                if y==25:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x-25)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y-25)
-                if y==-25:
-                    new_Lposition_bloc_x.append(position_bloc_descente_x-75)
-                    new_Lposition_bloc_y.append(position_bloc_descente_y-25)
-
-
-        #transfer des nouvelles valeurs:
-        for i in range(len(Lposition_bloc_x)):
-            Lposition_bloc_x[i]=new_Lposition_bloc_x[i]
-            Lposition_bloc_y[i]=new_Lposition_bloc_y[i]
+        Lposition_bloc_x,Lposition_bloc_y=rotation_des_listes(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
 
     return Lposition_bloc_x, Lposition_bloc_y
 
-def possibilité_de_rotation(Lposition_cadrillage_x):
+def vérif_possibilité_mvt(liste_x,liste_y):
+
+    """Ici, test permet de savoir en retournant True, si le bloque n'en touche pas un autre et renvoi false pour le contraire"""
+    if max(Lposition_carre_x)>=10 and  min(Lposition_carre_x)<=10 :
+        return False
+    if min(Lposition_carre_y)>17:
+        return False
+
+    elif Lposition_cadrillage_x[liste_x[0]][liste_y[0]]==False and Lposition_cadrillage_x[liste_x[1]][liste_y[1]]==False and Lposition_cadrillage_x[liste_x[2]][liste_y[2]]==False and Lposition_cadrillage_x[liste_x[3]][liste_y[3]]==False:
+        if liste_x[0]%50==0: #Ici, ce teste permet de savoir que le tetros qui tombe est considéré etre sur une seule ligne
+            return True #Ici, comme retourne True, cela veut dire que le bloc n'en touche pas un autre et donc qui peut continuer ça route
+        elif Lposition_cadrillage_x[liste_x[0]][liste_y[0]+1]==False and Lposition_cadrillage_x[liste_x[1]][liste_y[1]+1]==False and Lposition_cadrillage_x[liste_x[2]][liste_y[2]+1]==False and Lposition_cadrillage_x[liste_x[3]][liste_y[3]+1]==False:
+            return True
+    else :
+        return False #Cela veut dire que le bloc en touhe un autre et donc qu'il ne peut pas être ou rester la et qu'il doit revenir à son ancienne position
+
+
+def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_descente_y):
+#création des variables
+    new_liste_x=[]
+    new_liste_y=[]
+
+    for i in range (len(liste_x)):
+        x=liste_x[i] - position_bloc_descente_x
+        y=round((liste_y[i] - position_bloc_descente_y)/5)
+        y=y*5
+        print(x,y)
+        if x==-125:
+            new_liste_x.append(position_bloc_descente_x-25)
+            new_liste_y.append(position_bloc_descente_y+125)
+        if y==125:
+            new_liste_x.append(position_bloc_descente_x+75)
+            new_liste_y.append(position_bloc_descente_y+25)
+        if x==75:
+            new_liste_x.append(position_bloc_descente_x-25)
+            new_liste_y.append(position_bloc_descente_y-75)
+        if y==-75:
+            new_liste_x.append(position_bloc_descente_x-125)
+            new_liste_y.append(position_bloc_descente_y+25)
+
+        if x==-75:
+            if y==75:
+                new_liste_x.append(position_bloc_descente_x+25)
+                new_liste_y.append(position_bloc_descente_y+75)
+            if y==25:
+                new_liste_x.append(position_bloc_descente_x-25)
+                new_liste_y.append(position_bloc_descente_y+75)
+            if y==-25:
+                new_liste_x.append(position_bloc_descente_x-75)
+                new_liste_y.append(position_bloc_descente_y+75)
+            if y ==-75:
+                new_liste_x.append(position_bloc_descente_x+125)
+                new_liste_y.append(position_bloc_descente_y+75)
+
+        if x==-25:
+            if y==-75:
+                new_liste_x.append(position_bloc_descente_x+25)
+                new_liste_y.append(position_bloc_descente_y+25)
+            if y==25:
+                new_liste_x.append(position_bloc_descente_x-25)
+                new_liste_y.append(position_bloc_descente_y+25)
+            if y==-25:
+                new_liste_x.append(position_bloc_descente_x-75)
+                new_liste_y.append(position_bloc_descente_y+25)
+            if y == 75 :
+                new_liste_x.append(position_bloc_descente_x+25)
+                new_liste_y.append(position_bloc_descente_y+25)
+
+        if x==25:
+            if y==75:
+                new_liste_x.append(position_bloc_descente_x+25)
+                new_liste_y.append(position_bloc_descente_y-25)
+            if y==25:
+                new_liste_x.append(position_bloc_descente_x-25)
+                new_liste_y.append(position_bloc_descente_y-25)
+            if y==-25:
+                new_liste_x.append(position_bloc_descente_x-75)
+                new_liste_y.append(position_bloc_descente_y-25)
+    #transfer des nouvelles valeurs:
+    for i in range(len(new_liste_x)):
+        liste_x[i]=new_liste_x[i]
+        liste_y[i]=new_liste_y[i]
+    return liste_x,liste_y
+
+
+def mort():
+    if len(Lposition_carre_y)>0:
+        if max(Lposition_carre_y)<=1:
+            return True
+    else:
+        return False
     
-    """Fonction qui va vérifier si il est possible d'effectuer la rotation avec"""
-
-    rotation_possible=False
-
-
 def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y):
 
     """ def, de base permet de lancer le jeu avec la creation des blocs et de la map"""
@@ -447,12 +475,13 @@ def effacer_la_ligne ():
             for i in range (i-1):
                 Lposition_cadrillage_x[i]=Lposition_cadrillage_x[i-1][:]
             Lposition_cadrillage_x[0]==false
-
-def touche(in_game,position_bloc_descente_x):
+            
+def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
     
     """Ici, va détecter la pression d'un touche droite, gauche, quit et espace et a en consequence decaler le tetros, quitter la page 
     ou meme le faire tourner(ça marche pas encore), et il y a un beug malheuresement ou à la 1er descente du bloc, on peut pas le déplacer à gauche"""
     
+  
     for event in pygame.event.get():
         
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT and in_game == True: # Si la toche droite est appuyée alors ajoute 50 au positions = 1 bloc vers la droite
@@ -473,14 +502,14 @@ def touche(in_game,position_bloc_descente_x):
                         Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
     
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and in_game==True:
-            rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
+            Lposition_bloc_x,Lposition_bloc_y=rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
 
         elif event.type == pygame.QUIT:  #Pour quitter mais jsp pourquoi ça marche pas, julian si tu sais pk,
             sys.exit()
 
-        return position_bloc_descente_x 
+    return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
             
-def jeu_global(Lposition_bloc_x,quadrillage,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y):
+def jeu_global(Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y):
    
     """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties : 
             - Le in_menu : c'est la moment du début du jeu ou on attend juste que tu appuie sur play pour joeur et rien d'autre ne se passe
@@ -508,8 +537,14 @@ def jeu_global(Lposition_bloc_x,quadrillage,in_game,in_pause,esc_pressed,in_menu
     in_pause=in_pause
     esc_pressed=esc_pressed
     quadrillage=quadrillage
+    position_bloc_descente_x=position_bloc_descente_x
     
-    if in_menu:  #Dans menu, juste attete de l'appuie du bouton jouer
+    if in_mort:
+        in_menu=False
+        in_game=False
+        in_pause=False
+        
+    if in_menu:  #Dans menu, juste en attente de l'appuie du bouton jouer
         window.blit(menu_img, (0,0))
         if bouton_jouer.collision(window):
             in_menu = False
@@ -526,7 +561,7 @@ def jeu_global(Lposition_bloc_x,quadrillage,in_game,in_pause,esc_pressed,in_menu
             quadrillage = True
 
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
-        doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(nombre_bloc,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y)
+        in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(in_mort,nombre_bloc,doit_cree_bloc,repetition,color2,position_bloc_descente_y)
         
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = False
@@ -543,9 +578,10 @@ def jeu_global(Lposition_bloc_x,quadrillage,in_game,in_pause,esc_pressed,in_menu
             esc_pressed = True
         if not pygame.key.get_pressed()[K_ESCAPE]:
             esc_pressed = False
-    position_bloc_descente=touche(in_game,position_bloc_descente_x) # Ici va voir si une touche est appuyé
-    
-    return in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,nombre_bloc,doit_cree_bloc
+
+    position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
+
+    return in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc
             
 
 
@@ -559,7 +595,6 @@ bouton_jouer_img = pygame.image.load("python_tetris/bouton_jouer.png")
 bouton_jouer = Button(200, 200, bouton_jouer_img)
 
 while run:
-
-    in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,nombre_bloc,doit_cree_bloc=jeu_global(Lposition_bloc_x,quadrillage,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y) #réalise le jeu en entier
     
+    in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc=jeu_global(Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,color2,nombre_bloc,position_bloc_descente_y) #réalise le jeu en entier
     pygame.display.update()  # update l'écran je crois, donc réinitialise les pixels je crois, affiche quoi
