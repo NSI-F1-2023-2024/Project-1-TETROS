@@ -468,13 +468,7 @@ class Button():
                 self.clicked = False
         return action
     
-def effacer_la_ligne ():
-    for i in range (len(Lposition_cadrillage_x)):
-        if Lposition_cadrillage_x[i]==true:
-            Lposition_cadrillage_x[i]==false
-            for i in range (i-1):
-                Lposition_cadrillage_x[i]=Lposition_cadrillage_x[i-1][:]
-            Lposition_cadrillage_x[0]==false
+
             
 def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
     
