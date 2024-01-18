@@ -1,3 +1,5 @@
+#j'ai essayer de rajouter un rejouer comme image(il se trouve dans main/assets/bouton
+
 import pygame
 import sys
 from pygame.locals import *
