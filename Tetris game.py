@@ -40,8 +40,8 @@ Ltaille_ecran.append(y)
 nombre_bloc=0   #Déini, le debut du jeu, au début y'a 0 bloc, il faut en créer 1 et comme y'en a 0 bloc le type est 0
 doit_cree_bloc=1  #Ici, si marque 1, tout comme normal mais si marque 17, va afficher la liste des blocs
 type_bloc=0
-position_bloc_descente_x=325  #La, ajoute cette valeur aux positions des blocs en x (aussi pour + tard)
-position_bloc_descente_y=25  #La, ajoute cette valeur aux positions des blocs en y mais est pas encore utilisé
+position_bloc_descente_x=Ltaille_ecran[0]*13/2  #La, ajoute cette valeur aux positions des blocs en x (aussi pour + tard)
+position_bloc_descente_y=Ltaille_ecran[0]/2  #La, ajoute cette valeur aux positions des blocs en y mais est pas encore utilisé
 bloc_tetris=0
 repetition=Ltaille_ecran[0]-1
 vitesse=1
@@ -55,7 +55,7 @@ in_game = False
 in_pause = False
 esc_pressed = False
 run = True
-Lacceleration=[0.2,1]
+Lacceleration=[Ltaille_ecran[0]*4/1000,1]
 Lancien_position_x=[]
 Lancien_position_y=[]
 def definition():
@@ -579,9 +579,9 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
         
         if Lacceleration[0]<1 :
-            Lacceleration[0]+=0.00002  #Augmente l'acceleration pour que les tetros tombent de + en + vite
+            Lacceleration[0]+=Ltaille_ecran[0]*4/10000000 #Augmente l'acceleration pour que les tetros tombent de + en + vite
         elif Lacceleration[1]<1 :
-            Lacceleration[1]+=0.00002
+            Lacceleration[1]+=Ltaille_ecran[0]*4/10000000
             
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = False
