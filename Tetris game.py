@@ -1,7 +1,7 @@
-#j'ai essayer de rajouter un rejouer comme image(il se trouve dans main/assets/bouton
-
+#j'ai essayer de rajouter un rejouer comme image(il se trouve dans main/assets/bouton)
 import pygame
 import sys
+import os
 from pygame.locals import *
 from math import ceil
 from random import randint
@@ -10,6 +10,10 @@ from random import randint
 
 clock = pygame.time.Clock()
 
+# Permet d'ouvrir la fenetre aux positions x,y , soit la 100/200
+
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (100,200)
+
 #Ici, se retrouve toutes les listes utilisés
 Lposition_bloc_x=[]  #Voici les listes des position des blocs, et un bloc sera assigné a une valeur
 Lposition_bloc_y=[] 
@@ -17,6 +21,7 @@ Lcouleur_bloc=[]
 Lcouleur_bloc_noir=[10,10,10,10]
 Lposition_carre_x=[]
 Lposition_carre_y=[]
+Ltaille_ecran=[]
 
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 Lposition_cadrillage_x=[]
@@ -24,6 +29,12 @@ for i in range(10):
     Lposition_cadrillage_x.append([])
     for j in range(18):
         Lposition_cadrillage_x[i].append(False)
+        
+#Ici permet de mettre le jeu à la taille de l'écran du joueur
+screen = pygame.display.set_mode()
+x, y = screen.get_size()
+y=round(y/22)
+Ltaille_ecran.append(y)
 
 #Ici, se trouve toutes les variables du jeu tetris
 nombre_bloc=0   #Déini, le debut du jeu, au début y'a 0 bloc, il faut en créer 1 et comme y'en a 0 bloc le type est 0
@@ -32,7 +43,7 @@ type_bloc=0
 position_bloc_descente_x=325  #La, ajoute cette valeur aux positions des blocs en x (aussi pour + tard)
 position_bloc_descente_y=25  #La, ajoute cette valeur aux positions des blocs en y mais est pas encore utilisé
 bloc_tetris=0
-repetition=49
+repetition=Ltaille_ecran[0]-1
 vitesse=1
 
 
@@ -80,33 +91,33 @@ def couleur_bloc(i,Lcouleur_bloc):
 
     if Lcouleur_bloc[i]==1:
         image = pygame.image.load("python_tetris/bloc_tetris_vert.jpg")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     elif Lcouleur_bloc[i]==2:
         image = pygame.image.load("python_tetris/bloc_tetris_rouge.JPG")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     elif Lcouleur_bloc[i]==3:
         image = pygame.image.load("python_tetris/bloc_tetris_bleu.JPG")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     elif Lcouleur_bloc[i]==4:
         image = pygame.image.load("python_tetris/bloc_tetris_orange.JPG")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     elif Lcouleur_bloc[i]==5:
         image = pygame.image.load("python_tetris/bloc_tetris_violet.JPG")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     elif Lcouleur_bloc[i]==10:
         image = pygame.image.load("python_tetris/bloc_tetris_noir.jpg")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     else :
         image = pygame.image.load("python_tetris/bloc_tetris_jaune.JPG")
-        bloc_tetris = pygame.transform.scale(image, (50, 50))
+        bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     return bloc_tetris
 
 def crea_map():
     """Ici, crée la map et donc le quadrillage, pas le noir du fond"""
-    for i in range(100,650,50) :
-        pygame.draw.line(window  ,(255,0,255) , (i,50),(i,950))
-    for u in range (50,1000,50):
-        pygame.draw.line(window  , (255,0,255), (100,u),(600,u))
+    for i in range(2*Ltaille_ecran[0],13*Ltaille_ecran[0],Ltaille_ecran[0]) :
+        pygame.draw.line(window  ,(255,0,255) , (i,Ltaille_ecran[0]),(i,19*Ltaille_ecran[0]))
+    for u in range (Ltaille_ecran[0],20*Ltaille_ecran[0],Ltaille_ecran[0]):
+        pygame.draw.line(window  , (255,0,255), (2*Ltaille_ecran[0],u),(12*Ltaille_ecran[0],u))
         pygame.display.flip()
 
 
@@ -122,8 +133,8 @@ def creation_bloc(nombre_bloc,bloc_tetris):
         
 def genere_position_carre(i):
     """Permet de transformer les valeurs de pixels et valeur de bloc genre 150 pixels devien 3 blocs"""
-    Lposition_carre_x[i]=(ceil(Lposition_bloc_x[i]/50)-1)
-    Lposition_carre_y[i]=(ceil(Lposition_bloc_y[i]/50)-1) #insère dans la liste la position des blocs en terme de bloc pas pixel
+    Lposition_carre_x[i]=(ceil(Lposition_bloc_x[i]/Ltaille_ecran[0])-1)
+    Lposition_carre_y[i]=(ceil(Lposition_bloc_y[i]/Ltaille_ecran[0])-1) #insère dans la liste la position des blocs en terme de bloc pas pixel
 
 
 def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,position_bloc_descente_y):
@@ -138,103 +149,98 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
         type_bloc=randint(1,7)  #pour la creation du bloc aléaotire
         doit_cree_bloc-=1
         couleur_bloc=randint(1,6)
-        position_bloc_descente_x=325
-        position_bloc_descente_y=75
+        position_bloc_descente_x=15*Ltaille_ecran[0]/2
+        position_bloc_descente_y=3*Ltaille_ecran[0]/2
 
         for i in range(4):
             Lposition_carre_x.append(0)
             Lcouleur_bloc.append(couleur_bloc)
             Lposition_carre_y.append(0)
 
-    if doit_cree_bloc>=10:
-        type_bloc=doit_cree_bloc-10
-        doit_cree_bloc-=1
 
     if type_bloc==1:  #Ici, c'est un bloc 4X1
-        Lposition_bloc_x.append(position_bloc_descente_x-75)  #Ici va ajoouter aux liste des valeur et comme ça,
-        Lposition_bloc_y.append(position_bloc_descente_y-25)  # le bloc va aller à ces valeurs
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x+75)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)  #Ici va ajoouter aux liste des valeur et comme ça,
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)  # le bloc va aller à ces valeurs
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
         nombre_bloc+=4                 # Ici, comme ajoute 4, va collisions 4 blocs
         type_bloc=0
 
     if type_bloc==2:   # Ici, c'est le bloc 3X1 avec un bloc  en bas a droite
-        Lposition_bloc_x.append(position_bloc_descente_x-75)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==3:   # Ici, c'est le bloc 3X1 avec un bloc en bas a gauche
-        Lposition_bloc_x.append(position_bloc_descente_x-75)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x-75)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==4:   #Ici c'est le carré
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==5:    #Ici c'est le bloc 2 en haut et 2 en bas à gauche
-        Lposition_bloc_x.append(position_bloc_descente_x-75)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==6:    #Ici c'est le bloc 2 en haut et 2 en bas à droite
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
-        Lposition_bloc_x.append(position_bloc_descente_x-75)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
         nombre_bloc+=4
         type_bloc=0
 
     if type_bloc==7:    #Ici c'est le bloc T
-        Lposition_bloc_x.append(position_bloc_descente_x-75)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x+25)
-        Lposition_bloc_y.append(position_bloc_descente_y+25)
-        Lposition_bloc_x.append(position_bloc_descente_x-25)
-        Lposition_bloc_y.append(position_bloc_descente_y-25)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y+Ltaille_ecran[0]*0.5)
+        Lposition_bloc_x.append(position_bloc_descente_x-Ltaille_ecran[0]*0.5)
+        Lposition_bloc_y.append(position_bloc_descente_y-Ltaille_ecran[0]*0.5)
         nombre_bloc+=4
         type_bloc=0
-    if doit_cree_bloc>=10:
-        position_bloc_descente_x+=150
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y
 
 def faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y):
@@ -258,7 +264,7 @@ def faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,
             Lposition_bloc_y.clear()
             Lposition_carre_y.clear()
             Lcouleur_bloc.clear()
-            repetition=49
+            repetition=Ltaille_ecran[0]-1
             doit_cree_bloc+=1
             nombre_bloc-=4
             position_bloc_descente_y=25
@@ -272,16 +278,16 @@ def faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,
         if vitesse>=1:
             repetition+=1
             for i in range(4):   #Ici, dessine pour effacer l'ancient tetros et garder le fond color1
-                pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 49, 1))
+                pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i], Ltaille_ecran[0]-1, 1))
                 pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i], Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 1, 1))
                 Lposition_bloc_y[len(Lposition_bloc_y)-1-i]+=1
 
 
 
-                if repetition==50: #Va collisions une ligne de la couleur du cadrillage tout les 50 pixels
-                    pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i]-1, 49, 1))
+                if repetition==Ltaille_ecran[0]: #Va collisions une ligne de la couleur du cadrillage tout les 50 pixels
+                    pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i]-1, Ltaille_ecran[0]-1, 1))
             position_bloc_descente_y+=1
-            if repetition == 50 :  #reset
+            if repetition == Ltaille_ecran[0] :  #reset
                 repetition = 0
             vitesse-=1
     return vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y
@@ -320,7 +326,7 @@ def vérif_possibilité_mvt(liste_x,liste_y):
         return False
 
     elif Lposition_cadrillage_x[liste_x[0]-1][liste_y[0]-1]==False and Lposition_cadrillage_x[liste_x[1]-1][liste_y[1]-1]==False and Lposition_cadrillage_x[liste_x[2]-1][liste_y[2]-1]==False and Lposition_cadrillage_x[liste_x[3]-1][liste_y[3]-1]==False:
-        if liste_y[0]%50==0: #Ici, ce teste permet de savoir que le tetros qui tombe est considéré etre sur une seule ligne
+        if liste_y[0]%Ltaille_ecran[0]==0: #Ici, ce teste permet de savoir que le tetros qui tombe est considéré etre sur une seule ligne
             return True #Ici, comme retourne True, cela veut dire que le bloc n'en touche pas un autre et donc qui peut continuer ça route
         elif Lposition_cadrillage_x[liste_x[0]-1][liste_y[0]]==False and Lposition_cadrillage_x[liste_x[1]-1][liste_y[1]]==False and Lposition_cadrillage_x[liste_x[2]-1][liste_y[2]]==False and Lposition_cadrillage_x[liste_x[3]-1][liste_y[3]]==False:
             return True
@@ -337,57 +343,57 @@ def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_d
         y=round((liste_y[i] - position_bloc_descente_y)/5)
         y=y*5
         print(x,y)
-        if x==-125:
-            new_liste_x.append(position_bloc_descente_x-25)
-            new_liste_y.append(position_bloc_descente_y+125)
-        if y==125:
-            new_liste_x.append(position_bloc_descente_x+75)
-            new_liste_y.append(position_bloc_descente_y+25)
-        if x==75:
-            new_liste_x.append(position_bloc_descente_x-25)
-            new_liste_y.append(position_bloc_descente_y-75)
-        if y==-75:
-            new_liste_x.append(position_bloc_descente_x-125)
-            new_liste_y.append(position_bloc_descente_y+25)
+        if x==-Ltaille_ecran[0]*5/2:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*2.5)
+        if y==Ltaille_ecran[0]*2.5:
+            new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*1.5)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+        if x==Ltaille_ecran[0]*1.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+            new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]*1.5)
+        if y==-Ltaille_ecran[0]*1.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*2.5)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
 
-        if x==-75:
-            if y==75:
-                new_liste_x.append(position_bloc_descente_x+25)
-                new_liste_y.append(position_bloc_descente_y+75)
-            if y==25:
-                new_liste_x.append(position_bloc_descente_x-25)
-                new_liste_y.append(position_bloc_descente_y+75)
-            if y==-25:
-                new_liste_x.append(position_bloc_descente_x-75)
-                new_liste_y.append(position_bloc_descente_y+75)
-            if y ==-75:
-                new_liste_x.append(position_bloc_descente_x+125)
-                new_liste_y.append(position_bloc_descente_y+75)
+        if x==-Ltaille_ecran[0]*1.5:
+            if y==Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
+            if y==Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
+            if y==-Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
+            if y ==-Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*2.5)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
 
-        if x==-25:
-            if y==-75:
-                new_liste_x.append(position_bloc_descente_x+25)
-                new_liste_y.append(position_bloc_descente_y+25)
-            if y==25:
-                new_liste_x.append(position_bloc_descente_x-25)
-                new_liste_y.append(position_bloc_descente_y+25)
-            if y==-25:
-                new_liste_x.append(position_bloc_descente_x-75)
-                new_liste_y.append(position_bloc_descente_y+25)
-            if y == 75 :
-                new_liste_x.append(position_bloc_descente_x+25)
-                new_liste_y.append(position_bloc_descente_y+25)
+        if x==-Ltaille_ecran[0]/2:
+            if y==-Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+            if y==Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+            if y==-Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+            if y == Ltaille_ecran[0]*1.5 :
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
 
-        if x==25:
-            if y==75:
-                new_liste_x.append(position_bloc_descente_x+25)
-                new_liste_y.append(position_bloc_descente_y-25)
-            if y==25:
-                new_liste_x.append(position_bloc_descente_x-25)
-                new_liste_y.append(position_bloc_descente_y-25)
-            if y==-25:
-                new_liste_x.append(position_bloc_descente_x-75)
-                new_liste_y.append(position_bloc_descente_y-25)
+        if x==Ltaille_ecran[0]/2:
+            if y==Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
+            if y==Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
+            if y==-Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
     #transfer des nouvelles valeurs:
     for i in range(len(new_liste_x)):
         liste_x[i]=new_liste_x[i]
@@ -401,7 +407,7 @@ def mort():
             return True
     else:
         return False
-    
+
 def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y):
 
     """ def, de base permet de lancer le jeu avec la creation des blocs et de la map"""
@@ -473,26 +479,26 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
             if len(Lposition_carre_x)>0:    
                 if max(Lposition_carre_x)<10:
                     effacer()
-                    position_bloc_descente_x+=50
+                    position_bloc_descente_x+=Ltaille_ecran[0]
                     for i in range(4):
-                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=Ltaille_ecran[0]
                     if vérif_possibilité_mvt(Lposition_carre_x,Lposition_carre_y)==False: #regarde si peut faire le deplacement
-                        position_bloc_descente_x-=50
+                        position_bloc_descente_x-=Ltaille_ecran[0]
                         for i in range(4):
-                            Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50        
+                            Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0]        
                     
                     
         if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT and in_game == True: # Si la toche gauche est appuyée alors ajoute -50 au positions = 1 bloc vers la gauche
             if len(Lposition_carre_x)>0: 
                 if min(Lposition_carre_x)>1:
                     effacer()
-                    position_bloc_descente_x-=50
+                    position_bloc_descente_x-=Ltaille_ecran[0]
                     for i in range(4):
-                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=50 
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0] 
                         if vérif_possibilité_mvt(Lposition_carre_x,Lposition_carre_y)==False:  #Teste pour voir si on peut faire le deplacement
-                            position_bloc_descente_x+=50
+                            position_bloc_descente_x+=Ltaille_ecran[0]
                             for i in range(4):
-                                Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=50
+                                Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=Ltaille_ecran[0]
                                
     
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and in_game==True:
@@ -540,12 +546,12 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
     esc_pressed=esc_pressed
     quadrillage=quadrillage
     position_bloc_descente_x=position_bloc_descente_x
-    print(in_game,in_menu,in_pause,in_mort)
+    
     if in_mort:
         in_menu=False
         in_game=False
         in_pause=False
-        bouton_rejouer = Button(100, 400, bouton_rejouer_img)
+        bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_img)
         if bouton_rejouer.collision(window):
             print(0)
             in_menu = False
@@ -563,9 +569,9 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
             Lacceleration[0]=0.2  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
             fond_ecran_jeu = pygame.image.load("python_tetris/fond_ecran_jeu.png")
             #fond_ecran_jeu=pygame.transform.rotate(fond_ecran_jeu,90)
-            fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (700,1100 ))
+            fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
             window.blit(fond_ecran_jeu,[0,0])
-            pygame.draw.rect(window, (0,0,0), pygame.Rect(100,50, 500, 900))  # ici cree le rectangle pour le jeu
+            pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
             crea_map()
             quadrillage = True
         
@@ -598,17 +604,17 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
     return Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc
             
 
-
+#os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0,5000)
 pygame.init()   #Début dela création de la page
-window = pygame.display.set_mode((700,1000))  #crée le rectangle noir de 700 par 1000
+window = pygame.display.set_mode((14*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
 
 #Ici se trouve la définition des images notament pour le fond d'ecran
 menu_img = pygame.image.load("python_tetris/menu_image.png")
 bouton_jouer_img = pygame.image.load("python_tetris/bouton_jouer.png")
 bouton_rejouer_img = pygame.image.load("python_tetris/bouton_rejouer.png")
-bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (450, 150))
-bouton_jouer = Button(200, 200, bouton_jouer_img)
+bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
+bouton_jouer = Button(4*Ltaille_ecran[0], 4*Ltaille_ecran[0], bouton_jouer_img)
 
 while run:
     Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc=jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y) #réalise le jeu en entier
-    pygame.display.update()  # update l'écran je crois, donc réinitialise les pixels je crois, affiche quoi
+    pygame.display.update()  # update l'écran 
