@@ -600,9 +600,9 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
         
         if Lacceleration[0]<1 :
-            Lacceleration[0]+=Ltaille_ecran[0]*4/10000000*2 #Augmente l'acceleration pour que les tetros tombent de + en + vite
+            Lacceleration[0]+=Ltaille_ecran[0]*4/10000000 #Augmente l'acceleration pour que les tetros tombent de + en + vite
         elif Lacceleration[1]<1 :
-            Lacceleration[1]+=Ltaille_ecran[0]*4/10000000*2
+            Lacceleration[1]+=Ltaille_ecran[0]*4/10000000
             
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = False
