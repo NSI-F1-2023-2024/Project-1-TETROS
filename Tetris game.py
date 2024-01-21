@@ -631,7 +631,9 @@ window = pygame.display.set_mode((14*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #cr
 
 #Ici se trouve la définition des images notament pour le fond d'ecran
 menu_img = pygame.image.load("python_tetris/menu_image.png")
+menu_img = pygame.transform.scale(menu_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
 bouton_jouer_img = pygame.image.load("python_tetris/bouton_jouer.png")
+bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 bouton_rejouer_img = pygame.image.load("python_tetris/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
 bouton_jouer = Button(4*Ltaille_ecran[0], 4*Ltaille_ecran[0], bouton_jouer_img)
