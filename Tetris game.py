@@ -131,7 +131,7 @@ def creation_bloc(nombre_bloc,bloc_tetris):
 
         bloc_tetris=couleur_bloc(i,Lcouleur_bloc)
         window.blit(bloc_tetris,[Lposition_bloc_x[i],Lposition_bloc_y[i]])  # Ici, va print cette image a la position x,y
-        genere_position_carre(i)
+        genere_position_carre(i,Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)
         
 def bloc_suivant():
     if Ltype_bloc[0]==1:
@@ -151,10 +151,10 @@ def bloc_suivant():
     nexttetros = pygame.transform.scale(nexttetros, (3*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
     window.blit(nexttetros,(11*Ltaille_ecran[0],0))
 
-def genere_position_carre(i):
+def genere_position_carre(i,liste_x,liste_y,liste_carre_x,liste_carre_y):
     """Permet de transformer les valeurs de pixels et valeur de bloc genre 150 pixels devien 3 blocs"""
-    Lposition_carre_x[i]=(ceil(Lposition_bloc_x[i]/Ltaille_ecran[0])-1)
-    Lposition_carre_y[i]=(ceil(Lposition_bloc_y[i]/Ltaille_ecran[0])-1) #insère dans la liste la position des blocs en terme de bloc pas pixel
+    liste_carre_x[i]=(ceil(liste_x[i]/Ltaille_ecran[0])-1)
+    liste_carre_y[i]=(ceil(liste_y[i]/Ltaille_ecran[0])-1) #insère dans la liste la position des blocs en terme de bloc pas pixel
 
 
 def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,position_bloc_descente_y):
@@ -325,56 +325,60 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
             []
      new_Lposition_bloc_x et new_Lposition_bloc_y serviront à
     acceuillir ces nouvelles valeurs, puis deviendrons les "vraies" Lposition_bloc_. """
-    valeurs_vérif_rota_x, valeur_vérif_rota_y = rotation_des_listes( Lposition_carre_x,Lposition_carre_y,position_bloc_descente_x,position_bloc_descente_y)
-
-    if vérif_possibilité_mvt(valeurs_vérif_rota_x, valeur_vérif_rota_y) :
+    
+    valeurs_vérif_rota_x, valeur_vérif_rota_y = rotation_des_listes( Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
+    print(valeurs_vérif_rota_x,valeur_vérif_rota_y)
+    if vérif_possibilité_mvt(valeurs_vérif_rota_x, valeur_vérif_rota_y,valeurs_vérif_rota_x,valeur_vérif_rota_y) :
+        print(0)
         effacer()
-
         Lposition_bloc_x,Lposition_bloc_y=rotation_des_listes(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
-
+        
     return Lposition_bloc_x, Lposition_bloc_y
 
-def vérif_possibilité_mvt(liste_x,liste_y):
+def vérif_possibilité_mvt(liste_x,liste_y,liste_carre_x,liste_carre_y):
 
     """Ici, test permet de savoir en retournant True, si le bloque n'en touche pas un autre et renvoi false pour le contraire"""
     for i in range(4):
-        genere_position_carre(i)
-    if len(Lposition_carre_x)<4:
+        
+        genere_position_carre(i,liste_x,liste_y,liste_carre_x,liste_carre_y)
+        
+    if len(liste_carre_x)<4:
         return False
-    #if max(Lposition_carre_x)>=10 and  min(Lposition_carre_x)<=10 :
-        #return False
-    if max(Lposition_carre_y)>17:
+    if max(liste_carre_y)>17:
         return False
 
-    elif Lposition_cadrillage_x[liste_x[0]-1][liste_y[0]-1]==False and Lposition_cadrillage_x[liste_x[1]-1][liste_y[1]-1]==False and Lposition_cadrillage_x[liste_x[2]-1][liste_y[2]-1]==False and Lposition_cadrillage_x[liste_x[3]-1][liste_y[3]-1]==False:
+    elif Lposition_cadrillage_x[liste_carre_x[0]-1][liste_carre_y[0]-1]==False and Lposition_cadrillage_x[liste_carre_x[1]-1][liste_carre_y[1]-1]==False and Lposition_cadrillage_x[liste_carre_x[2]-1][liste_carre_y[2]-1]==False and Lposition_cadrillage_x[liste_carre_x[3]-1][liste_carre_y[3]-1]==False:
         if liste_y[0]%Ltaille_ecran[0]==0: #Ici, ce teste permet de savoir que le tetros qui tombe est considéré etre sur une seule ligne
             return True #Ici, comme retourne True, cela veut dire que le bloc n'en touche pas un autre et donc qui peut continuer ça route
-        elif Lposition_cadrillage_x[liste_x[0]-1][liste_y[0]]==False and Lposition_cadrillage_x[liste_x[1]-1][liste_y[1]]==False and Lposition_cadrillage_x[liste_x[2]-1][liste_y[2]]==False and Lposition_cadrillage_x[liste_x[3]-1][liste_y[3]]==False:
+        elif Lposition_cadrillage_x[liste_carre_x[0]-1][liste_carre_y[0]]==False and Lposition_cadrillage_x[liste_carre_x[1]-1][liste_carre_y[1]]==False and Lposition_cadrillage_x[liste_carre_x[2]-1][liste_carre_y[2]]==False and Lposition_cadrillage_x[liste_carre_x[3]-1][liste_carre_y[3]]==False:
             return True
     return False #Cela veut dire que le bloc en touhe un autre et donc qu'il ne peut pas être ou rester la et qu'il doit revenir à son ancienne position
 
 
 def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_descente_y):
 #création des variables
+
     new_liste_x=[]
     new_liste_y=[]
 
     for i in range (len(liste_x)):
+        
         x=liste_x[i] - position_bloc_descente_x
-        y=round((liste_y[i] - position_bloc_descente_y)/5)
-        y=y*5
-        if x==-Ltaille_ecran[0]*5/2:
-            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+        y=liste_y[i] - position_bloc_descente_y
+        
+
+        if x==-Ltaille_ecran[0]*2.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
             new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*2.5)
         if y==Ltaille_ecran[0]*2.5:
             new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*1.5)
-            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
         if x==Ltaille_ecran[0]*1.5:
-            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
+            new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
             new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]*1.5)
         if y==-Ltaille_ecran[0]*1.5:
             new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*2.5)
-            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+            new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
 
         if x==-Ltaille_ecran[0]*1.5:
             if y==Ltaille_ecran[0]*1.5:
@@ -414,11 +418,8 @@ def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_d
             if y==-Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
                 new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
-    #transfer des nouvelles valeurs:
-    for i in range(len(new_liste_x)):
-        liste_x[i]=new_liste_x[i]
-        liste_y[i]=new_liste_y[i]
-    return liste_x,liste_y
+
+    return new_liste_x,new_liste_y
 
 
 def mort():
@@ -441,10 +442,11 @@ def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetri
 def effacer():   
     
     """Ici, cette def permet d'effacer un bloc en dessinant par dessus des blocs noirs et elle est utilisé lorsque on deplace le bloc ou le tourne"""
-   
+
     for i in range(4):    #Ici, va collisions le bloc en noir pour l'effacer
         Lcouleur_bloc_noir[i]=Lcouleur_bloc[i]
-        Lcouleur_bloc[i]=10     
+        Lcouleur_bloc[i]=10    
+
     creation_bloc(nombre_bloc,bloc_tetris)
     for i in range(4):
         Lcouleur_bloc[i]=Lcouleur_bloc_noir[i]
@@ -502,7 +504,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
                     position_bloc_descente_x+=Ltaille_ecran[0]
                     for i in range(4):
                         Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=Ltaille_ecran[0]
-                    if vérif_possibilité_mvt(Lposition_carre_x,Lposition_carre_y)==False: #regarde si peut faire le deplacement
+                    if vérif_possibilité_mvt(Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)==False: #regarde si peut faire le deplacement
                         position_bloc_descente_x-=Ltaille_ecran[0]
                         for i in range(4):
                             Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0]        
@@ -515,7 +517,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
                     position_bloc_descente_x-=Ltaille_ecran[0]
                     for i in range(4):
                         Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0] 
-                        if vérif_possibilité_mvt(Lposition_carre_x,Lposition_carre_y)==False:  #Teste pour voir si on peut faire le deplacement
+                        if vérif_possibilité_mvt(Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)==False:  #Teste pour voir si on peut faire le deplacement
                             position_bloc_descente_x+=Ltaille_ecran[0]
                             for i in range(4):
                                 Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=Ltaille_ecran[0]
@@ -531,9 +533,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
         else :
             if Lacceleration[0]==1:    
                 Lacceleration[0],Lacceleration[1]=Lacceleration[1],Lacceleration[0]
-        if in_game==True :
-            bloc_suivant() #Pour print le bloc suivant en haut à droite
-            
+
         if event.type == pygame.QUIT:  #Pour quitter mais jsp pourquoi ça marche pas, julian si tu sais pk,
             sys.exit()
 
@@ -595,7 +595,7 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
             crea_map()
             quadrillage = True
-        
+        bloc_suivant()
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
         
@@ -624,8 +624,6 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
     
     return Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc
             
-
-#os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (0,5000)
 pygame.init()   #Début dela création de la page
 window = pygame.display.set_mode((14*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
 
