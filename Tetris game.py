@@ -281,6 +281,7 @@ def faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,
                 Lancien_position_x.append(Lposition_bloc_x[i])
                 Lancien_position_y.append(Lposition_bloc_y[i])
                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
+            Lpoint[0]+=4
             Lposition_bloc_x.clear()
             Lposition_carre_x.clear()
             Lposition_bloc_y.clear()
@@ -603,6 +604,7 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
 
     elif in_game:    #En game, le jeu tetris est lancé avec donc le programme
         if not quadrillage:
+            Lpoint=[0,0,0,0,0]
             Lacceleration[0]=0.2  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
             fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png")
             #fond_ecran_jeu=pygame.transform.rotate(fond_ecran_jeu,90)
