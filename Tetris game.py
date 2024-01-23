@@ -671,9 +671,9 @@ bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (6*Ltaille_ecran
 bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
 
-bouton_jouer = Button(4*Ltaille_ecran[0], 4*Ltaille_ecran[0], bouton_jouer_img)
-bouton_regles = Button(4*Ltaille_ecran[0], 7*Ltaille_ecran[0], bouton_regles_img)
-bouton_quitter = Button(4*Ltaille_ecran[0], 10*Ltaille_ecran[0], bouton_quitter_img)
+bouton_jouer = Button(5*Ltaille_ecran[0], 5*Ltaille_ecran[0], bouton_jouer_img)
+bouton_regles = Button(2*Ltaille_ecran[0], 10*Ltaille_ecran[0], bouton_regles_img)
+bouton_quitter = Button(8*Ltaille_ecran[0], 0*Ltaille_ecran[0], bouton_quitter_img)
 bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_img)
 
 while run:
