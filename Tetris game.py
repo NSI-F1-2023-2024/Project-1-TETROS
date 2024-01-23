@@ -265,7 +265,7 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
             Ltype_bloc[0],Ltype_bloc[1]=Ltype_bloc[1],Ltype_bloc[0]
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y
 
-def faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y):
+def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y):
     
     """Ici, permet à chaque itération de faire d'ajouter 1 pixel aux positions y des blocs et si le bloc touche 
     un autre bloc, il est descend plus et va reset, donc mettre True aux positions du bloc puis tout .clear et ajouter
@@ -281,7 +281,7 @@ def faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,
                 Lancien_position_x.append(Lposition_bloc_x[i])
                 Lancien_position_y.append(Lposition_bloc_y[i])
                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
-            Lpoint[0]+=4
+            Lpoint[position_point]+=4
             Lposition_bloc_x.clear()
             Lposition_carre_x.clear()
             Lposition_bloc_y.clear()
@@ -335,7 +335,7 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
         effacer()
         Lposition_bloc_x,Lposition_bloc_y=rotation_des_listes(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
         
-    return Lposition_bloc_x, Lposition_bloc_y
+    return position_point,Lposition_bloc_x, Lposition_bloc_y
 
 def vérif_possibilité_mvt(liste_x,liste_y,liste_carre_x,liste_carre_y):
 
@@ -541,7 +541,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
 
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
 
-def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles):
+def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles):
    
     """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties : 
             - Le in_menu : c'est la moment du début du jeu ou on attend juste que tu appuie sur play pour joeur et rien d'autre ne se passe
@@ -604,7 +604,8 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
 
     elif in_game:    #En game, le jeu tetris est lancé avec donc le programme
         if not quadrillage:
-            Lpoint=[0,0,0,0,0]
+            position_point=0
+            Lpoint=[0,0,0,0,0,0,0,0,0,0]
             Lacceleration[0]=0.2  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
             fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png")
             #fond_ecran_jeu=pygame.transform.rotate(fond_ecran_jeu,90)
@@ -615,8 +616,10 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
             quadrillage = True
         bloc_suivant()
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
-        vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
-        
+        position_point,vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
+        if Lpoint[position_point]>Lpoint[Lposition_point+1]:
+            Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
+            position_point+=1
         if Lacceleration[0]<1 :
             Lacceleration[0]+=Ltaille_ecran[0]*4/10000000 #Augmente l'acceleration pour que les tetros tombent de + en + vite
         elif Lacceleration[1]<1 :
@@ -640,7 +643,7 @@ def jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadril
 
     position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
     
-    return Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
+    return position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
 
 pygame.init()   #Début dela création de la page
 window = pygame.display.set_mode((14*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
@@ -667,5 +670,5 @@ bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_i
 
 while run:
 
-    Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
+    position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
     pygame.display.update()  # update l'écran 
