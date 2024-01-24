@@ -667,14 +667,15 @@ bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0],
 bouton_regles_img = pygame.image.load("assets/buttons/bouton_regles.png")
 bouton_regles_img = pygame.transform.scale(bouton_regles_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 bouton_quitter_img = pygame.image.load("assets/buttons/bouton_quitter.png")
-bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
+bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
 bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
 
-bouton_jouer = Button(5*Ltaille_ecran[0], 5*Ltaille_ecran[0], bouton_jouer_img)
-bouton_regles = Button(2*Ltaille_ecran[0], 10*Ltaille_ecran[0], bouton_regles_img)
-bouton_quitter = Button(8*Ltaille_ecran[0], 0*Ltaille_ecran[0], bouton_quitter_img)
+bouton_jouer = Button(4*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_jouer_img)
+bouton_regles = Button(4*Ltaille_ecran[0], 11*Ltaille_ecran[0], bouton_regles_img)
+bouton_quitter = Button(10.5*Ltaille_ecran[0], 1*Ltaille_ecran[0]/2, bouton_quitter_img)
 bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_img)
+
 
 while run:
     position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
