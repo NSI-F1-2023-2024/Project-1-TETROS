@@ -571,7 +571,7 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
                 4) la touche fleche vers le bas pour accelerer la descente du bloc ( en cours)
                 5) la croix en haut a droite pour arrêter le programme
         + tetros c'est un tetris de 4 blocs genre le t, 3 en haut et 1 en bas"""
- 
+
     in_menu=in_menu #ici c'est pour le return de fin, si je mets pas ça le programme beug pcq techniquement les valeurs ne sont pas touchés et donc il peut pas les return
     in_game=in_game
     in_pause=in_pause
@@ -579,7 +579,7 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
     esc_pressed=esc_pressed
     quadrillage=quadrillage
     position_bloc_descente_x=position_bloc_descente_x
-    
+
     if in_mort:
         in_menu=False
         in_game=False
@@ -589,8 +589,8 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
             in_menu = False
             in_game = True
             in_mort= False
-        
-    elif in_menu:  #Dans menu, juste en attente de l'appuie du bouton jouer
+
+    elif in_menu:  #Dans menu, juste en attente de l'appui du bouton jouer
         window.blit(menu_img, (0,0))
         if bouton_jouer.collision(window):
             in_menu = False
@@ -598,17 +598,15 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
         if bouton_regles.collision(window):
             in_menu = False
             in_regles = True
-        if bouton_quitter.collision(window):
+        if bouton_quitter.collision(window): # probleme avec le bouton quitter et les regles (ils sont a la meme position donc quand on clique sur l'un, ça clique sur les deux)
             pygame.quit()
             sys.exit()
-            
+
     elif in_regles:
         window.blit(regles_img, (0,0))
-        #ajout bouton retour menu
-        if bouton_quitter.collision(window):
+        if bouton_croix.collision(window):
             in_regles = False
             in_menu = True
-        
 
     elif in_game:    #En game, le jeu tetris est lancé avec donc le programme
         if not quadrillage:
@@ -666,6 +664,8 @@ bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
 bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 bouton_regles_img = pygame.image.load("assets/buttons/bouton_regles.png")
 bouton_regles_img = pygame.transform.scale(bouton_regles_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
+bouton_croix_img = pygame.image.load("assets/buttons/bouton_croix.png")
+bouton_croix_img = pygame.transform.scale(bouton_croix_img, (1.6*Ltaille_ecran[0], 1.6*Ltaille_ecran[0]))
 bouton_quitter_img = pygame.image.load("assets/buttons/bouton_quitter.png")
 bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
 bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
@@ -673,6 +673,7 @@ bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran
 
 bouton_jouer = Button(4*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_jouer_img)
 bouton_regles = Button(4*Ltaille_ecran[0], 11*Ltaille_ecran[0], bouton_regles_img)
+bouton_croix = Button(11.9*Ltaille_ecran[0], 0.2*Ltaille_ecran[0], bouton_croix_img)
 bouton_quitter = Button(10.5*Ltaille_ecran[0], 1*Ltaille_ecran[0]/2, bouton_quitter_img)
 bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_img)
 #J'aimerai faire juste au dessus du bouton jouer un endroit ou tu puisse mettre ton nom
