@@ -31,7 +31,7 @@ for i in range(10):
     Lposition_cadrillage_x.append([])
     for j in range(18):
         Lposition_cadrillage_x[i].append(False)
-        
+
 #Ici permet de mettre le jeu à la taille de l'écran du joueur
 screen = pygame.display.set_mode()
 x, y = screen.get_size()
@@ -168,7 +168,7 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
 
 
     if doit_cree_bloc>=1 :      #Dès que doit_cree_bloc >0, on ajoute et cree un bloc
-        
+
         Ltype_bloc[1]=randint(1,7)  #pour la creation du bloc aléaotire
         doit_cree_bloc-=1
         couleur_bloc=randint(1,6)
@@ -267,11 +267,11 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y
 
 def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y):
-    
+
     """Ici, permet à chaque itération de faire d'ajouter 1 pixel aux positions y des blocs et si le bloc touche 
     un autre bloc, il est descend plus et va reset, donc mettre True aux positions du bloc puis tout .clear et ajouter
     1 a doit_cree_bloc"""
-    
+
     doit_cree_bloc=doit_cree_bloc
 
     #Ici, va soit tout reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
@@ -298,7 +298,7 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
 
     else :
         vitesse+=Lacceleration[0]
-        
+
         if vitesse>=1:
             repetition+=1
             for i in range(4):   #Ici, dessine pour effacer l'ancient tetros et garder le fond color1
@@ -328,22 +328,22 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
             []
      new_Lposition_bloc_x et new_Lposition_bloc_y serviront à
     acceuillir ces nouvelles valeurs, puis deviendrons les "vraies" Lposition_bloc_. """
-    
+
     valeurs_vérif_rota_x, valeur_vérif_rota_y = rotation_des_listes( Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
     print(valeurs_vérif_rota_x,valeur_vérif_rota_y)
     if vérif_possibilité_mvt(valeurs_vérif_rota_x, valeur_vérif_rota_y,valeurs_vérif_rota_x,valeur_vérif_rota_y) :
         effacer()
         Lposition_bloc_x,Lposition_bloc_y=rotation_des_listes(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
-        
+
     return position_point,Lposition_bloc_x, Lposition_bloc_y
 
 def vérif_possibilité_mvt(liste_x,liste_y,liste_carre_x,liste_carre_y):
 
     """Ici, test permet de savoir en retournant True, si le bloque n'en touche pas un autre et renvoi false pour le contraire"""
     for i in range(4):
-        
+
         genere_position_carre(i,liste_x,liste_y,liste_carre_x,liste_carre_y)
-        
+
     if len(liste_carre_x)<4:
         return False
     if max(liste_carre_y)>17:
@@ -364,7 +364,7 @@ def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_d
     new_liste_y=[]
 
     for i in range (len(liste_x)):
-        
+
         x=liste_x[i] - position_bloc_descente_x
         y=liste_y[i] - position_bloc_descente_y
         
@@ -434,7 +434,7 @@ def mort():
             my_font = pygame.font.SysFont('Impact', Ltaille_ecran[0])
             text_surface = my_font.render('!!! END !!!', False, (255, 0, 0))
             screen.blit(text_surface, (5*Ltaille_ecran[0],0))
-            
+
             return True
     else:
         return False
@@ -501,12 +501,12 @@ def effacer_la_ligne ():
             Lposition_cadrillage_x[0]==false
 
 def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
-    
+
     """Ici, va détecter la pression d'un touche droite, gauche, quit et espace et a en consequence decaler le tetros, quitter la page 
     ou meme le faire tourner(ça marche pas encore), et il y a un beug malheuresement ou à la 1er descente du bloc, on peut pas le déplacer à gauche"""
-    
+
     for event in pygame.event.get():
-        
+
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT and in_game == True: # Si la toche droite est appuyée alors ajoute 50 au positions = 1 bloc vers la droite
             if len(Lposition_carre_x)>0:    
                 if max(Lposition_carre_x)<10:
@@ -532,7 +532,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
                             for i in range(4):
                                 Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=Ltaille_ecran[0]
                                
-    
+
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and in_game==True:
             Lposition_bloc_x,Lposition_bloc_y=rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
 
@@ -550,7 +550,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
 
 def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles):
-   
+
     """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties : 
             - Le in_menu : c'est la moment du début du jeu ou on attend juste que tu appuie sur play pour joeur et rien d'autre ne se passe
             - le in_game : C'est le moment ou le jeu est en cours, il se passe dans cette ordre : 
@@ -630,7 +630,7 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
             Lacceleration[0]+=Ltaille_ecran[0]*4/10000000 #Augmente l'acceleration pour que les tetros tombent de + en + vite
         elif Lacceleration[1]<1 :
             Lacceleration[1]+=Ltaille_ecran[0]*4/10000000
-            
+
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = False
             in_pause = True
@@ -638,7 +638,6 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
         if not pygame.key.get_pressed()[K_ESCAPE]:
             esc_pressed = False
 
-            
     elif in_pause:    #Le jeu est en pause si on appiue sur echap et le programme ne passera donc plus que part in_pause et plus par in_game
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False: 
             in_game = True
@@ -646,6 +645,9 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
             esc_pressed = True
         if not pygame.key.get_pressed()[K_ESCAPE]:
             esc_pressed = False
+        if bouton_quitter.collision(window):
+            in_pause = False
+            in_menu = True
 
     position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
     
