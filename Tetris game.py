@@ -23,7 +23,7 @@ Lposition_carre_x=[]
 Lposition_carre_y=[]
 Ltaille_ecran=[]
 Ltype_bloc=[4,0]
-Lpoint=[0,0,0,0]
+Lpoint=[0,0,1,2,3,4,5,10,15,21]
 
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 Lposition_cadrillage_x=[]
@@ -61,6 +61,7 @@ run = True
 Lacceleration=[Ltaille_ecran[0]*4/1000,1]
 Lancien_position_x=[]
 Lancien_position_y=[]
+Lancien_couleur=[]
 def definition():
 
     """ def :
@@ -279,10 +280,12 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
 
         if repetition==0:   #reset pour la suite
             for i in range (4):
+                Lancien_couleur.append(Lcouleur_bloc[i])
                 Lancien_position_x.append(Lposition_bloc_x[i])
                 Lancien_position_y.append(Lposition_bloc_y[i])
                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
             Lpoint[position_point]+=4
+            point_afficher()#Affiche le score
             Lposition_bloc_x.clear()
             Lposition_carre_x.clear()
             Lposition_bloc_y.clear()
@@ -304,7 +307,7 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
             for i in range(4):   #Ici, dessine pour effacer l'ancient tetros et garder le fond color1
                 pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i], Ltaille_ecran[0]-1, 1))
                 pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i], Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 1, 1))
-                Lposition_bloc_y[len(Lposition_bloc_y)-1-i]+=1
+                Lposition_bloc_y[4-1-i]+=1
 
 
 
@@ -330,12 +333,12 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
     acceuillir ces nouvelles valeurs, puis deviendrons les "vraies" Lposition_bloc_. """
 
     valeurs_vérif_rota_x, valeur_vérif_rota_y = rotation_des_listes( Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
-    print(valeurs_vérif_rota_x,valeur_vérif_rota_y)
+
     if vérif_possibilité_mvt(valeurs_vérif_rota_x, valeur_vérif_rota_y,valeurs_vérif_rota_x,valeur_vérif_rota_y) :
         effacer()
         Lposition_bloc_x,Lposition_bloc_y=rotation_des_listes(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
 
-    return position_point,Lposition_bloc_x, Lposition_bloc_y
+    return Lposition_bloc_x, Lposition_bloc_y
 
 def vérif_possibilité_mvt(liste_x,liste_y,liste_carre_x,liste_carre_y):
 
@@ -548,8 +551,16 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
             sys.exit()
 
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
-
-def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles):
+def point_afficher():
+    
+    pygame.draw.rect(window, (0,0,0), pygame.Rect(16*Ltaille_ecran[0], 7*Ltaille_ecran[0], 3*Ltaille_ecran[0], 11*Ltaille_ecran[0]))   
+    for i in range(len(Lpoint)):
+        score_font = pygame.font.Font(None, 50)
+        score_surf = score_font.render(str(Lpoint[i]), 1, (255, 255, 255))
+        score_pos = [17*Ltaille_ecran[0], 16*Ltaille_ecran[0]-i*Ltaille_ecran[0]]
+        screen.blit(score_surf, score_pos)
+    
+def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles):
 
     """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties : 
             - Le in_menu : c'est la moment du début du jeu ou on attend juste que tu appuie sur play pour joeur et rien d'autre ne se passe
@@ -610,8 +621,9 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
 
     elif in_game:    #En game, le jeu tetris est lancé avec donc le programme
         if not quadrillage:
+            point_afficher()
             position_point=0
-            Lpoint=[0,0,0,0,0,0,0,0,0,0]
+            Lpoint=[0,0,1,2,3,4,5,10,15,21]
             Lacceleration[0]=0.2  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
             fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png")
             #fond_ecran_jeu=pygame.transform.rotate(fond_ecran_jeu,90)
@@ -623,9 +635,12 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
         bloc_suivant()
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
-        #if Lpoint[position_point]>Lpoint[position_point+1]:
-            #Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
-            #position_point+=1
+    
+        if len(Lpoint)>=position_point+1:
+            if Lpoint[position_point]>Lpoint[position_point+1]:
+                Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
+                position_point+=1
+                point_afficher()
         if Lacceleration[0]<1 :
             Lacceleration[0]+=Ltaille_ecran[0]*4/10000000 #Augmente l'acceleration pour que les tetros tombent de + en + vite
         elif Lacceleration[1]<1 :
@@ -651,10 +666,10 @@ def jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition
 
     position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
     
-    return position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
+    return Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
 
 pygame.init()   #Début dela création de la page
-window = pygame.display.set_mode((14*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
+window = pygame.display.set_mode((21*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
 
 #Ici se trouve la définition des images notament pour le fond d'ecran
 menu_img = pygame.image.load("assets/menu_image.png")
@@ -672,6 +687,9 @@ bouton_quitter_img = pygame.image.load("assets/buttons/bouton_quitter.png")
 bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
 bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
+score_img = pygame.image.load("assets/score.png")
+score_img = pygame.transform.scale(score_img, (7*Ltaille_ecran[0]+Ltaille_ecran[0]/4, 20*Ltaille_ecran[0]))
+window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
 
 bouton_jouer = Button(4*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_jouer_img)
 bouton_regles = Button(4*Ltaille_ecran[0], 11*Ltaille_ecran[0], bouton_regles_img)
@@ -681,5 +699,5 @@ bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_i
 #J'aimerai faire juste au dessus du bouton jouer un endroit ou tu puisse mettre ton nom
 
 while run:
-    position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
+    Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
     pygame.display.update()  # update l'écran 
