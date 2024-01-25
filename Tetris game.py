@@ -171,6 +171,7 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
     if doit_cree_bloc>=1 :      #Dès que doit_cree_bloc >0, on ajoute et cree un bloc
 
         Ltype_bloc[1]=randint(1,7)  #pour la creation du bloc aléaotire
+        #Ltype_bloc[1]=5
         doit_cree_bloc-=1
         couleur_bloc=randint(1,6)
         position_bloc_descente_x=15*Ltaille_ecran[0]/2
@@ -277,8 +278,8 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
 
     #Ici, va soit tout reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
-
-        if repetition==0:   #reset pour la suite
+        print(Lposition_bloc_y[0]-1,(Lposition_bloc_y[0]-2)%Ltaille_ecran[0])
+        if (Lposition_bloc_y[0]-1)%Ltaille_ecran[0]==0: #reset pour la suite
             for i in range (4):
                 Lancien_couleur.append(Lcouleur_bloc[i])
                 Lancien_position_x.append(Lposition_bloc_x[i])
@@ -296,26 +297,21 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
             nombre_bloc-=4
             position_bloc_descente_y=Ltaille_ecran[0]/2
             crea_map()
-        if mort()==True:
-            in_mort=True
+            if mort()==True:
+                in_mort=True
 
     else :
         vitesse+=Lacceleration[0]
 
         if vitesse>=1:
-            repetition+=1
             for i in range(4):   #Ici, dessine pour effacer l'ancient tetros et garder le fond color1
-                pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i], Ltaille_ecran[0]-1, 1))
-                pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i], Lposition_bloc_y[len(Lposition_bloc_y)-1-i], 1, 1))
-                Lposition_bloc_y[4-1-i]+=1
-
-
-
-                if repetition==Ltaille_ecran[0]: #Va collisions une ligne de la couleur du cadrillage tout les 50 pixels
-                    pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[len(Lposition_bloc_y)-1-i]+1, Lposition_bloc_y[len(Lposition_bloc_y)-1-i]-1, Ltaille_ecran[0]-1, 1))
+                
+                pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[i]+1, Lposition_bloc_y[i], Ltaille_ecran[0]-1, 1))
+                pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[i], Lposition_bloc_y[i], 1, 1))
+                if (Lposition_bloc_y[0]-2)%Ltaille_ecran[0]==0: #Va collisions une ligne de la couleur du cadrillage tout les 50 pixels
+                    pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[i]+1, Lposition_bloc_y[i]-1, Ltaille_ecran[0]-1, 1)) 
+                Lposition_bloc_y[i]+=1
             position_bloc_descente_y+=1
-            if repetition == Ltaille_ecran[0] :  #reset
-                repetition = 0
             vitesse-=1
     return vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y
 
@@ -344,9 +340,9 @@ def vérif_possibilité_mvt(liste_x,liste_y,liste_carre_x,liste_carre_y):
 
     """Ici, test permet de savoir en retournant True, si le bloque n'en touche pas un autre et renvoi false pour le contraire"""
     for i in range(4):
-
         genere_position_carre(i,liste_x,liste_y,liste_carre_x,liste_carre_y)
-
+    if min(liste_carre_y)<1:
+        return False
     if len(liste_carre_x)<4:
         return False
     if max(liste_carre_y)>17:
@@ -369,58 +365,59 @@ def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_d
     for i in range (len(liste_x)):
 
         x=liste_x[i] - position_bloc_descente_x
+        x=round(x/(Ltaille_ecran[0]/2))*(Ltaille_ecran[0]/2)
         y=liste_y[i] - position_bloc_descente_y
-        
+        y=round(y/(Ltaille_ecran[0]/2))*(Ltaille_ecran[0]/2)
 
         if x==-Ltaille_ecran[0]*2.5:
-            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
             new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*2.5)
-        if y==Ltaille_ecran[0]*2.5:
+        elif y==Ltaille_ecran[0]*2.5:
             new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*1.5)
-            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-        if x==Ltaille_ecran[0]*1.5:
-            new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+        elif x==Ltaille_ecran[0]*1.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
             new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]*1.5)
-        if y==-Ltaille_ecran[0]*1.5:
+        elif y==-Ltaille_ecran[0]*1.5:
             new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*2.5)
-            new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
 
-        if x==-Ltaille_ecran[0]*1.5:
+        elif x==-Ltaille_ecran[0]*1.5:
             if y==Ltaille_ecran[0]*1.5:
                 new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-            if y==Ltaille_ecran[0]/2:
+            elif y==Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-            if y==-Ltaille_ecran[0]/2:
+            elif y==-Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-            if y ==-Ltaille_ecran[0]*1.5:
+            elif y ==-Ltaille_ecran[0]*1.5:
                 new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*2.5)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
 
-        if x==-Ltaille_ecran[0]/2:
+        elif x==-Ltaille_ecran[0]/2:
             if y==-Ltaille_ecran[0]*1.5:
                 new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-            if y==Ltaille_ecran[0]/2:
+            elif y==Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-            if y==-Ltaille_ecran[0]/2:
+            elif y==-Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-            if y == Ltaille_ecran[0]*1.5 :
+            elif y == Ltaille_ecran[0]*1.5 :
                 new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
 
-        if x==Ltaille_ecran[0]/2:
+        elif x==Ltaille_ecran[0]/2:
             if y==Ltaille_ecran[0]*1.5:
                 new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
-            if y==Ltaille_ecran[0]/2:
+            elif y==Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
                 new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
-            if y==-Ltaille_ecran[0]/2:
+            elif y==-Ltaille_ecran[0]/2:
                 new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
                 new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
 
@@ -699,5 +696,6 @@ bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_i
 #J'aimerai faire juste au dessus du bouton jouer un endroit ou tu puisse mettre ton nom
 
 while run:
+    print(Lposition_bloc_y)
     Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
     pygame.display.update()  # update l'écran 
