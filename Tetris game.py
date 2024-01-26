@@ -339,13 +339,14 @@ def rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,pos
 def vérif_possibilité_mvt(liste_x,liste_y,liste_carre_x,liste_carre_y):
 
     """Ici, test permet de savoir en retournant True, si le bloque n'en touche pas un autre et renvoi false pour le contraire"""
+    if len(liste_carre_x)<4:
+        return False
     for i in range(4):
         genere_position_carre(i,liste_x,liste_y,liste_carre_x,liste_carre_y)
     if min(liste_carre_y)<1:
         return False
-    if len(liste_carre_x)<4:
-        return False
-    if max(liste_carre_y)>17:
+
+    if max(liste_carre_y)>17 or max(liste_carre_x)>10 or min(liste_carre_x)<1:
         return False
 
     elif Lposition_cadrillage_x[liste_carre_x[0]-1][liste_carre_y[0]-1]==False and Lposition_cadrillage_x[liste_carre_x[1]-1][liste_carre_y[1]-1]==False and Lposition_cadrillage_x[liste_carre_x[2]-1][liste_carre_y[2]-1]==False and Lposition_cadrillage_x[liste_carre_x[3]-1][liste_carre_y[3]-1]==False:
@@ -365,61 +366,61 @@ def rotation_des_listes(liste_x,liste_y,position_bloc_descente_x,position_bloc_d
     for i in range (len(liste_x)):
 
         x=liste_x[i] - position_bloc_descente_x
-        x=round(x/(Ltaille_ecran[0]/2))*(Ltaille_ecran[0]/2)
+        x_new=round(x/(Ltaille_ecran[0]/2))*(Ltaille_ecran[0]/2)
         y=liste_y[i] - position_bloc_descente_y
-        y=round(y/(Ltaille_ecran[0]/2))*(Ltaille_ecran[0]/2)
+        y_new=round(y/(Ltaille_ecran[0]/2))*(Ltaille_ecran[0]/2)
 
-        if x==-Ltaille_ecran[0]*2.5:
-            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
-            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*2.5)
-        elif y==Ltaille_ecran[0]*2.5:
-            new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*1.5)
-            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-        elif x==Ltaille_ecran[0]*1.5:
-            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
-            new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]*1.5)
-        elif y==-Ltaille_ecran[0]*1.5:
-            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*2.5)
-            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+        if x_new==-Ltaille_ecran[0]*2.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2+x-x_new)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*2.5+y-y_new)
+        elif y_new==Ltaille_ecran[0]*2.5:
+            new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*1.5+x-x_new)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2+y-y_new)
+        elif x_new==Ltaille_ecran[0]*1.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2+x-x_new)
+            new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]*1.5+y-y_new)
+        elif y_new==-Ltaille_ecran[0]*1.5:
+            new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*2.5+x-x_new)
+            new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2+y-y_new)
 
-        elif x==-Ltaille_ecran[0]*1.5:
-            if y==Ltaille_ecran[0]*1.5:
-                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-            elif y==Ltaille_ecran[0]/2:
-                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-            elif y==-Ltaille_ecran[0]/2:
-                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
-            elif y ==-Ltaille_ecran[0]*1.5:
-                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*2.5)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5)
+        elif x_new==-Ltaille_ecran[0]*1.5:
+            if y_new==Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5+y-y_new)
+            elif y_new==Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5+y-y_new)
+            elif y_new==-Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5+y-y_new)
+            elif y_new==-Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]*2.5+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]*1.5+y-y_new)
 
-        elif x==-Ltaille_ecran[0]/2:
-            if y==-Ltaille_ecran[0]*1.5:
-                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-            elif y==Ltaille_ecran[0]/2:
-                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-            elif y==-Ltaille_ecran[0]/2:
-                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
-            elif y == Ltaille_ecran[0]*1.5 :
-                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2)
+        elif x_new==-Ltaille_ecran[0]/2:
+            if y_new==-Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2+y-y_new)
+            elif y_new==Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2+y-y_new)
+            elif y_new==-Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2+y-y_new)
+            elif y_new == Ltaille_ecran[0]*1.5 :
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y+Ltaille_ecran[0]/2+y-y_new)
 
-        elif x==Ltaille_ecran[0]/2:
-            if y==Ltaille_ecran[0]*1.5:
-                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
-            elif y==Ltaille_ecran[0]/2:
-                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2)
-                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
-            elif y==-Ltaille_ecran[0]/2:
-                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5)
-                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2)
+        elif x_new==Ltaille_ecran[0]/2:
+            if y_new==Ltaille_ecran[0]*1.5:
+                new_liste_x.append(position_bloc_descente_x+Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2+y-y_new)
+            elif y_new==Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]/2+x-x_new)
+                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2+y-y_new)
+            elif y_new==-Ltaille_ecran[0]/2:
+                new_liste_x.append(position_bloc_descente_x-Ltaille_ecran[0]*1.5+x-x_new)
+                new_liste_y.append(position_bloc_descente_y-Ltaille_ecran[0]/2+y-y_new)
 
     return new_liste_x,new_liste_y
 
@@ -633,7 +634,7 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
     
-        if len(Lpoint)>=position_point+1:
+        if len(Lpoint)>position_point+1:
             if Lpoint[position_point]>Lpoint[position_point+1]:
                 Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
                 position_point+=1
@@ -696,6 +697,5 @@ bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_i
 #J'aimerai faire juste au dessus du bouton jouer un endroit ou tu puisse mettre ton nom
 
 while run:
-    print(Lposition_bloc_y)
     Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
     pygame.display.update()  # update l'écran 
