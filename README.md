@@ -1,13 +1,17 @@
-# Project-1-TETRIS
+# TETROS
 
-Projet n°1 de NSI en Python.
+Le groupe de NSI de F1 vous présente son premier projet: Tetros (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python (clé d'accès  au Google Cloud Storage en json).
 
-pour le jeu, il faut faire :
-  <br>interface graphique
-  <br> creation bloque avec par ex 4 carrés independants pour un bloque
-  <br>bloque qui tombe 
-  <br> bloque qui s'arrete si touche autre
-  <br>bloque qui s'enleve si ligne
-  <br>prochain bloque qui tombe
-  <br>dimensions du jeu : 10 x 20
-  <br>soit "tableau" une liste regroupant 20 listes représentant les positions y du jeu, et de 10 éléments représentant les positions x du jeu
+## Prérequis
+
+Afin de pouvoir tester notre jeu, il vous faudra installer plusieurs librairies Python. Utilisez le gestionnaire de packages [pip](https://pip.pypa.io/en/stable/) afin de les télécharger.
+
+La première librairie est celle qui nous a permis de réaliser l'interface graphique du jeu: [Pygame](https://www.pygame.org/docs/).
+```bash
+pip install pygame
+```
+
+Afin d'avoir accès au classement en ligne, il vous faudra également télécharger la librairie [Google Cloud Storage](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md)
+```bash
+pip install google-cloud-storage
+```
