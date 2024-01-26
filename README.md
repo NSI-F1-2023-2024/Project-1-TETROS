@@ -15,3 +15,8 @@ Pour avoir accès au classement en ligne, il vous faudra également télécharge
 ```bash
 pip install google-cloud-storage
 ```
+
+## Comment jouer
+Voici les règles du jeu et les contrôles utilisables (également présent dans le jeu).
+
+![image](https://github.com/NSI-F1-2023-2024/Project-1-TETRIS/blob/main/assets/regles_image.png)
