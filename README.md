@@ -1,6 +1,6 @@
 # TETROS
 
-Le groupe de NSI de F1 vous présente son premier projet: Tetros (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python (clé d'accès  au Google Cloud Storage en json).
+Le groupe de NSI de F1 vous présente son premier projet: **Tetros** (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python (clé d'accès  au Google Cloud Storage en json).
 
 ## Prérequis
 
@@ -20,3 +20,9 @@ pip install google-cloud-storage
 Voici les règles du jeu et les contrôles utilisables (également présent dans le jeu).
 
 ![image](https://github.com/NSI-F1-2023-2024/Project-1-TETRIS/blob/main/assets/regles_image.png)
+
+# Fonctionnement du jeu
+
+### à rédiger: quadrillage, rotation bloc, descente bloc, suppression ligne... + autres?
+
+## Le classement en ligne
