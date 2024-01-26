@@ -11,7 +11,7 @@ La première librairie est celle qui nous a permis de réaliser l'interface grap
 pip install pygame
 ```
 
-Afin d'avoir accès au classement en ligne, il vous faudra également télécharger la librairie [Google Cloud Storage](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md)
+Pour avoir accès au classement en ligne, il vous faudra également télécharger la librairie [Google Cloud Storage](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md)
 ```bash
 pip install google-cloud-storage
 ```
