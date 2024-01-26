@@ -1,4 +1,3 @@
-#j'ai essayer de rajouter un rejouer comme image(il se trouve dans main/assets/bouton)
 import pygame
 import sys
 import os
@@ -549,6 +548,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
             sys.exit()
 
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
+
 def point_afficher():
     
     pygame.draw.rect(window, (0,0,0), pygame.Rect(16*Ltaille_ecran[0], 7*Ltaille_ecran[0], 3*Ltaille_ecran[0], 11*Ltaille_ecran[0]))   
@@ -581,23 +581,23 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
                 5) la croix en haut a droite pour arrêter le programme
         + tetros c'est un tetris de 4 blocs genre le t, 3 en haut et 1 en bas"""
 
-    in_menu=in_menu #ici c'est pour le return de fin, si je mets pas ça le programme beug pcq techniquement les valeurs ne sont pas touchés et donc il peut pas les return
-    in_game=in_game
-    in_pause=in_pause
+    in_menu = in_menu #ici c'est pour le return de fin, si je mets pas ça le programme beug pcq techniquement les valeurs ne sont pas touchés et donc il peut pas les return
+    in_game = in_game
+    in_pause = in_pause
     in_regles = in_regles
-    esc_pressed=esc_pressed
-    quadrillage=quadrillage
-    position_bloc_descente_x=position_bloc_descente_x
+    esc_pressed = esc_pressed
+    quadrillage = quadrillage
+    position_bloc_descente_x = position_bloc_descente_x
 
     if in_mort:
-        in_menu=False
-        in_game=False
-        in_pause=False
+        in_menu = False
+        in_game = False
+        in_pause = False
         in_regles = False
         if bouton_rejouer.collision(window):
             in_menu = False
             in_game = True
-            in_mort= False
+            in_mort = False
 
     elif in_menu:  #Dans menu, juste en attente de l'appui du bouton jouer
         window.blit(menu_img, (0,0))
