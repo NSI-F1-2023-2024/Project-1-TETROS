@@ -1,3 +1,4 @@
+# Créé par octaveleruste, le 27/01/2024 en Python 3.7
 import pygame
 import sys
 import os
@@ -5,7 +6,7 @@ from pygame.locals import *
 from math import ceil
 from random import randint
 
-#Ici se trouve la définition de toutes les listes, valeurs et initialisation par exemple de clock 
+#Ici se trouve la définition de toutes les listes, valeurs et initialisation par exemple de clock
 
 clock = pygame.time.Clock()
 
@@ -15,7 +16,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (100,200)
 
 #Ici, se retrouve toutes les listes utilisés
 Lposition_bloc_x=[]  #Voici les listes des position des blocs, et un bloc sera assigné a une valeur
-Lposition_bloc_y=[] 
+Lposition_bloc_y=[]
 Lcouleur_bloc=[]
 Lcouleur_bloc_noir=[10,10,10,10]
 Lposition_carre_x=[]
@@ -34,7 +35,7 @@ for i in range(10):
 #Ici permet de mettre le jeu à la taille de l'écran du joueur
 screen = pygame.display.set_mode()
 x, y = screen.get_size()
-y=round(y/22)
+y=round(y/22)-20
 Ltaille_ecran.append(y)
 
 #Ici, se trouve toutes les variables du jeu tetris
@@ -134,7 +135,7 @@ def creation_bloc(nombre_bloc,bloc_tetris):
         bloc_tetris=couleur_bloc(i,Lcouleur_bloc)
         window.blit(bloc_tetris,[Lposition_bloc_x[i],Lposition_bloc_y[i]])  # Ici, va print cette image a la position x,y
         genere_position_carre(i,Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)
-        
+
 def bloc_suivant():
     if Ltype_bloc[0]==1:
         nexttetros=pygame.image.load("assets/next_tetros_1.png")
@@ -269,11 +270,12 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
 
 def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y):
 
-    """Ici, permet à chaque itération de faire d'ajouter 1 pixel aux positions y des blocs et si le bloc touche 
+    """Ici, permet à chaque itération de faire d'ajouter 1 pixel aux positions y des blocs et si le bloc touche
     un autre bloc, il est descend plus et va reset, donc mettre True aux positions du bloc puis tout .clear et ajouter
     1 a doit_cree_bloc"""
 
     doit_cree_bloc=doit_cree_bloc
+
 
     #Ici, va soit tout reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
@@ -304,11 +306,11 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
 
         if vitesse>=1:
             for i in range(4):   #Ici, dessine pour effacer l'ancient tetros et garder le fond color1
-                
+
                 pygame.draw.rect(window, (0,0,0), (Lposition_bloc_x[i]+1, Lposition_bloc_y[i], Ltaille_ecran[0]-1, 1))
                 pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[i], Lposition_bloc_y[i], 1, 1))
                 if (Lposition_bloc_y[0]-2)%Ltaille_ecran[0]==0: #Va collisions une ligne de la couleur du cadrillage tout les 50 pixels
-                    pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[i]+1, Lposition_bloc_y[i]-1, Ltaille_ecran[0]-1, 1)) 
+                    pygame.draw.rect(window, (255,0,255), (Lposition_bloc_x[i]+1, Lposition_bloc_y[i]-1, Ltaille_ecran[0]-1, 1))
                 Lposition_bloc_y[i]+=1
             position_bloc_descente_y+=1
             vitesse-=1
@@ -449,13 +451,13 @@ def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetri
 
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y
 
-def effacer():   
+def effacer():
 
     """Ici, cette def permet d'effacer un bloc en dessinant par dessus des blocs noirs et elle est utilisé lorsque on deplace le bloc ou le tourne"""
 
     for i in range(4):    #Ici, va collisions le bloc en noir pour l'effacer
         Lcouleur_bloc_noir[i]=Lcouleur_bloc[i]
-        Lcouleur_bloc[i]=10    
+        Lcouleur_bloc[i]=10
 
     creation_bloc(nombre_bloc,bloc_tetris)
     for i in range(4):
@@ -468,8 +470,8 @@ def effacer():
 class Button():
     """Définit les caractéristiques des boutons utilisés dans le jeu."""
     def __init__(self, x: int, y: int, image):
-        """Initialisation des variables nécessaires pour tout bouton: 
-        position (x,y), image, rectangle pygame(utile pour les collisions) 
+        """Initialisation des variables nécessaires pour tout bouton:
+        position (x,y), image, rectangle pygame(utile pour les collisions)
         et le statut du bouton(cliqué ou non cliqué)"""
         self.image = image
         self.rect = self.image.get_rect()
@@ -478,8 +480,8 @@ class Button():
         self.clicked = False
 
     def collision(self, fenetre):
-        """Dessine le bouton dans la fenetre du jeu, et vérifie s'il y a une 
-        intéraction avec celui-ci. 
+        """Dessine le bouton dans la fenetre du jeu, et vérifie s'il y a une
+        intéraction avec celui-ci.
         Retourne True si le bouton est cliqué, sinon retourne False."""
         action = False
         fenetre.blit(self.image, (self.rect.x, self.rect.y))
@@ -502,13 +504,13 @@ def effacer_la_ligne ():
 
 def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
 
-    """Ici, va détecter la pression d'un touche droite, gauche, quit et espace et a en consequence decaler le tetros, quitter la page 
+    """Ici, va détecter la pression d'un touche droite, gauche, quit et espace et a en consequence decaler le tetros, quitter la page
     ou meme le faire tourner(ça marche pas encore), et il y a un beug malheuresement ou à la 1er descente du bloc, on peut pas le déplacer à gauche"""
 
     for event in pygame.event.get():
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT and in_game == True: # Si la toche droite est appuyée alors ajoute 50 au positions = 1 bloc vers la droite
-            if len(Lposition_carre_x)>0:    
+            if len(Lposition_carre_x)>0:
                 if max(Lposition_carre_x)<10:
                     effacer()
                     position_bloc_descente_x+=Ltaille_ecran[0]
@@ -517,21 +519,21 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
                     if vérif_possibilité_mvt(Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)==False: #regarde si peut faire le deplacement
                         position_bloc_descente_x-=Ltaille_ecran[0]
                         for i in range(4):
-                            Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0]        
+                            Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0]
 
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT and in_game == True: # Si la toche gauche est appuyée alors ajoute -50 au positions = 1 bloc vers la gauche
-            if len(Lposition_carre_x)>0: 
+            if len(Lposition_carre_x)>0:
                 if min(Lposition_carre_x)>1:
                     effacer()
                     position_bloc_descente_x-=Ltaille_ecran[0]
                     for i in range(4):
-                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0] 
+                        Lposition_bloc_x[len(Lposition_bloc_x)-1-i]-=Ltaille_ecran[0]
                         if vérif_possibilité_mvt(Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)==False:  #Teste pour voir si on peut faire le deplacement
                             position_bloc_descente_x+=Ltaille_ecran[0]
                             for i in range(4):
                                 Lposition_bloc_x[len(Lposition_bloc_x)-1-i]+=Ltaille_ecran[0]
-                               
+
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and in_game==True:
             Lposition_bloc_x,Lposition_bloc_y=rotation_bloc(Lposition_bloc_x,Lposition_bloc_y,position_bloc_descente_x,position_bloc_descente_y)
@@ -550,24 +552,42 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
 
 def point_afficher():
-    
-    pygame.draw.rect(window, (0,0,0), pygame.Rect(16*Ltaille_ecran[0], 7*Ltaille_ecran[0], 3*Ltaille_ecran[0], 11*Ltaille_ecran[0]))   
+
+    pygame.draw.rect(window, (0,0,0), pygame.Rect(16*Ltaille_ecran[0], 7*Ltaille_ecran[0], 3*Ltaille_ecran[0], 11*Ltaille_ecran[0]))
     for i in range(len(Lpoint)):
         score_font = pygame.font.Font(None, 50)
         score_surf = score_font.render(str(Lpoint[i]), 1, (255, 255, 255))
         score_pos = [17*Ltaille_ecran[0], 16*Ltaille_ecran[0]-i*Ltaille_ecran[0]]
         screen.blit(score_surf, score_pos)
-    
-def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles):
 
-    """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties : 
+def generation_de_pseudos():
+    consonnes = ("Z","R","T","P","S","D","F","G","K","L","N","X","C","V","B","N")
+    voyelles = ("A","E","I","O","U","Y","OU","UI","AI","AY","OY","EY")
+    pseudo = []
+    for i in range (2):
+        pseudo.append(consonnes[randint(0,len(consonnes)-1)])
+        pseudo.append(voyelles[randint(0,len(voyelles)-1)])
+    if randint(0,3)>0:
+        pseudo.append(consonnes[randint(0,len(consonnes)-1)])
+    return ''.join(pseudo)
+
+
+def affichage_pseudo(pseudo):
+    screen.blit(barre_pseudo_img, (round(Ltaille_ecran[0]*1.5),Ltaille_ecran[0]*5))
+    police = pygame.font.SysFont("monospace" ,24)
+    image_pseudo = police.render (str(pseudo), 1 , (255,255,255) )
+    screen.blit(image_pseudo, (round(Ltaille_ecran[0]*6.5),round(Ltaille_ecran[0]*5.5)))
+
+def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo):
+
+    """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties :
             - Le in_menu : c'est la moment du début du jeu ou on attend juste que tu appuie sur play pour joeur et rien d'autre ne se passe
-            - le in_game : C'est le moment ou le jeu est en cours, il se passe dans cette ordre : 
+            - le in_game : C'est le moment ou le jeu est en cours, il se passe dans cette ordre :
                                 1) le jeu : d'abord si il y a aucun bloc,ou un qui est deja tombe, il cree un nouveau bloc avec de
                                     nouvelles valeurs et couleur et donc réinitialiser les liste de positions et de couleur
                                 2) Va a chaque position des liste Lposition_bloc_x et Lposition_bloc_y et va print un bloc avec du noir au dessus pour effacer l'ancien et de couleur Lcouleur_bloc
                             Ensuite, on a terminé le jeu et on va faire : tomber_reset ( avec 2 cas) :
-                                1) soit ajoute 1 a chaques valeurs de Lposition_bloc_y pour après , quand va print les tetros, vales print 1 pixel plus bas et va symboliser la descente 
+                                1) soit ajoute 1 a chaques valeurs de Lposition_bloc_y pour après , quand va print les tetros, vales print 1 pixel plus bas et va symboliser la descente
                                 2) Ou alors va, si le bloc entrain de descendre touche un autre bloc, va reinitialiser toutes les valeurs et ajouter 1 à la variable doit_cree_bloc pour que a la boucle
                                     suivante, dans type_bloc_image, ajoute des valeurs au listes des positions et donc ensuite print un nouveau tetros
                             Enfin, va regarder si on appuie sur la touche echap pour mettre en pause le jeu.
@@ -610,6 +630,11 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
         if bouton_quitter.collision(window): # probleme avec le bouton quitter et les regles (ils sont a la meme position donc quand on clique sur l'un, ça clique sur les deux)
             pygame.quit()
             sys.exit()
+        if changement_pseudo:
+            pseudo=generation_de_pseudos()
+            changement_pseudo = False
+        affichage_pseudo(pseudo)
+
 
     elif in_regles:
         window.blit(regles_img, (0,0))
@@ -633,7 +658,7 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
         bloc_suivant()
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
-    
+
         if len(Lpoint)>position_point+1:
             if Lpoint[position_point]>Lpoint[position_point+1]:
                 Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
@@ -652,7 +677,7 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
             esc_pressed = False
 
     elif in_pause:    #Le jeu est en pause si on appiue sur echap et le programme ne passera donc plus que part in_pause et plus par in_game
-        if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False: 
+        if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = True
             in_pause = False
             esc_pressed = True
@@ -663,8 +688,8 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
             in_menu = True
 
     position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
-    
-    return Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
+
+    return pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
 
 pygame.init()   #Début dela création de la page
 window = pygame.display.set_mode((21*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
@@ -678,15 +703,17 @@ regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille
 bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
 bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 bouton_regles_img = pygame.image.load("assets/buttons/bouton_regles.png")
-bouton_regles_img = pygame.transform.scale(bouton_regles_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
+bouton_regles_img = pygame.transform.scale(bouton_regles_img, (round(6*Ltaille_ecran[0]), round(2*Ltaille_ecran[0])))
 bouton_croix_img = pygame.image.load("assets/buttons/bouton_croix.png")
-bouton_croix_img = pygame.transform.scale(bouton_croix_img, (1.6*Ltaille_ecran[0], 1.6*Ltaille_ecran[0]))
+bouton_croix_img = pygame.transform.scale(bouton_croix_img, (round(1.6*Ltaille_ecran[0]),round(1.6*Ltaille_ecran[0])))
 bouton_quitter_img = pygame.image.load("assets/buttons/bouton_quitter.png")
 bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
 bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
+barre_pseudo_img = pygame.image.load("assets/barre_pseudo.png")
+barre_pseudo_img = pygame.transform.scale(barre_pseudo_img, (11*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 score_img = pygame.image.load("assets/score.png")
-score_img = pygame.transform.scale(score_img, (7*Ltaille_ecran[0]+Ltaille_ecran[0]/4, 20*Ltaille_ecran[0]))
+score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
 window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
 
 bouton_jouer = Button(4*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_jouer_img)
@@ -695,7 +722,11 @@ bouton_croix = Button(11.9*Ltaille_ecran[0], 0.2*Ltaille_ecran[0], bouton_croix_
 bouton_quitter = Button(10.5*Ltaille_ecran[0], 1*Ltaille_ecran[0]/2, bouton_quitter_img)
 bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_img)
 #J'aimerai faire juste au dessus du bouton jouer un endroit ou tu puisse mettre ton nom
+changement_pseudo = True
+pseudo = ''
 
 while run:
-    Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles=jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles) #réalise le jeu en entier
-    pygame.display.update()  # update l'écran 
+    pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles = jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo) #réalise le jeu en entier
+#   pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
+    pygame.display.update()  # update l'écran
+
