@@ -24,7 +24,7 @@ Lposition_carre_y=[]
 Ltaille_ecran=[]
 Ltype_bloc=[4,0]
 Lpoint=[0,0,1,2,3,4,5,10,15,21]
-
+Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 Lposition_cadrillage_x=[]
 for i in range(10):
@@ -35,7 +35,7 @@ for i in range(10):
 #Ici permet de mettre le jeu à la taille de l'écran du joueur
 screen = pygame.display.set_mode()
 x, y = screen.get_size()
-y=round(y/22)-20
+y=round(y/22)
 Ltaille_ecran.append(y)
 
 #Ici, se trouve toutes les variables du jeu tetris
@@ -137,20 +137,21 @@ def creation_bloc(nombre_bloc,bloc_tetris):
         genere_position_carre(i,Lposition_bloc_x,Lposition_bloc_y,Lposition_carre_x,Lposition_carre_y)
 
 def bloc_suivant():
+
     if Ltype_bloc[0]==1:
-        nexttetros=pygame.image.load("assets/next_tetros_1.png")
+        nexttetros=Lnext_tetros[0]
     elif Ltype_bloc[0]==2:
-        nexttetros=pygame.image.load("assets/next_tetros_2.png")
+        nexttetros=Lnext_tetros[1]
     elif Ltype_bloc[0]==3:
-        nexttetros=pygame.image.load("assets/next_tetros_3.png")
+        nexttetros=Lnext_tetros[2]
     elif Ltype_bloc[0]==4:
-        nexttetros=pygame.image.load("assets/next_tetros_4.png")
+        nexttetros=Lnext_tetros[3]
     elif Ltype_bloc[0]==5:
-        nexttetros=pygame.image.load("assets/next_tetros_5.png")
+        nexttetros=Lnext_tetros[4]
     elif Ltype_bloc[0]==6:
-        nexttetros=pygame.image.load("assets/next_tetros_6.png")
+        nexttetros=Lnext_tetros[5]
     elif Ltype_bloc[0]==7:
-        nexttetros=pygame.image.load("assets/next_tetros_7.png")
+        nexttetros=Lnext_tetros[6]
     nexttetros = pygame.transform.scale(nexttetros, (3*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
     window.blit(nexttetros,(11*Ltaille_ecran[0],0))
 
@@ -281,28 +282,11 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
         print(Lposition_bloc_y[0]-1,(Lposition_bloc_y[0]-2)%Ltaille_ecran[0])
         if (Lposition_bloc_y[0]-1)%Ltaille_ecran[0]==0: #reset pour la suite
-            
-            for i in range(10):
-                        cadricouleur.append([])
-                        for j in range(18):
-                            cadricouleur[i].append(False)
-                    
-            for i in range(4):
-                cadricouleur[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=Lcouleur_bloc[i]
-            
-            for i in range(10):
-                        ancien_position.append([])
-                        for j in range(18):
-                            ancien_position[i].append(False)
-                    
-            for i in range(4):
-                ancien_position[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=list(Lposition_bloc_x[i],Lposition_bloc_y[i])
-            
-           # for i in range (4):
-                #Lancien_couleur.append(Lcouleur_bloc[i])
-               # Lancien_position_x.append(Lposition_bloc_x[i])
-               # Lancien_position_y.append(Lposition_bloc_y[i])
-                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
+            for i in range (4):
+                Lancien_couleur.append(Lcouleur_bloc[i])
+                Lancien_position_x.append(Lposition_bloc_x[i])
+                Lancien_position_y.append(Lposition_bloc_y[i])
+                Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
             Lpoint[position_point]+=4
             point_afficher()#Affiche le score
             Lposition_bloc_x.clear()
@@ -569,18 +553,23 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
 
 def point_afficher():
-
-    pygame.draw.rect(window, (0,0,0), pygame.Rect(16*Ltaille_ecran[0], 7*Ltaille_ecran[0], 3*Ltaille_ecran[0], 11*Ltaille_ecran[0]))
+    """ Affiche les points """
+    pygame.draw.rect(window, (0,0,0), pygame.Rect(14*Ltaille_ecran[0]+round(Ltaille_ecran[0]/8), 8*Ltaille_ecran[0],6*Ltaille_ecran[0], 11*Ltaille_ecran[0]))
     for i in range(len(Lpoint)):
+        
         score_font = pygame.font.Font(None, 50)
         score_surf = score_font.render(str(Lpoint[i]), 1, (255, 255, 255))
-        score_pos = [17*Ltaille_ecran[0], 16*Ltaille_ecran[0]-i*Ltaille_ecran[0]]
+        score_pos = [18*Ltaille_ecran[0], 16*Ltaille_ecran[0]-i*Ltaille_ecran[0]]
         screen.blit(score_surf, score_pos)
+        my_font = pygame.font.SysFont('Impact', round(Ltaille_ecran[0]/2))
+        text_surface = my_font.render(Lpseudo[i], False, (255, 255, 255))
+        screen.blit(text_surface, (15*Ltaille_ecran[0],16*Ltaille_ecran[0]-i*Ltaille_ecran[0]))
 
+        
 def generation_de_pseudos():
     consonnes = ("Z","R","T","P","S","D","F","G","K","L","N","X","C","V","B","N")
     voyelles = ("A","E","I","O","U","Y","OU","UI","AI","AY","OY","EY")
-    pseudo = []
+    pseudo=[]
     for i in range (2):
         pseudo.append(consonnes[randint(0,len(consonnes)-1)])
         pseudo.append(voyelles[randint(0,len(voyelles)-1)])
@@ -588,8 +577,8 @@ def generation_de_pseudos():
         pseudo.append(consonnes[randint(0,len(consonnes)-1)])
     return ''.join(pseudo)
 
-
 def affichage_pseudo(pseudo):
+    """ Affiche le pseudo"""
     screen.blit(barre_pseudo_img, (round(Ltaille_ecran[0]*1.5),Ltaille_ecran[0]*5))
     police = pygame.font.SysFont("monospace" ,24)
     image_pseudo = police.render (str(pseudo), 1 , (255,255,255) )
@@ -649,9 +638,9 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
             sys.exit()
         if changement_pseudo:
             pseudo=generation_de_pseudos()
+            Lpseudo[0]=pseudo
             changement_pseudo = False
         affichage_pseudo(pseudo)
-
 
     elif in_regles:
         window.blit(regles_img, (0,0))
@@ -666,7 +655,6 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
             Lpoint=[0,0,1,2,3,4,5,10,15,21]
             Lacceleration[0]=0.2  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
             fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png")
-            #fond_ecran_jeu=pygame.transform.rotate(fond_ecran_jeu,90)
             fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
             window.blit(fond_ecran_jeu,[0,0])
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
@@ -677,12 +665,15 @@ def jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lp
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
 
         if len(Lpoint)>position_point+1:
-            if Lpoint[position_point]>Lpoint[position_point+1]:
+            while Lpoint[position_point]>Lpoint[position_point+1]:
                 Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
+                Lpseudo[position_point],Lpseudo[position_point+1]=Lpseudo[position_point+1],Lpseudo[position_point]
                 position_point+=1
                 point_afficher()
+                
         if Lacceleration[0]<1 :
             Lacceleration[0]+=Ltaille_ecran[0]*4/10000000 #Augmente l'acceleration pour que les tetros tombent de + en + vite
+        
         elif Lacceleration[1]<1 :
             Lacceleration[1]+=Ltaille_ecran[0]*4/10000000
 
@@ -717,6 +708,9 @@ menu_img = pygame.transform.scale(menu_img, (14*Ltaille_ecran[0], 20*Ltaille_ecr
 regles_img = pygame.image.load("assets/regles_image.png")
 regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
 
+#Ici va ajouter à cette liste toutes les images du next_tetros pour éviter de les réimporter à chaque fois
+Lnext_tetros=[pygame.image.load("assets/next_tetros_1.png"),pygame.image.load("assets/next_tetros_2.png"),pygame.image.load("assets/next_tetros_3.png"),pygame.image.load("assets/next_tetros_4.png"),pygame.image.load("assets/next_tetros_5.png"),pygame.image.load("assets/next_tetros_6.png"),pygame.image.load("assets/next_tetros_7.png")]
+
 bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
 bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 bouton_regles_img = pygame.image.load("assets/buttons/bouton_regles.png")
@@ -743,7 +737,7 @@ changement_pseudo = True
 pseudo = ''
 
 while run:
+
     pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles = jeu_global(Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo) #réalise le jeu en entier
 #   pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
     pygame.display.update()  # update l'écran
-
