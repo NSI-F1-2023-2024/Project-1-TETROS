@@ -281,11 +281,28 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
         print(Lposition_bloc_y[0]-1,(Lposition_bloc_y[0]-2)%Ltaille_ecran[0])
         if (Lposition_bloc_y[0]-1)%Ltaille_ecran[0]==0: #reset pour la suite
-            for i in range (4):
-                Lancien_couleur.append(Lcouleur_bloc[i])
-                Lancien_position_x.append(Lposition_bloc_x[i])
-                Lancien_position_y.append(Lposition_bloc_y[i])
-                Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
+            
+            for i in range(10):
+                        cadricouleur.append([])
+                        for j in range(18):
+                            cadricouleur[i].append(False)
+                    
+            for i in range(4):
+                cadricouleur[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=Lcouleur_bloc[i]
+            
+            for i in range(10):
+                        ancien_position.append([])
+                        for j in range(18):
+                            ancien_position[i].append(False)
+                    
+            for i in range(4):
+                ancien_position[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=list(Lposition_bloc_x[i],Lposition_bloc_y[i])
+            
+           # for i in range (4):
+                #Lancien_couleur.append(Lcouleur_bloc[i])
+               # Lancien_position_x.append(Lposition_bloc_x[i])
+               # Lancien_position_y.append(Lposition_bloc_y[i])
+                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
             Lpoint[position_point]+=4
             point_afficher()#Affiche le score
             Lposition_bloc_x.clear()
