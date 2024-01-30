@@ -252,10 +252,66 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
     #Ici, va soit tout reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
         if (Lposition_bloc_y[0]-1)%Ltaille_ecran[0]==0: #reset pour la suite
-            for i in range (4):
-                Lancien_couleur.append(Lcouleur_bloc[i])
-                Lancien_position_x.append(Lposition_bloc_x[i])
-                Lancien_position_y.append(Lposition_bloc_y[i])
+
+            def effacer_laligne_vrai (Lposition_cadrillage_x,window,Ltaille_ecran):
+                l_valleur_ligne_horrizontal=[]
+                game =True  
+                x=50
+                ancien_position=[]
+               # lposition_trou=[]
+                Lposistion_des_blocs_a_bouger=[]
+                cadricouleur=[]
+                while game ==True :
+       
+                    for i in range(10):
+                        cadricouleur.append([])
+                        for j in range(18):
+                            cadricouleur[i].append(0,0,0)
+                    
+                    for i in range(4):
+                        cadricouleur[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=Lcouleur_bloc[i]
+        
+
+
+                    for i in range(10):
+                        ancien_position.append([])
+                        for j in range(18):
+                             ancien_position[i].append(False)
+                    
+                    for i in range(4):
+                          ancien_position[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=list(Lposition_bloc_x[i],Lposition_bloc_y[i])    
+                    j=-1
+       
+                    while  all.l_valleur_ligne_horrizontal!=True:
+                        if j =17:
+                            j=-1
+                        j+=1
+                        l_valleur_ligne_horrizontal.clear()
+                        for i in range (10):
+                            l_valleur_ligne_horrizontal.append(Lposition_cadrillage_x[i][j])
+                    if all.l_valleur_ligne_horrizontal==True:
+                        pygame.draw.rect(window,(0,0,0),(x,j*50),Ltaille_ecran[0]-1,1,width==0)
+        
+                        for n in range (50):
+                            for o in range (10):
+                                for a in range(j-1):
+                                    if ancien_position[o][a]==False:
+                                         pygame.draw.rect(window,cadricouleur[o][a],o*50,(a*50)+n,49,49)
+                             
+                                    pygame.draw.rect(window,cadricouleur[o][a],ancien_position[o][a][0],ancien_position[o][a][1]+n,49,49)     
+            
+                        for u in range (10):
+                            cadri[u][j]==False
+                
+                            for f in range(j-1):# je décale toute les valeurs de un place en sous liste 
+                                Lposition_cadrillage_x[u][j-f]=Lposition_cadrillage_x[u][j-(f+1)]
+                                cadricouleur[u][j-f]=cadricouleur[u][j-(f+1)]
+                                ancien_position[u][j-f]=ancien_position-[u][j-(f+1)]
+            
+          #  for i in range (4):
+               # Lancien_couleur.append(Lcouleur_bloc[i])
+              #  Lancien_position_x.append(Lposition_bloc_x[i])
+             #   Lancien_position_y.append(Lposition_bloc_y[i])
                 Lposition_cadrillage_x[Lposition_carre_x[i]-1][Lposition_carre_y[i]-1]=True
             Lpoint[position_point]+=4
             point_afficher()#Affiche le score
