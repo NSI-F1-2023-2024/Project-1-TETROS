@@ -1,5 +1,5 @@
 # Créé par octaveleruste, le 27/01/2024 en Python 3.7
-import pygame, sys, os, csv
+#import pygame, sys, os, csv
 #import moviepy.editor
 
 try :
