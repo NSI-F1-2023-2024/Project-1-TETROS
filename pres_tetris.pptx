@@ -650,12 +650,12 @@ def effacer_la_ligne (rep_suppression,position_point):
                 Lposition_cadrillage_x[round(Lancien_position_x[f]/Ltaille_ecran[0])-2][round(Lancien_position_y[f]/Ltaille_ecran[0])-1]=True
 
                 
-def intro():  #Permet d'afficher la video d'intro
+def intro(window):  #Permet d'afficher la video d'intro
     video = moviepy.editor.VideoFileClip("assets/tetris-intro_ngccytXF.mp4")
-    video = video.resize(height=20*Ltaille_ecran[0])
+    video = video.resize(height=10*Ltaille_ecran[0])
     video.preview()
     pygame.draw.rect(window, (0,0,0), (0, 0, 20*Ltaille_ecran[0], 100*Ltaille_ecran[0]))
-                
+    window = pygame.display.set_mode((14*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
             
 def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo):
 
@@ -818,7 +818,7 @@ changement_pseudo = True
 pseudo = ''
 point_afficher()
 
-intro()
+intro(window)
 
 while run:
 
