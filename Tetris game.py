@@ -4,6 +4,7 @@ from pygame.locals import *
 from math import ceil
 from random import randint
 try:
+    import google
     from google.cloud import storage
     online = True
 except ModuleNotFoundError: online = False
