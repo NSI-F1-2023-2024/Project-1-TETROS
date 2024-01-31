@@ -3,9 +3,10 @@ import pygame, sys, os, csv
 #import moviepy.editor
 
 try :
+    import pygame, sys, os, csv
     import moviepy.editor
 except :
-    print("Tu dois installer moviepy.editor, tape ça : pip install moviepy")
+    print("Tu dois installer moviepy.editor, tape ça : pip install moviepy et pareil avec pygame")
     #break
 from pygame.locals import *
 from math import ceil
