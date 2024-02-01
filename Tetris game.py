@@ -105,6 +105,7 @@ in_pause = False
 esc_pressed = False
 run = True
 neon=False
+intro=False
 Lacceleration=[Ltaille_ecran[0]*4/1000,1]
 Lancien_position_x=[]
 Lancien_position_y=[]
@@ -139,10 +140,8 @@ def couleur_bloc(i,Lcouleur_bloc,neon):
     """ Ici, la variable permet de prendre un bloc de couleur et de l'importe, donc permet de determiner la couleur
     d'un tetros grâce à la liste Lcouleur_bloc qui va append un chiffre correspondant à une couleur. La variable prend
     en paramètre i, ce qui va permettre la repetition pour x, x etant le nombre de bloc du tetros crée"""
-    if neon:
-        image = Lbloc_tetris_neon_img[Lcouleur_bloc[i]]
-    else :
-        image = Lbloc_tetris_img[Lcouleur_bloc[i]]
+
+    image = Lbloc_tetris_img[Lcouleur_bloc[i]]
     bloc_tetris = pygame.transform.scale(image, (Ltaille_ecran[0], Ltaille_ecran[0]))
     return bloc_tetris
 
@@ -177,7 +176,7 @@ def genere_position_carre(i,liste_x,liste_y,liste_carre_x,liste_carre_y):
     liste_carre_y[i]=(ceil(liste_y[i]/Ltaille_ecran[0])-1) #insère dans la liste la position des blocs en terme de bloc pas pixel
 
 
-def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,position_bloc_descente_y):
+def type_bloc_image(neon,doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,position_bloc_descente_y):
 
     """ Ici, type_bloc_image va choisir aléatoirement un type de bloc et va ajouter a la liste Lposition_bloc_x et y les valeurs
     précisent pour cree ce bloc, mais ici on ajoute juste les valeurs a la liste, on ne cree pas les blocs. Elle prend en compte :
@@ -185,8 +184,12 @@ def type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_
 
     if doit_cree_bloc>=1 :      #Dès que doit_cree_bloc >0, on ajoute et cree un bloc
         Ltype_bloc[1]=randint(1,7)  #pour la creation du bloc aléaotire
+        Ltype_bloc[0]=1
         doit_cree_bloc-=1
-        couleur_bloc=randint(0,5)
+        if neon:
+            couleur_bloc=randint(6,11)
+        else:
+            couleur_bloc=randint(0,5)
         position_bloc_descente_x=15*Ltaille_ecran[0]/2
         position_bloc_descente_y=3*Ltaille_ecran[0]/2       
         
@@ -462,7 +465,7 @@ def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetri
     """ def, de base permet de lancer le jeu avec la creation des blocs et de la map"""
 
 
-    nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y=type_bloc_image(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,position_bloc_descente_y)
+    nombre_bloc,doit_cree_bloc,position_bloc_descente_x,position_bloc_descente_y=type_bloc_image(neon,doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,position_bloc_descente_y)
     bloc_tetris=creation_bloc(nombre_bloc,bloc_tetris,neon)
 
     return nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y
@@ -473,12 +476,12 @@ def effacer():
 
     for i in range(4):    #Ici, va collisions le bloc en noir pour l'effacer
         Lcouleur_bloc_noir[i]=Lcouleur_bloc[i]
-        Lcouleur_bloc[i]=6
+        Lcouleur_bloc[i]=len(Lbloc_tetris_img)-1
 
     creation_bloc(nombre_bloc,bloc_tetris,neon)
     for i in range(4):
         Lcouleur_bloc[i]=Lcouleur_bloc_noir[i]
-        Lcouleur_bloc_noir[i]=6
+        Lcouleur_bloc_noir[i]=len(Lbloc_tetris_img)-1
 
     crea_map()
 
@@ -611,7 +614,7 @@ def effacement_ligne(ligne):
     error=0
     
     for i in range(10):
-        bloc_tetris = pygame.transform.scale(Lbloc_tetris_img[6], (Ltaille_ecran[0], Ltaille_ecran[0]))
+        bloc_tetris = pygame.transform.scale(Lbloc_tetris_img[len(Lbloc_tetris_img)-1], (Ltaille_ecran[0], Ltaille_ecran[0]))
         window.blit(bloc_tetris,[Ltaille_ecran[0]*(i+2),Ltaille_ecran[0]*(ligne+1)])  # Ici, va print cette image a la position x,y
         Lposition_cadrillage_x[i][ligne]=False 
         rep=0
@@ -630,10 +633,8 @@ def effacement_ligne(ligne):
                     rep+=1
 
 def dessine_tetros_ligne(i,neon):
-    if neon==True:
-        bloc_tetris=Lbloc_tetris_neon_img[Lancien_couleur[i]]
-    else :
-        bloc_tetris=Lbloc_tetris_img[Lancien_couleur[i]]
+
+    bloc_tetris=Lbloc_tetris_img[Lancien_couleur[i]]
     bloc_tetris = pygame.transform.scale(bloc_tetris, (Ltaille_ecran[0], Ltaille_ecran[0]))
     window.blit(bloc_tetris,[Lancien_position_x[i],Lancien_position_y[i]])  # Ici, va print cette image a la position x,y
 
@@ -661,11 +662,14 @@ def effacer_la_ligne (rep_suppression,position_point):
                 Lposition_cadrillage_x[round(Lancien_position_x[f]/Ltaille_ecran[0])-2][round(Lancien_position_y[f]/Ltaille_ecran[0])-1]=True
 
                 
-def intro(window):  #Permet d'afficher la video d'intro
-    
-    video = moviepy.editor.VideoFileClip("assets/tetris-intro_ngccytXF.mp4")
-    video = video.resize(height=10*Ltaille_ecran[0])
-    video.preview()
+def intro(window,intro):  #Permet d'afficher la video d'intro
+    if intro==True:
+        try :
+            video = moviepy.editor.VideoFileClip("assets/tetris-intro_ngccytXF.mp4")
+            video = video.resize(height=10*Ltaille_ecran[0])
+            video.preview()
+        except :
+            None
     window = pygame.display.set_mode((21*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
     score_img = pygame.image.load("assets/score.png") #Affiche le score à droite
     score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
@@ -742,7 +746,6 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
 
     elif in_game:    #En game, le jeu tetris est lancé avec donc le programme
         if not quadrillage:
-            point_afficher()
             position_point=0
             Lpoint=[0,0,10,20,30,44,50,100,150,210]
             Lacceleration[0]=0.1  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
@@ -754,6 +757,7 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
             window.blit(fond_ecran_jeu,[0,0])
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
             crea_map()
+            point_afficher()
             quadrillage = True
             
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
@@ -770,11 +774,11 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
         
         elif Lacceleration[1]<1 :
             Lacceleration[1]+=Ltaille_ecran[0]*4/100000000
-        if Lpoint[position_point]>=200 and Lpoint[position_point]<=210 :
+        if Lpoint[position_point]>=50 and Lpoint[position_point]<=51 :
             if neon==False:
                 neon=True
             else : neon=False
-        if Lpoint[position_point]>210 and neon == False:
+        if Lpoint[position_point]>51 and neon == False:
             neon=True
 
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
@@ -811,8 +815,7 @@ regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille
 #Ici va ajouter à cette liste toutes les images du next_tetros pour éviter de les réimporter à chaque fois
 Lnext_tetros=[pygame.image.load("assets/next_tetros_1.png"),pygame.image.load("assets/next_tetros_2.png"),pygame.image.load("assets/next_tetros_3.png"),pygame.image.load("assets/next_tetros_4.png"),pygame.image.load("assets/next_tetros_5.png"),pygame.image.load("assets/next_tetros_6.png"),pygame.image.load("assets/next_tetros_7.png")]
 #Ici crée une liste avec les plocs importé comme le réimporte plus.
-Lbloc_tetris_img=[pygame.image.load("assets/bloc_tetris_vert.jpg"),pygame.image.load("assets/bloc_tetris_rouge.jpg"),pygame.image.load("assets/bloc_tetris_bleu.jpg"),pygame.image.load("assets/bloc_tetris_orange.jpg"),pygame.image.load("assets/bloc_tetris_violet.jpg"),pygame.image.load("assets/bloc_tetris_jaune.jpg"),pygame.image.load("assets/bloc_tetris_noir.jpg")]
-Lbloc_tetris_neon_img=[pygame.image.load("assets/bloc_tetris_neon_vert.png"),pygame.image.load("assets/bloc_tetris_neon_rouge.png"),pygame.image.load("assets/bloc_tetris_neon_bleu.png"),pygame.image.load("assets/bloc_tetris_neon_orange.png"),pygame.image.load("assets/bloc_tetris_neon_violet.png"),pygame.image.load("assets/bloc_tetris_neon_jaune.png"),pygame.image.load("assets/bloc_tetris_noir.jpg")]
+Lbloc_tetris_img=[pygame.image.load("assets/bloc_tetris_vert.jpg"),pygame.image.load("assets/bloc_tetris_rouge.jpg"),pygame.image.load("assets/bloc_tetris_bleu.jpg"),pygame.image.load("assets/bloc_tetris_orange.jpg"),pygame.image.load("assets/bloc_tetris_violet.jpg"),pygame.image.load("assets/bloc_tetris_jaune.jpg"),pygame.image.load("assets/bloc_tetris_neon_vert.png"),pygame.image.load("assets/bloc_tetris_neon_rouge.png"),pygame.image.load("assets/bloc_tetris_neon_bleu.png"),pygame.image.load("assets/bloc_tetris_neon_orange.png"),pygame.image.load("assets/bloc_tetris_neon_violet.png"),pygame.image.load("assets/bloc_tetris_neon_jaune.png"),pygame.image.load("assets/bloc_tetris_noir.jpg")]
 
 bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
 bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
@@ -837,7 +840,7 @@ changement_pseudo = True
 pseudo = ''
 point_afficher()
 
-intro(window)
+intro(window,intro)
 
 while run:
 
