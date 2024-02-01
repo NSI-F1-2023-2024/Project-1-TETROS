@@ -2,15 +2,15 @@
 #import pygame, sys, os, csv
 #import moviepy.editor
 
+
+from pygame.locals import *
+from math import ceil
+from random import randint
 try :
     import pygame, sys, os, csv
     import moviepy.editor
 except :
     print("Tu dois installer moviepy.editor, tape ça : pip install moviepy")
-    #break
-from pygame.locals import *
-from math import ceil
-from random import randint
 try:
     import google
     from google.cloud import storage
@@ -716,7 +716,7 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
         if bouton_regles.collision(window):
             in_menu = False
             in_regles = True
-        if bouton_quitter.collision(window): # probleme avec le bouton quitter et les regles (ils sont a la meme position donc quand on clique sur l'un, ça clique sur les deux)
+        if bouton_quitter.collision(window) and bouton_croix.clicked == False:
             pygame.quit()
             sys.exit()
         if changement_pseudo:
@@ -767,7 +767,7 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
             else : neon=False
         if Lpoint[position_point]>210 and neon == False:
             neon=True
-        
+
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
             in_game = False
             in_pause = True
