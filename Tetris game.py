@@ -2,15 +2,24 @@
 #import pygame, sys, os, csv
 #import moviepy.editor
 
+import IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
+from PIL import Image
+
+display.display(Image.open("assets/chargement.jpg"))
 
 from pygame.locals import *
 from math import ceil
 from random import randint
-try :
+
+try :#Ici va tester d'importer les librairies pygame et moviepy et si arrive pas, alors va les pip install pour que l'utilisateur ai juste à lancer le programme pour y jouer !
     import pygame, sys, os, csv
     import moviepy.editor
 except :
-    print("Tu dois installer moviepy.editor, tape ça : pip install moviepy")
+    !pip install pygame
+    !pip install moviepy
+    import pygame, sys, os, csv
+    import moviepy.editor
+    print("Si ça ne marche pas, il faut installer pygame et moviepy, il faut donc regarder sur internet comme faire...")
 try:
     import google
     from google.cloud import storage
@@ -47,7 +56,7 @@ clock = pygame.time.Clock()
 
 # Permet d'ouvrir la fenetre aux positions x,y , soit la 100/200
 
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (100,200)
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (500,200)
 
 #Ici, se retrouve toutes les listes utilisés
 Lposition_bloc_x=[]  #Voici les listes des position des blocs, et un bloc sera assigné a une valeur
@@ -657,14 +666,14 @@ def intro(window):  #Permet d'afficher la video d'intro
     video = moviepy.editor.VideoFileClip("assets/tetris-intro_ngccytXF.mp4")
     video = video.resize(height=10*Ltaille_ecran[0])
     video.preview()
-    pygame.draw.rect(window, (0,0,0), (0, 0, 20*Ltaille_ecran[0], 100*Ltaille_ecran[0]))
-    window = pygame.display.set_mode((21*Ltaille_ecran[0],22*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
+    window = pygame.display.set_mode((21*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
     score_img = pygame.image.load("assets/score.png") #Affiche le score à droite
     score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
     window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
     fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png") #Affiche le fond d'écran
     fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
     window.blit(fond_ecran_jeu,[0,0])
+    point_afficher()
             
             
 def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo):
