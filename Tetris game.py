@@ -1,10 +1,17 @@
 # Créé par octaveleruste, le 27/01/2024 en Python 3.7
-import pygame, sys, os, csv
+#import pygame, sys, os, csv
+#import moviepy.editor
+
+try :
+    import pygame, sys, os, csv
+    import moviepy.editor
+except :
+    print("Tu dois installer moviepy.editor, tape ça : pip install moviepy")
+    #break
 from pygame.locals import *
 from math import ceil
 from random import randint
 try:
-    import google
     from google.cloud import storage
     online = True
 except ModuleNotFoundError: online = False
@@ -50,7 +57,7 @@ Lposition_carre_x=[]
 Lposition_carre_y=[]
 Ltaille_ecran=[]
 Ltype_bloc=[4,0]
-Lpoint=[0,0,1,2,3,4,5,10,15,21]
+Lpoint=[0,0,10,20,30,44,50,100,150,210]
 Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 rep_suppression=[0] #nombre de répétition pour faire descendre tout les blocs d'exactement 1 bloc.
@@ -642,6 +649,21 @@ def effacer_la_ligne (rep_suppression,position_point):
                     Lposition_cadrillage_x[a][b]=False
             for f in range(len(Lancien_position_y)):
                 Lposition_cadrillage_x[round(Lancien_position_x[f]/Ltaille_ecran[0])-2][round(Lancien_position_y[f]/Ltaille_ecran[0])-1]=True
+
+                
+def intro(window):  #Permet d'afficher la video d'intro
+    
+    video = moviepy.editor.VideoFileClip("assets/tetris-intro_ngccytXF.mp4")
+    video = video.resize(height=10*Ltaille_ecran[0])
+    video.preview()
+    pygame.draw.rect(window, (0,0,0), (0, 0, 20*Ltaille_ecran[0], 100*Ltaille_ecran[0]))
+    window = pygame.display.set_mode((21*Ltaille_ecran[0],22*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
+    score_img = pygame.image.load("assets/score.png") #Affiche le score à droite
+    score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
+    window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
+    fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png") #Affiche le fond d'écran
+    fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
+    window.blit(fond_ecran_jeu,[0,0])
             
             
 def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo):
@@ -712,9 +734,12 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
         if not quadrillage:
             point_afficher()
             position_point=0
-            Lpoint=[0,0,1,2,3,4,5,10,15,21]
+            Lpoint=[0,0,10,20,30,44,50,100,150,210]
             Lacceleration[0]=0.1  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
-            fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png")
+            score_img = pygame.image.load("assets/score.png") #Affiche le score à droite
+            score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
+            window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
+            fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png") #Affiche le fond d'écran
             fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
             window.blit(fond_ecran_jeu,[0,0])
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
@@ -724,7 +749,7 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
         nombre_bloc,doit_cree_bloc,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y=jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y)
         vitesse,in_mort,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y=faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,doit_cree_bloc,repetition,position_bloc_descente_y)
            
-        while len(Lpoint)>position_point+1 and Lpoint[position_point]>=Lpoint[position_point+1]:
+        while len(Lpoint)>position_point+1 and Lpoint[position_point]>Lpoint[position_point+1]:
                 Lpoint[position_point],Lpoint[position_point+1]=Lpoint[position_point+1],Lpoint[position_point]
                 Lpseudo[position_point],Lpseudo[position_point+1]=Lpseudo[position_point+1],Lpseudo[position_point]
                 position_point+=1
@@ -735,11 +760,11 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
         
         elif Lacceleration[1]<1 :
             Lacceleration[1]+=Ltaille_ecran[0]*4/100000000
-        if Lpoint[position_point]>=100 and Lpoint[position_point]<=110 :
+        if Lpoint[position_point]>=200 and Lpoint[position_point]<=210 :
             if neon==False:
                 neon=True
             else : neon=False
-        if Lpoint[position_point]>110 and neon == False:
+        if Lpoint[position_point]>210 and neon == False:
             neon=True
         
         if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
@@ -765,7 +790,7 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
     return neon,pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
 
 pygame.init()   #Début dela création de la page
-window = pygame.display.set_mode((21*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
+window = pygame.display.set_mode((15*Ltaille_ecran[0],10*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
 
 #Ici se trouve la définition des images notament pour le fond d'ecran
 menu_img = pygame.image.load("assets/menu_image.png")
@@ -791,9 +816,6 @@ bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 3*Ltaille_ecran[0]))
 barre_pseudo_img = pygame.image.load("assets/barre_pseudo.png")
 barre_pseudo_img = pygame.transform.scale(barre_pseudo_img, (11*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
-score_img = pygame.image.load("assets/score.png")
-score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
-window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
 
 bouton_jouer = Button(4*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_jouer_img)
 bouton_regles = Button(4*Ltaille_ecran[0], 11*Ltaille_ecran[0], bouton_regles_img)
@@ -804,6 +826,8 @@ bouton_rejouer = Button(2*Ltaille_ecran[0], 8*Ltaille_ecran[0], bouton_rejouer_i
 changement_pseudo = True
 pseudo = ''
 point_afficher()
+
+intro(window)
 
 while run:
 
