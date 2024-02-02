@@ -11,15 +11,18 @@ from pygame.locals import *
 from math import ceil
 from random import randint
 
+import sys, os, csv, subprocess
+
 try :#Ici va tester d'importer les librairies pygame et moviepy et si arrive pas, alors va les pip install pour que l'utilisateur ai juste à lancer le programme pour y jouer !
-    import pygame, sys, os, csv
+    import pygame
     import moviepy.editor
 except :
-    !pip install pygame
-    !pip install moviepy
-    import pygame, sys, os, csv
-    import moviepy.editor
-    print("Si ça ne marche pas, il faut installer pygame et moviepy, il faut donc regarder sur internet comme faire...")
+    subprocess.check_call(sys.executable, "-m", "pip", "install", pygame)
+    subprocess.check_call(sys.executable, "-m", "pip", "install", moviepy)
+    
+    import pygame, moviepy.editor
+    print("Si ça ne marche pas, il faut installer pygame et moviepy (voir sur le repository GitHub).")
+
 try:
     import google
     from google.cloud import storage
@@ -77,12 +80,17 @@ for i in range(10):
     Lposition_cadrillage_x.append([])
     for j in range(18):
         Lposition_cadrillage_x[i].append(False)
-        
+
 #Ici permet de mettre le jeu à la taille de l'écran du joueur
 screen = pygame.display.set_mode()
 x, y = screen.get_size()
 y=round(y/22)
 Ltaille_ecran.append(y)
+
+#assignation du nom et de l'icone de la fenêtre de jeu
+pygame.display.set_caption('Tetros')
+icone_jeu = pygame.image.load('assets/bloc_tetris_bleu.jpg')
+pygame.display.set_icon(icone_jeu)
 
 #Ici, se trouve toutes les variables du jeu tetris
 nombre_bloc=0   #Déini, le debut du jeu, au début y'a 0 bloc, il faut en créer 1 et comme y'en a 0 bloc le type est 0
@@ -737,6 +745,7 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
             Lpseudo[0]=pseudo
             changement_pseudo = False
         affichage_pseudo(pseudo)
+        bouton_croix.clicked = False #correction d'un bug qui permettait d'intéragir avec deux boutons en meme temps s'ils étaient à la même position sur différentes pages
 
     elif in_regles:
         window.blit(regles_img, (0,0))
@@ -846,4 +855,4 @@ while run:
 
     neon,pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles = jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo) #réalise le jeu en entier
 #   pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
-    pygame.display.update()  # update l'écran
+    pygame.display.update()  #met l'écran à jour
