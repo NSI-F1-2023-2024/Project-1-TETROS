@@ -28,7 +28,8 @@ try:
     import google
     from google.cloud import storage
     online = True
-except ModuleNotFoundError: online = False
+except ModuleNotFoundError or ImportError: online = False
+
 
 if online:
     #page de connexion & affichage du classement depuis le cloud
@@ -49,7 +50,7 @@ if online:
         liste_colonnes = [k for k,v in leaderboard[0].items()]
         print(leaderboard)
     except google.auth.exceptions.DefaultCredentialsError:
-        print('file not found')
+        print("Le fichier 'tetros-service-key.json' n'a pas été trouvé. Son emplacement par défaut est dans le dossier 'cloud'.")
     Lpseudo = []
     Lpoint = []
     for i in range(len(leaderboard)):
