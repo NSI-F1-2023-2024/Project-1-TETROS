@@ -1,8 +1,10 @@
-# Créé par octaveleruste, le 27/01/2024 en Python 3.7
-#import pygame, sys, os, csv
-#import moviepy.editor
+#GitHub repository: https://github.com/NSI-F1-2023-2024/Project-1-TETRIS
 
-import IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
+
+# Créé par octaveleruste, le 27/01/2024 en Python 3.7
+
+
+import sys, os, csv, IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
 from PIL import Image
 
 display.display(Image.open("assets/chargement.jpg"))
@@ -12,14 +14,15 @@ from math import ceil
 from random import randint
 
 try :#Ici va tester d'importer les librairies pygame et moviepy et si arrive pas, alors va les pip install pour que l'utilisateur ai juste à lancer le programme pour y jouer !
-    import pygame, sys, os, csv
-    import moviepy.editor
-except :
-    #!pip install pygame
-    #!pip install moviepy
-    import pygame, sys, os, csv
-    import moviepy.editor
-    print("Si ça ne marche pas, il faut installer pygame et moviepy, il faut donc regarder sur internet comme faire...")
+    import pygame, moviepy.editor
+except ImportError:
+    try:
+        import pip
+        pip.main(["install", "pygame"])
+        pip.main(["install", "moviepy"])
+        import pygame, moviepy.editor
+    except:
+        print("L'INSTALLATION A ECHOUE \n il faut installer pygame et moviepy (voir page GitHub du projet pour plus d'informations)")
 try:
     import google
     from google.cloud import storage
