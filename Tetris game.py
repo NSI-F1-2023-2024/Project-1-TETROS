@@ -604,7 +604,6 @@ def affichage_pseudo(pseudo):
     screen.blit(image_pseudo, (round(Ltaille_ecran[0]*6.5),round(Ltaille_ecran[0]*5.5)))
 
 def error():
-    
     """Permet si le logiciel a beuge de tout fermer pour forcer l'utilisateur à relancer"""
     
     pygame.quit()
@@ -616,7 +615,7 @@ def error():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  #Pour quitter mais jsp pourquoi ça marche pas, julian si tu sais pk,
             pygame.quit()
-    
+
 def effacement_ligne(ligne):
     
     error=0
