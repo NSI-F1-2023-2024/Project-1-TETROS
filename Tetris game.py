@@ -22,7 +22,8 @@ except ImportError:
         pip.main(["install", "moviepy"])
         import pygame, moviepy.editor
     except:
-        print("L'INSTALLATION A ECHOUE \n il faut installer pygame et moviepy (voir page GitHub du projet pour plus d'informations)")
+        print("L'INSTALLATION A ECHOUE \n Il faut installer pygame et moviepy (voir page GitHub du projet pour plus d'informations)")
+
 try:
     import google
     from google.cloud import storage
@@ -49,9 +50,25 @@ if online:
         print(leaderboard)
     except google.auth.exceptions.DefaultCredentialsError:
         print('file not found')
+    Lpseudo = []
+    Lpoint = []
+    for i in range(len(leaderboard)):
+        Lpseudo.append(leaderboard[i]['username'])
+        Lpoint.append(leaderboard[i]['highscore'])
+    if len(Lpseudo) < 10:
+        j = 0
+        pseudos = ['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
+        scores = [randint(0,200) for i in range(10)]
+        while len(Lpseudo) < 10:
+            Lpseudo.append(pseudos[j])
+            Lpoint.append(scores[j])
+            j += 1
+    print(Lpseudo)
+    print(Lpoint)
 else:
-    #génération de pseudo & classement actuel, affichage "mode hors ligne"
-    pass
+    Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
+    Lpoint = [0,0,10,20,30,44,50,100,150,200]
+
 
 #Ici se trouve la définition de toutes les listes, valeurs et initialisation par exemple de clock qui est lle "temps"
 
@@ -70,8 +87,9 @@ Lposition_carre_x=[]
 Lposition_carre_y=[]
 Ltaille_ecran=[]
 Ltype_bloc=[4,0]
-Lpoint=[0,0,10,20,30,44,50,100,150,210]
-Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
+#Lpoint=[0,0,10,20,30,44,50,100,150,210]
+#Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
+
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 rep_suppression=[0] #nombre de répétition pour faire descendre tout les blocs d'exactement 1 bloc.
 
@@ -80,7 +98,7 @@ for i in range(10):
     Lposition_cadrillage_x.append([])
     for j in range(18):
         Lposition_cadrillage_x[i].append(False)
-        
+
 #Ici permet de mettre le jeu à la taille de l'écran du joueur
 screen = pygame.display.set_mode()
 x, y = screen.get_size()
@@ -675,7 +693,7 @@ def effacer_la_ligne (rep_suppression,position_point):
             for f in range(len(Lancien_position_y)):
                 Lposition_cadrillage_x[round(Lancien_position_x[f]/Ltaille_ecran[0])-2][round(Lancien_position_y[f]/Ltaille_ecran[0])-1]=True
 
-                
+
 def intro(window,intro):  #Permet d'afficher la video d'intro
     if intro==True:
         try :
@@ -692,7 +710,7 @@ def intro(window,intro):  #Permet d'afficher la video d'intro
     fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
     window.blit(fond_ecran_jeu,[0,0])
     point_afficher()
-         
+
 def reset_all():
     """Permet de tout réinitialiser pour pouvoir rejouer après avoi perdu"""
     
