@@ -63,10 +63,16 @@ if online:
             Lpseudo.append(pseudos[j])
             Lpoint.append(scores[j])
             j += 1
-    print(Lpseudo)
-    print(Lpoint)
+
+    tmp = []
+    for i in range(10):
+        tmp.append((Lpoint[i], Lpseudo[i]))
+    tmp = sorted(tmp)
+    Lpoint = [ele[0] for ele in tmp]
+    Lpseudo = [ele[1] for ele in tmp]
+
 else:
-    Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
+    Lpseudo = ['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
     Lpoint = [0,0,10,20,30,44,50,100,150,200]
 
 
