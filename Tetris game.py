@@ -1,8 +1,4 @@
-#GitHub repository: https://github.com/NSI-F1-2023-2024/Project-1-TETRIS
-
-
-# Créé par octaveleruste, le 27/01/2024 en Python 3.7
-
+#Modifié par Timothée samedi 15h33, a ajouté : bloc mario plus de beug  , faire de meme pour + tard pour tj savoir si a utilisé la dernière version : )
 
 import sys, os, csv, IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
 from PIL import Image
@@ -219,7 +215,7 @@ def type_bloc_image(mario,neon,doit_cree_bloc,nombre_bloc,type_bloc,position_blo
         doit_cree_bloc-=1
         if neon:
             couleur_bloc=randint(6,11)
-        elif mario:
+        elif mario == True and neon == False:
             couleur_bloc=randint(12,19)
         else:
             couleur_bloc=randint(0,5)
@@ -336,7 +332,6 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
             
             if mort()==True:#Test pour savoir si est mort?
                 in_mort=True
-                print(in_mort)
                 
             for i in range (4):
                 Lancien_couleur.append(Lcouleur_bloc[i])
@@ -738,7 +733,7 @@ def reset_all():
     Lposition_bloc_x.clear()
     Lposition_bloc_y.clear()
     for i in range(len(Lposition_carre_x)):
-        
+    
         Lposition_carre_x.pop(i)
         Lposition_carre_y.pop(i)
     Lcouleur_bloc.clear()
@@ -907,10 +902,6 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
             esc_pressed = False
 
     elif in_pause:    #Le jeu est en pause si on appiue sur echap et le programme ne passera donc plus que part in_pause et plus par in_game
-        if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
-            in_game = True
-            in_pause = False
-            esc_pressed = True
         if not pygame.key.get_pressed()[K_ESCAPE]:
             esc_pressed = False
         if bouton_quitter.collision(window):
@@ -918,7 +909,13 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
             quadrillage = False
             in_pause = False
             in_menu = True
-            print("aaaaaaa",Lposition_bloc_x,Lposition_carre_x)
+        if pygame.key.get_pressed()[K_ESCAPE] and esc_pressed == False:
+            pygame.draw.rect(window, (0,0,0), (10.5*Ltaille_ecran[0], 2*Ltaille_ecran[0]/2, round(0.5*Ltaille_ecran[0]+Ltaille_ecran[0]/49), round(1*Ltaille_ecran[0])))
+            crea_map()
+            bloc_suivant()
+            in_game = True
+            in_pause = False
+            esc_pressed = True
 
     position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
 
