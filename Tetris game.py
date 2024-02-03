@@ -15,8 +15,8 @@ try :#Ici va tester d'importer les librairies pygame et moviepy et si arrive pas
     import pygame, sys, os, csv
     import moviepy.editor
 except :
-    !pip install pygame
-    !pip install moviepy
+    #!pip install pygame
+    #!pip install moviepy
     import pygame, sys, os, csv
     import moviepy.editor
     print("Si ça ne marche pas, il faut installer pygame et moviepy, il faut donc regarder sur internet comme faire...")
@@ -29,7 +29,7 @@ except ModuleNotFoundError: online = False
 if online:
     #page de connexion & affichage du classement depuis le cloud
     try:
-        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'tetros-service-key.json'
+        os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'cloud/tetros-service-key.json'
 
         storage_client = storage.Client()
         bucket = storage_client.bucket('tetros_bucket')
@@ -59,7 +59,7 @@ clock = pygame.time.Clock()
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (500,200)
 
 #Ici, se retrouve toutes les listes utilisés
-Lposition_bloc_x=[]  #Voici les listes des position des blocs, et un bloc sera assigné a une valeur
+Lposition_bloc_x=[] #Voici les listes des position des blocs, et un bloc sera assigné a une valeur
 Lposition_bloc_y=[]
 Lcouleur_bloc=[]
 Lcouleur_bloc_noir=[10,10,10,10]
@@ -676,16 +676,16 @@ def effacer_la_ligne (rep_suppression,position_point):
 def intro(window,intro):  #Permet d'afficher la video d'intro
     if intro==True:
         try :
-            video = moviepy.editor.VideoFileClip("assets/tetris-intro_ngccytXF.mp4")
+            video = moviepy.editor.VideoFileClip("assets/intro/tetris-intro_vid.mp4")
             video = video.resize(height=10*Ltaille_ecran[0])
             video.preview()
         except :
             None
     window = pygame.display.set_mode((21*Ltaille_ecran[0],20*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
-    score_img = pygame.image.load("assets/score.png") #Affiche le score à droite
+    score_img = pygame.image.load("assets/menu/score.png") #Affiche le score à droite
     score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
     window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
-    fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png") #Affiche le fond d'écran
+    fond_ecran_jeu = pygame.image.load("assets/jeu/fond_ecran_jeu.png") #Affiche le fond d'écran
     fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
     window.blit(fond_ecran_jeu,[0,0])
     point_afficher()
@@ -839,10 +839,10 @@ def jeu_global(neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Laccelerati
             position_point=0
             Lpoint=[0,0,10,20,30,44,50,100,150,210]
             Lacceleration[0]=0.1  #L[0] car acceleration à 2 niveau,1 utilisé tout le temps et l'autre utilisé que quand apppuie sur la touche du bas
-            score_img = pygame.image.load("assets/score.png") #Affiche le score à droite
+            score_img = pygame.image.load("assets/menu/score.png") #Affiche le score à droite
             score_img = pygame.transform.scale(score_img, (round(7*Ltaille_ecran[0]+Ltaille_ecran[0]/4), 20*Ltaille_ecran[0]))
             window.blit(score_img,[14*Ltaille_ecran[0]-Ltaille_ecran[0]/8,0])
-            fond_ecran_jeu = pygame.image.load("assets/fond_ecran_jeu.png") #Affiche le fond d'écran
+            fond_ecran_jeu = pygame.image.load("assets/jeu/fond_ecran_jeu.png") #Affiche le fond d'écran
             fond_ecran_jeu = pygame.transform.scale(fond_ecran_jeu, (14*Ltaille_ecran[0],22*Ltaille_ecran[0] ))
             window.blit(fond_ecran_jeu,[0,0])
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
@@ -901,27 +901,27 @@ pygame.init()   #Début dela création de la page
 window = pygame.display.set_mode((15*Ltaille_ecran[0],10*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
 
 #Ici se trouve la définition des images notament pour le fond d'ecran
-menu_img = pygame.image.load("assets/menu_image.png")
+menu_img = pygame.image.load("assets/menu/menu_image.png")
 menu_img = pygame.transform.scale(menu_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
-regles_img = pygame.image.load("assets/regles_image.png")
+regles_img = pygame.image.load("assets/menu/regles_image.png")
 regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
 
 #Ici va ajouter à cette liste toutes les images du next_tetros pour éviter de les réimporter à chaque fois
-Lnext_tetros=[pygame.image.load("assets/next_tetros_1.png"),pygame.image.load("assets/next_tetros_2.png"),pygame.image.load("assets/next_tetros_3.png"),pygame.image.load("assets/next_tetros_4.png"),pygame.image.load("assets/next_tetros_5.png"),pygame.image.load("assets/next_tetros_6.png"),pygame.image.load("assets/next_tetros_7.png")]
+Lnext_tetros=[pygame.image.load("assets/jeu/next_tetros/1.png"),pygame.image.load("assets/jeu/next_tetros/2.png"),pygame.image.load("assets/jeu/next_tetros/3.png"),pygame.image.load("assets/jeu/next_tetros/4.png"),pygame.image.load("assets/jeu/next_tetros/5.png"),pygame.image.load("assets/jeu/next_tetros/6.png"),pygame.image.load("assets/jeu/next_tetros/7.png")]
 #Ici crée une liste avec les plocs importé comme le réimporte plus.
-Lbloc_tetris_img=[pygame.image.load("assets/bloc_tetris_vert.jpg"),pygame.image.load("assets/bloc_tetris_rouge.jpg"),pygame.image.load("assets/bloc_tetris_bleu.jpg"),pygame.image.load("assets/bloc_tetris_orange.jpg"),pygame.image.load("assets/bloc_tetris_violet.jpg"),pygame.image.load("assets/bloc_tetris_jaune.jpg"),pygame.image.load("assets/bloc_tetris_neon_vert.png"),pygame.image.load("assets/bloc_tetris_neon_rouge.png"),pygame.image.load("assets/bloc_tetris_neon_bleu.png"),pygame.image.load("assets/bloc_tetris_neon_orange.png"),pygame.image.load("assets/bloc_tetris_neon_violet.png"),pygame.image.load("assets/bloc_tetris_neon_jaune.png"),pygame.image.load("assets/mario_pics.png"),pygame.image.load("assets/mario_nuage.png"),pygame.image.load("assets/mario_note.png"),pygame.image.load("assets/mario_mur.png"),pygame.image.load("assets/mario_glace.png"),pygame.image.load("assets/mario_brique.png"),pygame.image.load("assets/mario_surprise.png"),pygame.image.load("assets/mario_pow.png"),pygame.image.load("assets/bloc_tetris_noir.jpg")]
+Lbloc_tetris_img=[pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_vert.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_rouge.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_bleu.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_orange.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_violet.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_jaune.jpg"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_vert.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_rouge.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_bleu.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_orange.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_violet.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_jaune.png"),pygame.image.load("assets/jeu/bloc_mario/mario_pics.png"),pygame.image.load("assets/jeu/bloc_mario/mario_nuage.png"),pygame.image.load("assets/jeu/bloc_mario/mario_note.png"),pygame.image.load("assets/jeu/bloc_mario/mario_mur.png"),pygame.image.load("assets/jeu/bloc_mario/mario_glace.png"),pygame.image.load("assets/jeu/bloc_mario/mario_brique.png"),pygame.image.load("assets/jeu/bloc_mario/mario_surprise.png"),pygame.image.load("assets/jeu/bloc_mario/mario_pow.png"),pygame.image.load("assets/jeu/bloc_tetris_noir.jpg")]
 
-bouton_jouer_img = pygame.image.load("assets/buttons/bouton_jouer.png")
+bouton_jouer_img = pygame.image.load("assets/boutons/bouton_jouer.png")
 bouton_jouer_img = pygame.transform.scale(bouton_jouer_img, (6*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
-bouton_regles_img = pygame.image.load("assets/buttons/bouton_regles.png")
+bouton_regles_img = pygame.image.load("assets/boutons/bouton_regles.png")
 bouton_regles_img = pygame.transform.scale(bouton_regles_img, (round(6*Ltaille_ecran[0]), round(2*Ltaille_ecran[0])))
-bouton_croix_img = pygame.image.load("assets/buttons/bouton_croix.png")
+bouton_croix_img = pygame.image.load("assets/boutons/bouton_croix.png")
 bouton_croix_img = pygame.transform.scale(bouton_croix_img, (round(1.6*Ltaille_ecran[0]),round(1.6*Ltaille_ecran[0])))
-bouton_quitter_img = pygame.image.load("assets/buttons/bouton_quitter.png")
+bouton_quitter_img = pygame.image.load("assets/boutons/bouton_quitter.png")
 bouton_quitter_img = pygame.transform.scale(bouton_quitter_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
-bouton_rejouer_img = pygame.image.load("assets/buttons/bouton_rejouer.png")
+bouton_rejouer_img = pygame.image.load("assets/boutons/bouton_rejouer.png")
 bouton_rejouer_img = pygame.transform.scale(bouton_rejouer_img, (9*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
-barre_pseudo_img = pygame.image.load("assets/barre_pseudo.png")
+barre_pseudo_img = pygame.image.load("assets/menu/barre_pseudo.png")
 barre_pseudo_img = pygame.transform.scale(barre_pseudo_img, (11*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 
 
