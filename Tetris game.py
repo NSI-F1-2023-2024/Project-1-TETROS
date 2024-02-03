@@ -188,7 +188,7 @@ def type_bloc_image(mario,neon,doit_cree_bloc,nombre_bloc,type_bloc,position_blo
 
     if doit_cree_bloc>=1 :      #Dès que doit_cree_bloc >0, on ajoute et cree un bloc
         Ltype_bloc[1]=randint(1,7)  #pour la creation du bloc aléaotire
-        Ltype_bloc[0]=1
+        #Ltype_bloc[0]=1
         doit_cree_bloc-=1
         if neon:
             couleur_bloc=randint(6,11)
@@ -202,8 +202,8 @@ def type_bloc_image(mario,neon,doit_cree_bloc,nombre_bloc,type_bloc,position_blo
         for i in range(4):
             Lposition_carre_x.append(0)
             Lcouleur_bloc.append(couleur_bloc)
-            #if mario :
-                #couleur_bloc=randint(12,19)
+            if mario :
+                couleur_bloc=randint(12,19)
             Lposition_carre_y.append(0)
 
 
