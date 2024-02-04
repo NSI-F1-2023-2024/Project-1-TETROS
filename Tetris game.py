@@ -858,11 +858,9 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
         in_regles = False
 
         ecriture_score(pseudo)
-        print(pseudo)
         if not sauvegardé:
             sauvegarde_cloud()
             sauvegardé = True
-        
 
         if bouton_rejouer.collision(window):
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
@@ -987,8 +985,6 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
     elif in_pause:    #Le jeu est en pause si on appiue sur echap et le programme ne passera donc plus que part in_pause et plus par in_game
         
         ecriture_score(pseudo)
-        print(pseudo)
-        
         
         if not pygame.key.get_pressed()[K_ESCAPE]:
             esc_pressed = False
