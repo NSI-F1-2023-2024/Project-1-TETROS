@@ -2,12 +2,13 @@
 
 import sys, os, csv, IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
 from PIL import Image
-
-display.display(Image.open("assets/chargement.jpg"))
-
 from pygame.locals import *
 from math import ceil
 from random import randint
+
+
+display.display(Image.open("assets/chargement.jpg"))
+
 
 try :#Ici va tester d'importer les librairies pygame et moviepy et si arrive pas, alors va les pip install pour que l'utilisateur ai juste à lancer le programme pour y jouer !
     import pygame, moviepy.editor
@@ -19,7 +20,6 @@ except ImportError:
         import pygame, moviepy.editor
     except:
         print("L'INSTALLATION A ECHOUE \n Il faut installer pygame et moviepy (voir page GitHub du projet pour plus d'informations)")
-
 try:
     import google
     from google.cloud import storage
@@ -46,7 +46,8 @@ if online:
         liste_colonnes = [k for k,v in leaderboard[0].items()]
         print(leaderboard)
     except google.auth.exceptions.DefaultCredentialsError:
-        print("Le fichier 'tetros-service-key.json' n'a pas été trouvé. Son emplacement par défaut est dans le dossier 'cloud'.")
+        online = False
+        print("Le fichier 'tetros-service-key.json' n'a pas été trouvé. Son emplacement par défaut est dans le dossier 'cloud', dans le dossier où se trouve le jeu.")
     Lpseudo = []
     Lpoint = []
     for i in range(len(leaderboard)):
@@ -90,8 +91,6 @@ Lposition_carre_x=[]
 Lposition_carre_y=[]
 Ltaille_ecran=[]
 Ltype_bloc=[4,0]
-#Lpoint=[0,0,10,20,30,44,50,100,150,210]
-#Lpseudo=['lol','Cascroute','Mandaldutitan','Disney -','Gogolehome','Pasladin','Amsterman','lampixar','gomugomu','Le pain']
 
 #Ici, se trouve la grande liste qui contient 10 petites listes de 18 false (car les cases sont vides)
 rep_suppression=[0] #nombre de répétition pour faire descendre tout les blocs d'exactement 1 bloc.
@@ -108,9 +107,11 @@ x, y = screen.get_size()
 y=round(y/22)
 Ltaille_ecran.append(y)
 
-pygame.display.set_caption("Tetros")
+#icone et nom de la fenêtre
 icon_img = pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_bleu.jpg")
 pygame.display.set_icon(icon_img)
+pygame.display.set_caption("Tetros")
+
 
 #Ici, se trouve toutes les variables du jeu tetris
 nombre_bloc=0   #Déini, le debut du jeu, au début y'a 0 bloc, il faut en créer 1 et comme y'en a 0 bloc le type est 0
@@ -500,8 +501,7 @@ def mort():
             screen.blit(text_surface, (5*Ltaille_ecran[0],0))
 
             return True
-    else:
-        return False
+    return False
 
 def jeu(doit_cree_bloc,nombre_bloc,type_bloc,position_bloc_descente_x,bloc_tetris,position_bloc_descente_y,Lposition_bloc_x,Lposition_bloc_y):
 
