@@ -1,4 +1,4 @@
-#Modifié par Timothée samedi 15h33, a ajouté : peut changer de pseudo et de bloc sur le menu ais beug quand joue puis quitte et change de bloc  , faire de meme pour + tard pour tj savoir si a utilisé la dernière version : )
+#Modifié par Julian samedi 04/02 14:45
 
 import sys, os, csv, IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
 from PIL import Image
@@ -48,6 +48,7 @@ if online:
     except google.auth.exceptions.DefaultCredentialsError:
         online = False
         print("Le fichier 'tetros-service-key.json' n'a pas été trouvé. Son emplacement par défaut est dans le dossier 'cloud', dans le dossier où se trouve le jeu.")
+
     Lpseudo = []
     Lpoint = []
     for i in range(len(leaderboard)):
@@ -132,6 +133,7 @@ in_regles = False
 in_game = False
 in_pause = False
 esc_pressed = False
+sauvegardé = False
 run = True
 neon=False
 mario=False
@@ -342,8 +344,8 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
         if (Lposition_bloc_y[0]-1)%Ltaille_ecran[0]==0: #reset pour la suite
             
-            if mort()==True:#Test pour savoir si est mort?
-                in_mort=True
+            if mort() == True:#Test pour savoir si est mort?
+                in_mort = True
                 
             for i in range (4):
                 Lancien_couleur.append(Lcouleur_bloc[i])
@@ -609,18 +611,43 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
 
 def point_afficher():
     """ Affiche les points """
-    pygame.draw.rect(window, (0,0,0), pygame.Rect(14*Ltaille_ecran[0]+round(Ltaille_ecran[0]/8), 7*Ltaille_ecran[0],6*Ltaille_ecran[0], 11*Ltaille_ecran[0]))
+    pygame.draw.rect(window, (0,0,0), 
+                     pygame.Rect(14*Ltaille_ecran[0]+round(Ltaille_ecran[0]/8), 7*Ltaille_ecran[0],6*Ltaille_ecran[0], 11*Ltaille_ecran[0]))
     for i in range(len(Lpoint)):
-        
         score_font = pygame.font.Font(None, 50)
         score_surf = score_font.render(str(Lpoint[i]), 1, (255, 255, 255))
         score_pos = [18*Ltaille_ecran[0], 16*Ltaille_ecran[0]-i*Ltaille_ecran[0]]
         screen.blit(score_surf, score_pos)
+
         my_font = pygame.font.SysFont('Impact', round(Ltaille_ecran[0]/2))
         text_surface = my_font.render(Lpseudo[i], False, (255, 255, 255))
         screen.blit(text_surface, (15*Ltaille_ecran[0],16*Ltaille_ecran[0]-i*Ltaille_ecran[0]))
 
-        
+
+def ecriture_score(pseudo):
+    for i in range(len(Lpseudo)):
+        if pseudo == Lpseudo[i]:
+            score = Lpoint[i]
+
+    for ele in leaderboard:
+        if pseudo == ele['username']:
+            if ele['highscore'] < score:
+                ele['highscore'] = score
+                return
+            return
+    leaderboard.append({'username': pseudo, 'highscore': score})
+    return
+
+def sauvegarde_cloud():
+    with leaderboard_csv.open('w') as f:
+        file_writer = csv.DictWriter(f, fieldnames = liste_colonnes)
+        file_writer.writeheader()
+        for data in leaderboard:
+            file_writer.writerow(data)
+    print(leaderboard)
+    return
+
+
 def generation_de_pseudos():
     consonnes = ("Z","R","T","P","S","D","F","G","K","L","N","X","C","V","B","N")
     voyelles = ("A","E","I","O","U","Y","OU","UI","AI","AY","OY","EY")
@@ -791,7 +818,7 @@ def reset_all():
     Lposition_bloc_y.clear()
     return Lposition_carre_x,Lposition_carre_y,Lposition_cadrillage_x,Lposition_bloc_x,Lposition_bloc_y,position_point,vitesse,repetition,bloc_tetris,position_bloc_descente_x,position_bloc_descente_y,type_bloc,doit_cree_bloc,nombre_bloc
     
-def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo):
+def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo,sauvegardé):
 
     """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties :
             - Le in_menu : c'est la moment du début du jeu ou on attend juste que tu appuie sur play pour joeur et rien d'autre ne se passe
@@ -820,6 +847,7 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
     in_regles = in_regles
     esc_pressed = esc_pressed
     quadrillage = quadrillage
+    sauvegardé = sauvegardé
     position_bloc_descente_x = position_bloc_descente_x
 
     if in_mort:
@@ -828,20 +856,31 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
         in_game = False
         in_pause = False
         in_regles = False
-        
+
+        print(pseudo)
+        if not sauvegardé:
+            sauvegarde_cloud()
+            sauvegardé = True
+
         if bouton_rejouer.collision(window):
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
             in_menu = False
             in_game = True
             in_mort = False
             quadrillage = False
+            sauvegardé = False
         if bouton_quitter.collision(window):
             in_menu=True
             in_game=False
             in_mort=False
             quadrillage = False
+            sauvegardé = False
 
     elif in_menu:  #Dans menu, juste en attente de l'appui du bouton jouer
+        if not sauvegardé:
+            sauvegarde_cloud()
+            sauvegardé = True
+
         if not cadrillage_menu:
             window.blit(menu_img, (0,0))
             window.blit(Lbloc_tetris_img[0],[round(10.5*Ltaille_ecran[0]),14*Ltaille_ecran[0]])
@@ -849,6 +888,7 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
         if bouton_jouer.collision(window):
             in_menu = False
             in_game = True
+            sauvegardé = False
         if bouton_regles.collision(window):
             in_menu = False
             in_regles = True
@@ -961,7 +1001,7 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
 
     position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y=touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y) # Ici va voir si une touche est appuyé
 
-    return cadrillage_menu,mario,minecraft,classique,neon,pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
+    return cadrillage_menu,mario,minecraft,classique,neon,pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles,sauvegardé
 
 pygame.init()   #Début dela création de la page
 window = pygame.display.set_mode((15*Ltaille_ecran[0],10*Ltaille_ecran[0]))  #crée le rectangle noir de 700 par 1000
@@ -1018,6 +1058,6 @@ window.blit(Lbloc_tetris_img[0],[round(10.5*Ltaille_ecran[0]),14*Ltaille_ecran[0
 
 while run:
 
-    cadrillage_menu,mario,minecraft,classique,neon,pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles = jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo) #réalise le jeu en entier
+    cadrillage_menu,mario,minecraft,classique,neon,pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles,sauvegardé = jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo,sauvegardé) #réalise le jeu en entier
 #   pseudo,changement_pseudo,Lpoint,position_point,Lacceleration,vitesse,in_mort,in_game,in_pause,esc_pressed,in_menu,quadrillage,Lposition_bloc_y,Lposition_bloc_x,repetition,position_bloc_descente_y,position_bloc_descente_x,nombre_bloc,doit_cree_bloc,in_regles
     pygame.display.update()  # update l'écran
