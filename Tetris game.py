@@ -108,6 +108,10 @@ x, y = screen.get_size()
 y=round(y/22)
 Ltaille_ecran.append(y)
 
+pygame.display.set_caption("Tetros")
+icon_img = pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_bleu.jpg")
+pygame.display.set_icon(icon_img)
+
 #Ici, se trouve toutes les variables du jeu tetris
 nombre_bloc=0   #Déini, le debut du jeu, au début y'a 0 bloc, il faut en créer 1 et comme y'en a 0 bloc le type est 0
 doit_cree_bloc=1  #Ici, si marque 1, tout comme normal mais si marque 17, va afficher la liste des blocs
@@ -753,7 +757,7 @@ def reset_all():
     for a in range(10):
         for b in range(18):
             Lposition_cadrillage_x[a][b]=False
-            
+
     Lposition_bloc_x=[]  #Voici les listes des position des blocs, et un bloc sera assigné a une valeur
     Lposition_bloc_y=[]
     Lcouleur_bloc=[]
@@ -890,6 +894,7 @@ def jeu_global(cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_po
         if bouton_croix.collision(window):
             in_regles = False
             in_menu = True
+            cadrillage_menu = False
 
     elif in_game:    #En game, le jeu tetris est lancé avec donc le programme
 
@@ -970,7 +975,7 @@ regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille
 #Ici va ajouter à cette liste toutes les images du next_tetros pour éviter de les réimporter à chaque fois
 Lnext_tetros=[pygame.image.load("assets/jeu/next_tetros/1.png"),pygame.image.load("assets/jeu/next_tetros/2.png"),pygame.image.load("assets/jeu/next_tetros/3.png"),pygame.image.load("assets/jeu/next_tetros/4.png"),pygame.image.load("assets/jeu/next_tetros/5.png"),pygame.image.load("assets/jeu/next_tetros/6.png"),pygame.image.load("assets/jeu/next_tetros/7.png")]
 #Ici crée une liste avec les plocs importé comme le réimporte plus.
-Lbloc_tetris_img=[pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_vert.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_rouge.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_bleu.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_orange.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_violet.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_jaune.jpg"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_vert.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_rouge.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_bleu.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_orange.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_violet.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_jaune.png"),pygame.image.load("assets/jeu/bloc_mario/mario_pics.png"),pygame.image.load("assets/jeu/bloc_mario/mario_nuage.png"),pygame.image.load("assets/jeu/bloc_mario/mario_note.png"),pygame.image.load("assets/jeu/bloc_mario/mario_mur.png"),pygame.image.load("assets/jeu/bloc_mario/mario_glace.png"),pygame.image.load("assets/jeu/bloc_mario/mario_brique.png"),pygame.image.load("assets/jeu/bloc_mario/mario_surprise.png"),pygame.image.load("assets/jeu/bloc_mario/mario_beignet.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_pow.png"),pygame.image.load("assets/jeu/bloc_mario/mario_nuage_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_pow_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_pics_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_note_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_glace_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_brique_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_beignet_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_mur_neon.png"),pygame.image.load("assets/jeu/bloc_tetris_noir.jpg")]
+Lbloc_tetris_img=[pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_vert.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_rouge.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_bleu.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_orange.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_violet.jpg"),pygame.image.load("assets/jeu/bloc_classique/bloc_tetris_jaune.jpg"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_vert.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_rouge.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_bleu.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_orange.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_violet.png"),pygame.image.load("assets/jeu/bloc_neon/bloc_tetris_neon_jaune.png"),pygame.image.load("assets/jeu/bloc_mario/mario_pics.png"),pygame.image.load("assets/jeu/bloc_mario/mario_nuage.png"),pygame.image.load("assets/jeu/bloc_mario/mario_note.png"),pygame.image.load("assets/jeu/bloc_mario/mario_mur.png"),pygame.image.load("assets/jeu/bloc_mario/mario_glace.png"),pygame.image.load("assets/jeu/bloc_mario/mario_brique.png"),pygame.image.load("assets/jeu/bloc_mario/mario_surprise.png"),pygame.image.load("assets/jeu/bloc_mario/mario_beignet.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_pow.png"),pygame.image.load("assets/jeu/bloc_mario/mario_nuage.png"),pygame.image.load("assets/jeu/bloc_mario/mario_pow_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_pics_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_note_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_glace_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_brique_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_beignet_neon.jpg"),pygame.image.load("assets/jeu/bloc_mario/mario_mur_neon.png"),pygame.image.load("assets/jeu/bloc_tetris_noir.jpg")]
 
 for i in range(len(Lbloc_tetris_img)):
     Lbloc_tetris_img[i]= pygame.transform.scale(Lbloc_tetris_img[i], (1*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
@@ -990,7 +995,7 @@ barre_pseudo_img = pygame.transform.scale(barre_pseudo_img, (11*Ltaille_ecran[0]
 bouton_rerol_img = pygame.image.load("assets/boutons/bouton_rerol.png")
 bouton_rerol_img = pygame.transform.scale(bouton_rerol_img, (2*Ltaille_ecran[0], 2*Ltaille_ecran[0]))
 bouton_droite_img = pygame.image.load("assets/boutons/bouton_droite.png")
-bouton_droite_img = pygame.transform.scale(barre_droite_img, (Ltaille_ecran[0], Ltaille_ecran[0]))
+bouton_droite_img = pygame.transform.scale(bouton_droite_img, (Ltaille_ecran[0], Ltaille_ecran[0]))
 bouton_gauche_img = pygame.image.load("assets/boutons/bouton_gauche.png")
 bouton_gauche_img = pygame.transform.scale(bouton_gauche_img, (Ltaille_ecran[0], Ltaille_ecran[0]))
 
