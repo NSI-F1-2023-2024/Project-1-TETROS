@@ -23,6 +23,10 @@ Voici les règles du jeu et les contrôles utilisables (également présent dans
 
 # Fonctionnement du jeu
 
-### à rédiger: quadrillage, rotation bloc, descente bloc, suppression ligne... + autres?
+### à rédiger:
+Quadrillage : Le jeu "tetris" prend en utilise un quadrillage s'adaptant à la résolution de votre écran ainsi toute la surface de jeu est visible par l'utilisateur.
+Rotation bloc : La rotation du bloc en mouvement est un aspect éssentiel de Tetris pour effectuer une rotation appuyer sur la barre espace.
+Descente bloc : Il existe deux manières dans tetris pour qu'un bloc descende , automatiquement popur stimuler le gameplay , le coefficient de la descente auto augmente au cour du temps garrantissant une expérience toujours plus nerveuse 
+Suppression ligne: Pour gagner des points il faut compléter des lignes de la grille avec des blocs. Le jeu Tetris effectue une suppréssion de ligne auto dès lors qu'une ligne est complète.
 
 ## Le classement en ligne
