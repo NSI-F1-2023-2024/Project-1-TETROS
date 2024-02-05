@@ -1082,6 +1082,8 @@ menu_img = pygame.image.load("assets/menu/menu_image.png")
 menu_img = pygame.transform.scale(menu_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
 regles_img = pygame.image.load("assets/menu/regles_image.png")
 regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
+hors_ligne_img = pygame.image.load("assets/menu/hors_ligne.png")
+hors_ligne_img = pygame.transform.scale(hors_ligne_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
 
 #Ici va ajouter à cette liste toutes les images du next_tetros pour éviter de les réimporter à chaque fois
 Lnext_tetros=[pygame.image.load("assets/jeu/next_tetros/1.png"),pygame.image.load("assets/jeu/next_tetros/2.png"),pygame.image.load("assets/jeu/next_tetros/3.png"),pygame.image.load("assets/jeu/next_tetros/4.png"),pygame.image.load("assets/jeu/next_tetros/5.png"),pygame.image.load("assets/jeu/next_tetros/6.png"),pygame.image.load("assets/jeu/next_tetros/7.png")]
