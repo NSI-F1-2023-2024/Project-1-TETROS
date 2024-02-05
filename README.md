@@ -1,4 +1,4 @@
-# TETROS
+# Tetris
 
 Le groupe de NSI de F1 vous présente son premier projet: **Tetros** (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python (clé d'accès  au Google Cloud Storage en json).
 
