@@ -34,4 +34,4 @@ Voici les règles du jeu et les contrôles utilisables (également présent dans
 
 ## Le classement en ligne
 
-Il s'agit de départager les joueurs de notre Tétris et de sauvegarder les scores très bons.Le cloud est (ou était) distribué par Google 
+Il s'agit de départager les joueurs de notre Tétris et de sauvegarder les scores très bons. Le cloud est (ou était) distribué par Google 
