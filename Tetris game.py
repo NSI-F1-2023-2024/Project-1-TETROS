@@ -358,8 +358,6 @@ def faire_tomber_reset(position_point,vitesse,Lacceleration,in_mort,nombre_bloc,
 
     #Ici, va soit tout reset si bloc touche le bout ou trouve un bloc en dessous, ou alors va ajouter 1 a la position du bloc et donc il va descendre
     if max(Lposition_carre_y)==18   or Lposition_cadrillage_x[Lposition_carre_x[0]-1][Lposition_carre_y[0]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[1]-1][Lposition_carre_y[1]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[2]-1][Lposition_carre_y[2]+0]==True  or Lposition_cadrillage_x[Lposition_carre_x[3]-1][Lposition_carre_y[3]+0]==True :
-        #if (Lposition_bloc_y[0]-1)%Ltaille_ecran[0]==0: #reset pour la suite
-            #print("hey")
         if mort()==True:#Test pour savoir si est mort?
             in_mort=True
                 
@@ -656,6 +654,9 @@ def point_afficher():
         my_font = pygame.font.SysFont('Impact', round(Ltaille_ecran[0]/2))
         text_surface = my_font.render(Lpseudo[i], False, (255, 255, 255))
         screen.blit(text_surface, (15*Ltaille_ecran[0],16*Ltaille_ecran[0]-i*Ltaille_ecran[0]))
+
+    if not online:
+            window.blit(hors_ligne_img, (0,0))
 
 
 def ecriture_score(pseudo):
@@ -990,6 +991,9 @@ def jeu_global(remerciements,cadrillage_menu,mario,minecraft,classique,neon,Lpoi
                 classique=True
                 window.blit(Lbloc_tetris_img[0],[round(10.5*Ltaille_ecran[0]),14*Ltaille_ecran[0]])
         affichage_pseudo(pseudo)
+        
+        if not online:
+            window.blit(hors_ligne_img, (0,0))
 
     elif in_regles:
         window.blit(regles_img, (0,0))
@@ -1083,7 +1087,7 @@ menu_img = pygame.transform.scale(menu_img, (14*Ltaille_ecran[0], 20*Ltaille_ecr
 regles_img = pygame.image.load("assets/menu/regles_image.png")
 regles_img = pygame.transform.scale(regles_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
 hors_ligne_img = pygame.image.load("assets/menu/hors_ligne.png")
-hors_ligne_img = pygame.transform.scale(hors_ligne_img, (3*Ltaille_ecran[0], 1*Ltaille_ecran[0]))
+hors_ligne_img = pygame.transform.scale(hors_ligne_img, (3*Ltaille_ecran[0], round(0.8*Ltaille_ecran[0])))
 
 #Ici va ajouter à cette liste toutes les images du next_tetros pour éviter de les réimporter à chaque fois
 Lnext_tetros=[pygame.image.load("assets/jeu/next_tetros/1.png"),pygame.image.load("assets/jeu/next_tetros/2.png"),pygame.image.load("assets/jeu/next_tetros/3.png"),pygame.image.load("assets/jeu/next_tetros/4.png"),pygame.image.load("assets/jeu/next_tetros/5.png"),pygame.image.load("assets/jeu/next_tetros/6.png"),pygame.image.load("assets/jeu/next_tetros/7.png")]
