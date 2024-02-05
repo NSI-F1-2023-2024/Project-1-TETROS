@@ -28,7 +28,7 @@ Voici les règles du jeu et les contrôles utilisables (également présent dans
 
 #Rotation bloc : La rotation du bloc en mouvement est un aspect éssentiel de Tetris pour effectuer une rotation appuyer sur la barre espace.
 
-#Descente bloc : Il existe deux manières dans tetris pour qu'un bloc descende , automatiquement popur stimuler le gameplay , le coefficient de la descente auto augmente au cour du temps garrantissant une expérience toujours plus nerveuse.
+#Descente bloc : Il existe deux manières dans tetris pour qu'un bloc descende , automatiquement pour stimuler le gameplay , le coefficient de la descente auto augmente au cour du temps garrantissant une expérience toujours plus nerveuse.
 
 #Suppression ligne: Pour gagner des points il faut compléter des lignes de la grille avec des blocs. Le jeu Tetris effectue une suppréssion de ligne auto dès lors qu'une ligne est complète.
 
