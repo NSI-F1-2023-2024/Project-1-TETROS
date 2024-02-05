@@ -1,6 +1,6 @@
 #Modifié par Timothée samedi 15h33, a ajouté : peut changer de pseudo et de bloc sur le menu ais beug quand joue puis quitte et change de bloc  , faire de meme pour + tard pour tj savoir si a utilisé la dernière version : )
 
-import sys, os, csv, time, IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
+import sys, os, csv, IPython.display as display  #Permet avant durant l'installement de pygame et moviepy d'afficher un chaargement pour que l'utilisateur sache qu'il doit attendre : )
 from PIL import Image
 from pygame.locals import *
 from math import ceil
@@ -45,7 +45,6 @@ if online:
         for ele in leaderboard:
             ele['highscore'] = int(ele['highscore'])
         liste_colonnes = [k for k,v in leaderboard[0].items()]
-        print(leaderboard)
     except google.auth.exceptions.DefaultCredentialsError:
         print("Le fichier 'tetros-service-key.json' n'a pas été trouvé. Son emplacement par défaut est dans le dossier 'cloud'.")
     
@@ -679,7 +678,6 @@ def sauvegarde_cloud():
         file_writer.writeheader()
         for data in leaderboard:
             file_writer.writerow(data)
-    print(leaderboard)
     return
 
 
@@ -907,10 +905,12 @@ def jeu_global(remerciements,cadrillage_menu,mario,minecraft,classique,neon,Lpoi
         in_game = False
         in_pause = False
         in_regles = False
-        ecriture_score(pseudo)
-        if not sauvegardé:
-            sauvegarde_cloud()
-            sauvegardé = True
+        
+        if online:
+            ecriture_score(pseudo)
+            if not sauvegardé:
+                sauvegarde_cloud()
+                sauvegardé = True
 
         if bouton_rejouer.collision(window):
             pygame.draw.rect(window, (0,0,0), pygame.Rect(2*Ltaille_ecran[0],Ltaille_ecran[0], 10*Ltaille_ecran[0], 18*Ltaille_ecran[0]))  # ici cree le rectangle pour le jeu
@@ -929,7 +929,7 @@ def jeu_global(remerciements,cadrillage_menu,mario,minecraft,classique,neon,Lpoi
             sauvegardé = False
             neon = False
     elif in_menu:  #Dans menu, juste en attente de l'appui du bouton jouer
-        if not sauvegardé:
+        if online and not sauvegardé:
             sauvegarde_cloud()
             sauvegardé = True
         
