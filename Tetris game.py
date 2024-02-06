@@ -122,13 +122,13 @@ playlist_perdant = list()
 playlist_suppression = list()
 playlist_moove = list()
 
-playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-playlist_perdant.append ( "assets/musique_perdant.mp3" )
-playlist_suppression.append ( "assets/suppression_ligne.mp3" )
-playlist_moove.append ( "assets/TEtris_moove_musique2.wav" )
+playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
+playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
+playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
+playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
+playlist_perdant.append ( "assets/musique/musique_perdant.mp3" )
+playlist_suppression.append ( "assets/musique/suppression_ligne.mp3" )
+playlist_moove.append ( "assets/musique/tetris_moove_musique.wav" )
 
 #Ici, se trouve toutes les variables du jeu tetris
 nombre_bloc=0   #Déini, le debut du jeu, au début y'a 0 bloc, il faut en créer 1 et comme y'en a 0 bloc le type est 0
@@ -625,20 +625,19 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
         if event.type == pygame.QUIT:  #Pour quitter mais jsp pourquoi ça marche pas, julian si tu sais pk,
             sys.exit()
 
+        #musique
         if Lmusique[0]==False:
-            pygame.mixer.music.load ( playlist_main.pop() )  # Get the first track from the playlist
-            pygame.mixer.music.queue ( playlist_main.pop() ) # Queue the 2nd song
-            pygame.mixer.music.set_endevent ( pygame.USEREVENT )    # Setup the end track event
+            #charge, met en attente le reste de la playlist et lance la première chanson
+            pygame.mixer.music.load ( playlist_main.pop() )
+            pygame.mixer.music.queue ( playlist_main.pop() )
+            pygame.mixer.music.set_endevent ( pygame.USEREVENT )
             pygame.mixer.music.play()
-            Lmusique[0]=True# Play the music
-        #if event.type == pygame.USEREVENT:    # A track has ended
+            Lmusique[0]=True #joue la musique
         if len(playlist_main)==0:
             playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-        if len ( playlist_main ) > 0:       # If there are more tracks in the queue...
-            #playlist_main.append ( "assets/le_main_son_du_game.mp3" )
+        if len ( playlist_main ) > 0:
             pygame.mixer.music.queue ( playlist_main.pop() ) 
 
-            
     return position_bloc_descente_x,Lposition_bloc_x, Lposition_bloc_y
 
 def point_afficher():
@@ -852,22 +851,24 @@ def reset_all():
     Lposition_bloc_x.clear()
     Lposition_bloc_y.clear()
     return Lposition_carre_x,Lposition_carre_y,Lposition_cadrillage_x,Lposition_bloc_x,Lposition_bloc_y,position_point,vitesse,repetition,bloc_tetris,position_bloc_descente_x,position_bloc_descente_y,type_bloc,doit_cree_bloc,nombre_bloc
-    
-def musique():
-    if Lmusique[0]==False:
-        pygame.mixer.music.load ( playlist_main.pop() )  # Get the first track from the playlist
-        pygame.mixer.music.queue ( playlist_main.pop() ) # Queue the 2nd song
-        pygame.mixer.music.set_endevent ( pygame.USEREVENT )    # Setup the end track event
-        pygame.mixer.music.play()
-        Lmusique[0]=True# Play the music
-    if pygame.event.type == pygame.USEREVENT:    # A track has ended
-        if len(playlist_main)==0:
-            playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-        if len ( playlist_main ) > 0:       # If there are more tracks in the queue...
-            playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-            pygame.mixer.music.queue ( playlist_main.pop() ) 
 
-            
+
+# def musique():
+#     #lance la première chanson, charge et met en attente le reste de la playlist
+#     if Lmusique[0]==False:
+#         pygame.mixer.music.load ( playlist_main.pop() )
+#         pygame.mixer.music.queue ( playlist_main.pop() )
+#         pygame.mixer.music.set_endevent ( pygame.USEREVENT )
+#         pygame.mixer.music.play()
+#         Lmusique[0]=True
+#     if pygame.event.type == pygame.USEREVENT: #si une chanson s'arrete
+#         if len(playlist_main)==0:
+#             playlist_main.append ( "assets/le_main_son_du_game.mp3" )
+#         if len ( playlist_main ) > 0:
+#             playlist_main.append ( "assets/le_main_son_du_game.mp3" )
+#             pygame.mixer.music.queue ( playlist_main.pop() )
+
+
 def jeu_global(remerciements,cadrillage_menu,mario,minecraft,classique,neon,Lpoint,position_point,bouton_rejouer_img,vitesse,Lacceleration,Lposition_bloc_x,quadrillage,in_mort,in_game,in_pause,esc_pressed,in_menu,type_bloc,position_bloc_descente_x,bloc_tetris,Lposition_bloc_y,doit_cree_bloc,repetition,nombre_bloc,position_bloc_descente_y,in_regles,changement_pseudo,pseudo, sauvegardé):
 
     """Ici ce réalise tout le jeu. Celui-ci est divisé en 3 parties :
@@ -1066,7 +1067,7 @@ def jeu_global(remerciements,cadrillage_menu,mario,minecraft,classique,neon,Lpoi
             quadrillage=False
             
     elif remerciements:
-        remerciements_img = pygame.image.load("assets/remerciements.png") #Affiche le score à droite
+        remerciements_img = pygame.image.load("assets/menu/remerciements.png") #Affiche le score à droite
         remerciements_img = pygame.transform.scale(remerciements_img, (14*Ltaille_ecran[0], 20*Ltaille_ecran[0]))
         window.blit(remerciements_img, (0,0))
         if bouton_croix.collision(window):
