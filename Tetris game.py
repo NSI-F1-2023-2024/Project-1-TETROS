@@ -516,8 +516,8 @@ def mort():
             text_surface = my_font.render('!!! END !!!', False, (255, 0, 0))
             screen.blit(text_surface, (5*Ltaille_ecran[0],0))
             
-            playlist_main.append ( "assets/le_main_son_du_game.mp3" )
-            playlist_perdant.append ( "assets/musique_perdant.mp3" )
+            playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
+            playlist_perdant.append ( "assets/musique/musique_perdant.mp3" )
             pygame.mixer.music.load ( playlist_perdant.pop() )  # Get the first track from the playlist
             pygame.mixer.music.play()
             return True
@@ -634,7 +634,7 @@ def touche(in_game,position_bloc_descente_x,Lposition_bloc_x,Lposition_bloc_y):
             pygame.mixer.music.play()
             Lmusique[0]=True #joue la musique
         if len(playlist_main)==0:
-            playlist_main.append ( "assets/le_main_son_du_game.mp3" )
+            playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
         if len ( playlist_main ) > 0:
             pygame.mixer.music.queue ( playlist_main.pop() ) 
 
@@ -863,9 +863,9 @@ def reset_all():
 #         Lmusique[0]=True
 #     if pygame.event.type == pygame.USEREVENT: #si une chanson s'arrete
 #         if len(playlist_main)==0:
-#             playlist_main.append ( "assets/le_main_son_du_game.mp3" )
+#             playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
 #         if len ( playlist_main ) > 0:
-#             playlist_main.append ( "assets/le_main_son_du_game.mp3" )
+#             playlist_main.append ( "assets/musique/le_main_son_du_game.mp3" )
 #             pygame.mixer.music.queue ( playlist_main.pop() )
 
 
