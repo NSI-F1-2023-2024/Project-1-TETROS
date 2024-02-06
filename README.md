@@ -11,7 +11,12 @@ La première librairie est celle qui nous a permis de réaliser l'interface grap
 pip install pygame
 ```
 
-Pour avoir accès au classement en ligne, il vous faudra également télécharger la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md).
+Nous vous demandons également de télécharger la librairie [moviepy](https://zulko.github.io/moviepy/). Celle-ci permet le bon fonctionnement de la vidéo d'introduction au lancement du jeu.
+```bash
+pip install moviepy
+```
+
+Enfin, pour avoir accès au classement en ligne, il vous faudra télécharger la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md).
 ```bash
 pip install google-cloud-storage
 ```
