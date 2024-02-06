@@ -11,7 +11,7 @@ La première librairie est celle qui nous a permis de réaliser l'interface grap
 pip install pygame
 ```
 
-Pour avoir accès au classement en ligne, il vous faudra également télécharger la librairie [Google Cloud Storage](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md)
+Pour avoir accès au classement en ligne, il vous faudra également télécharger la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md).
 ```bash
 pip install google-cloud-storage
 ```
@@ -41,9 +41,11 @@ Une suppression de ligne est effectuée automatiquement dès lors qu'une ligne d
 
 <b>Les explications données ci-dessous supposent que vous avez déjà installé les prérequis nécessaires aux intéractions avec le cloud.</b>
 
-Affiché à droite de la grille de jeu, le classement des 10 premiers joueurs vous permet de vous situer par rapport aux autres. 
+Affiché à droite de la grille de jeu, le classement des 10 premiers joueurs vous permet de vous situer par rapport aux autres.
 
-Les données sont stockées au sein d'un fichier csv (comma separated values), lui-même stocké dans un 'bucket' sur la plateforme Google Cloud Storage.
+![image](https://github.com/NSI-F1-2023-2024/Project-1-TETRIS/blob/main/assets/menu/score.png)
+
+Les données sont stockées au sein d'un fichier [csv](https://fr.wikipedia.org/wiki/Comma-separated_values) (comma separated values), lui-même stocké dans un 'bucket' sur la plateforme [Google Cloud Storage](https://cloud.google.com/storage/docs/introduction?hl=fr).
 Grâce à la clé d'accès fournie dans les fichiers du jeu, vous pouvez avoir accès aux données du fichier depuis n'importe quelle machine.
 
 A la fin de chacune de vos parties, si le score réalisé correspond à votre meilleur score, il sera enregistré.
