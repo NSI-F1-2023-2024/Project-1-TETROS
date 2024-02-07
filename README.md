@@ -1,6 +1,6 @@
 # Tetros
 
-Le groupe de NSI de F1 vous présente son premier projet: **Tetros** (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python (clé d'accès  au Google Cloud Storage en json).
+Le groupe de NSI de F1/JASA vous présente son premier projet: **Tetros** (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python, avec [Pygame](https://www.pygame.org/docs/) notamment.
 
 
 # Prérequis
@@ -11,12 +11,12 @@ Pour télécharger le programme: cliquez sur **Code** (en haut de la page à dro
 
 Avant de pouvoir le lancer et tester notre jeu, il vous faudra installer plusieurs librairies Python. Utilisez le gestionnaire de packages [pip](https://pip.pypa.io/en/stable/) afin de les télécharger.
 
-La première librairie nous a permis de réaliser l'interface graphique du jeu:[Pygame](https://www.pygame.org/docs/).
+Pour l'interface graphique du jeu: [Pygame](https://www.pygame.org/docs/).
 ```bash
 pip install pygame
 ```
 
-La librairie [moviepy](https://zulko.github.io/moviepy/) utilisée pour la vidéo d'intro du jeu.
+La librairie [moviepy](https://zulko.github.io/moviepy/), utilisée pour la vidéo d'intro du jeu.
 ```bash
 pip install moviepy
 ```
