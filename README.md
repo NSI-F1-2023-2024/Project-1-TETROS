@@ -2,11 +2,14 @@
 
 Le groupe de NSI de F1 vous présente son premier projet: **Tetros** (inspiré du jeu Tetris). Celui-ci a été quasi-exclusivement développé en Python (clé d'accès  au Google Cloud Storage en json).
 
+
 # Prérequis
 
-Afin de pouvoir tester notre jeu, il vous faudra installer plusieurs librairies Python. Utilisez le gestionnaire de packages [pip](https://pip.pypa.io/en/stable/) afin de les télécharger.
+Pour télécharger le programme: **cliquez sur 'Code'** (en haut à droite, en vert), puis sur **'Download ZIP'**. Il vous suffit ensuite d'extraire les fichiers du dossier ZIP et vous aurez accès à tout le programme.
 
-La première librairie est celle qui nous a permis de réaliser l'interface graphique du jeu: [Pygame](https://www.pygame.org/docs/).
+Avant de pouvoir le lancer et tester notre jeu, il vous faudra installer plusieurs librairies Python. Utilisez le gestionnaire de packages [pip](https://pip.pypa.io/en/stable/) afin de les télécharger.
+
+La première librairie nous a permis de réaliser l'interface graphique du jeu: [Pygame](https://www.pygame.org/docs/).
 ```bash
 pip install pygame
 ```
@@ -16,7 +19,7 @@ Nous vous demandons également de télécharger la librairie [moviepy](https://z
 pip install moviepy
 ```
 
-Enfin, pour avoir accès au classement en ligne, il vous faudra télécharger la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md).
+Enfin, pour avoir accès au classement en ligne, il vous faudra télécharger la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md) (il est également possible de jouer hors-ligne).
 ```bash
 pip install google-cloud-storage
 ```
@@ -34,7 +37,7 @@ Le jeu est basé sur un quadrillage, les blocs se déplaçant uniquement au sein
 Le jeu prend en utilise un quadrillage s'adaptant à la résolution de votre écran ainsi toute la surface de jeu est visible par l'utilisateur.
 
 ## Rotation bloc
-Vous avez la possibilité de faire tourner le bloc sur lui-même. Le principe est le suivant: ##
+Vous avez la possibilité de faire tourner le bloc sur lui-même. Nous utilisons un centre de rotation pour permettre à ce bloc de tourner correctement.
 
 ## Descente du bloc
 Il existe deux manières distinctes pour que le bloc descende: l'une se fait automatiquement et augmente au fur et à mesure que l'on avance dans la partie, et la seconde a lieu uniquement lorsque le joueur le souhaite (la descente est alors grandement accélérée).
