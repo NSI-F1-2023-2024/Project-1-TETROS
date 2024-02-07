@@ -34,12 +34,12 @@ Le jeu est basé sur un quadrillage, les blocs se déplaçant uniquement au sein
 Le jeu prend en utilise un quadrillage s'adaptant à la résolution de votre écran ainsi toute la surface de jeu est visible par l'utilisateur.
 
 ## Rotation bloc
-La rotation du bloc en mouvement est un aspect essentiel de Tetris pour effectuer une rotation appuyer sur la barre espace.
+Vous avez la possibilité de faire tourner le bloc sur lui-même. Le principe est le suivant: ##
 
-## Descente du bloc 
+## Descente du bloc
 Il existe deux manières distinctes pour que le bloc descende: l'une se fait automatiquement et augmente au fur et à mesure que l'on avance dans la partie, et la seconde a lieu uniquement lorsque le joueur le souhaite (la descente est alors grandement accélérée).
 
-## Suppression ligne 
+## Suppression ligne
 Une suppression de ligne est effectuée automatiquement dès lors qu'une ligne de la grille est complète. Cela fait alors gagner des points supplémentaires au joueur.
 
 ## Le classement en ligne
@@ -53,4 +53,4 @@ Affiché à droite de la grille de jeu, le classement des 10 premiers joueurs vo
 Les données sont stockées au sein d'un fichier [csv](https://fr.wikipedia.org/wiki/Comma-separated_values) (comma separated values), lui-même stocké dans un 'bucket' sur la plateforme [Google Cloud Storage](https://cloud.google.com/storage/docs/introduction?hl=fr).
 Grâce à la clé d'accès fournie dans les fichiers du jeu, vous pouvez avoir accès aux données du fichier depuis n'importe quelle machine.
 
-A la fin de chacune de vos parties, si le score réalisé correspond à votre meilleur score, il sera enregistré.
+A la fin de chacune de vos parties, si le score réalisé correspond à votre meilleur score, il est enregistré.
