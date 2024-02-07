@@ -5,21 +5,23 @@ Le groupe de NSI de F1 vous présente son premier projet: **Tetros** (inspiré d
 
 # Prérequis
 
-Pour télécharger le programme: **cliquez sur 'Code'** (en haut à droite, en vert), puis sur **'Download ZIP'**. Il vous suffit ensuite d'extraire les fichiers du dossier ZIP et vous aurez accès à tout le programme.
+Pour télécharger le programme: cliquez sur **Code** (en haut de la page à droite, en vert), puis sur **Download ZIP**. Il vous suffit ensuite d'extraire les fichiers du dossier ZIP et vous aurez accès à tout le programme.
+
+<br>
 
 Avant de pouvoir le lancer et tester notre jeu, il vous faudra installer plusieurs librairies Python. Utilisez le gestionnaire de packages [pip](https://pip.pypa.io/en/stable/) afin de les télécharger.
 
-La première librairie nous a permis de réaliser l'interface graphique du jeu: [Pygame](https://www.pygame.org/docs/).
+La première librairie nous a permis de réaliser l'interface graphique du jeu:[Pygame](https://www.pygame.org/docs/).
 ```bash
 pip install pygame
 ```
 
-Nous vous demandons également de télécharger la librairie [moviepy](https://zulko.github.io/moviepy/). Celle-ci permet le bon fonctionnement de la vidéo d'introduction au lancement du jeu.
+La librairie [moviepy](https://zulko.github.io/moviepy/) utilisée pour la vidéo d'intro du jeu.
 ```bash
 pip install moviepy
 ```
 
-Enfin, pour avoir accès au classement en ligne, il vous faudra télécharger la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md) (il est également possible de jouer hors-ligne).
+Enfin, pour avoir accès au classement en ligne, la librairie [Google Cloud Storage pour Python](https://github.com/GoogleCloudPlatform/python-docs-samples/blob/main/notebooks/rendered/cloud-storage-client-library.md) (il est également possible de jouer hors-ligne).
 ```bash
 pip install google-cloud-storage
 ```
@@ -45,13 +47,11 @@ Il existe deux manières distinctes pour que le bloc descende: l'une se fait aut
 ## Suppression ligne
 Une suppression de ligne est effectuée automatiquement dès lors qu'une ligne de la grille est complète. Cela fait alors gagner des points supplémentaires au joueur.
 
-## Le classement en ligne
+## Classement en ligne
 
-<b>Les explications données ci-dessous supposent que vous avez déjà installé les prérequis nécessaires aux intéractions avec le cloud.</b>
+<b>Les explications données ci-dessous supposent que vous avez installé l'API Google Cloud Storage pour Python (voir prérequis).</b>
 
 Affiché à droite de la grille de jeu, le classement des 10 premiers joueurs vous permet de vous situer par rapport aux autres.
-
-![image](https://github.com/NSI-F1-2023-2024/Project-1-TETRIS/blob/main/assets/menu/score.png)
 
 Les données sont stockées au sein d'un fichier [csv](https://fr.wikipedia.org/wiki/Comma-separated_values) (comma separated values), lui-même stocké dans un 'bucket' sur la plateforme [Google Cloud Storage](https://cloud.google.com/storage/docs/introduction?hl=fr).
 Grâce à la clé d'accès fournie dans les fichiers du jeu, vous pouvez avoir accès aux données du fichier depuis n'importe quelle machine.
